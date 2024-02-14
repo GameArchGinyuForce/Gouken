@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5E8574D2B7C83EC0022B09F /* HitboxOverlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8574C2B7C83EC0022B09F /* HitboxOverlayScene.swift */; };
 		F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */; };
 		F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA0C2B7609EC00E3F4B5 /* art.scnassets */; };
 		F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A5E8574C2B7C83EC0022B09F /* HitboxOverlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitboxOverlayScene.swift; sourceTree = "<group>"; };
 		F031DA072B7609EC00E3F4B5 /* Gouken.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gouken.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F031DA0C2B7609EC00E3F4B5 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 				F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */,
 				F031DA0C2B7609EC00E3F4B5 /* art.scnassets */,
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
+				A5E8574C2B7C83EC0022B09F /* HitboxOverlayScene.swift */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
 				F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5E8574D2B7C83EC0022B09F /* HitboxOverlayScene.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
 			);

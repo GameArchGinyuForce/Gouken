@@ -1,6 +1,6 @@
 //
 //  GameViewController.swift
-//  Gouken!
+//  Gouken
 //
 //  Created by Sepehr Mansouri on 2024-02-08.
 //
@@ -8,16 +8,27 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import SpriteKit
+
 
 class GameViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
         
-        // create and add a camera to the scene
+//        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+//        let scnView = SCNView()
+//        
+//        scnView.scene = scene
+
+        
+        
+//         create a new scene
+        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+
+        
+//         create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
         scene.rootNode.addChildNode(cameraNode)
@@ -25,7 +36,7 @@ class GameViewController: UIViewController {
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
         
-        // create and add a light to the scene
+//         create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
         lightNode.light!.type = .omni
@@ -63,6 +74,10 @@ class GameViewController: UIViewController {
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
+        
+        // Add SpriteKit Scene as overlay
+        scnView.overlaySKScene = HitboxOverlayScene(size: CGSize(width: 100, height: 100))
+        //scnView.overlaySKScene = SKScene(fileNamed: "HitboxOverlayScene.swift")
     }
     
     @objc
