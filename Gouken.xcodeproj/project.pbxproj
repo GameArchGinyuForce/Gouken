@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */; };
+		DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D362B7BAF44007C7323 /* StateMachine.swift */; };
+		DBC19D392B7BB38F007C7323 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D382B7BB38F007C7323 /* State.swift */; };
+		DBC19D3C2B7BB4A9007C7323 /* BaikenStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */; };
+		DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */; };
+		DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */; };
+		DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */; };
 		F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */; };
 		F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA0C2B7609EC00E3F4B5 /* art.scnassets */; };
 		F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */; };
@@ -16,6 +23,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterStateMachine.swift; sourceTree = "<group>"; };
+		DBC19D362B7BAF44007C7323 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
+		DBC19D382B7BB38F007C7323 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenStateMachine.swift; sourceTree = "<group>"; };
+		DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenIdleState.swift; sourceTree = "<group>"; };
+		DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenBaseState.swift; sourceTree = "<group>"; };
+		DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenWalkState.swift; sourceTree = "<group>"; };
 		F031DA072B7609EC00E3F4B5 /* Gouken.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gouken.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F031DA0C2B7609EC00E3F4B5 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -36,6 +50,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DBC19D342B7BAE2C007C7323 /* StateMachines */ = {
+			isa = PBXGroup;
+			children = (
+				DBC19D362B7BAF44007C7323 /* StateMachine.swift */,
+				DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */,
+				DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */,
+			);
+			path = StateMachines;
+			sourceTree = "<group>";
+		};
+		DBC19D352B7BAEA7007C7323 /* States */ = {
+			isa = PBXGroup;
+			children = (
+				DBC19D382B7BB38F007C7323 /* State.swift */,
+				DBC19D3A2B7BB444007C7323 /* Baiken */,
+			);
+			path = States;
+			sourceTree = "<group>";
+		};
+		DBC19D3A2B7BB444007C7323 /* Baiken */ = {
+			isa = PBXGroup;
+			children = (
+				DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */,
+				DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */,
+				DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */,
+			);
+			path = Baiken;
+			sourceTree = "<group>";
+		};
 		F031D9FE2B7609EC00E3F4B5 = {
 			isa = PBXGroup;
 			children = (
@@ -55,6 +98,8 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				DBC19D352B7BAEA7007C7323 /* States */,
+				DBC19D342B7BAE2C007C7323 /* StateMachines */,
 				F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */,
 				F031DA0C2B7609EC00E3F4B5 /* art.scnassets */,
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
@@ -138,6 +183,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
+				DBC19D3C2B7BB4A9007C7323 /* BaikenStateMachine.swift in Sources */,
+				DBC19D392B7BB38F007C7323 /* State.swift in Sources */,
+				DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */,
+				DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */,
+				DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */,
+				DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */,
+				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

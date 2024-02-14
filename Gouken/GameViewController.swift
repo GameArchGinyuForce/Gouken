@@ -10,9 +10,31 @@ import QuartzCore
 import SceneKit
 
 class GameViewController: UIViewController {
-
+    
+    // TODO: for testing state machine
+    var baikenStateMachine: BaikenStateMachine?
+    var displayLink: CADisplayLink?
+    var lastFrameTime: Double = 0.0
+    @objc func screenUpdated(displayLink: CADisplayLink) {
+        update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
+    }
+    func update(currentTime: Double) {
+        let deltaTime = currentTime - lastFrameTime
+        
+        baikenStateMachine?.update(deltaTime)
+        
+        lastFrameTime = currentTime
+    }
+    // ----------------------------- //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // TODO: for testing state machine
+        let screenUpdated = #selector(screenUpdated(displayLink:))
+        displayLink = CADisplayLink(target: self, selector: screenUpdated)
+        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
+        // ----------------------------- //
         
         // create a new scene
         let scene = SCNScene(named: "art.scnassets/ship.scn")!
@@ -63,7 +85,21 @@ class GameViewController: UIViewController {
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
+        
+        // TODO: for testing state machine
+        baikenStateMachine = BaikenStateMachine(ship)
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        scnView.addGestureRecognizer(doubleTapGesture)
+        // ---------------------------- //
     }
+    
+    // TODO: for testing state machine
+    @objc
+    func handleDoubleTap(_ gestureRecognize: UIGestureRecognizer) {
+        baikenStateMachine?.exampleStateChange()
+    }
+    // ---------------------------- //
     
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
