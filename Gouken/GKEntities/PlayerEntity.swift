@@ -19,6 +19,5 @@ class PlayerEntity : GKEntity {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        // You need to implement decoding logic here if you intend to encode and decode your entity
     }
 }
