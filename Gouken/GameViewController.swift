@@ -10,6 +10,8 @@ import QuartzCore
 import SceneKit
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate {
+    
+    var entityManager = EntityManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +67,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
+        
+        
+        // The following code initializes the Entities for our GKEntity set
+        
+        let playerEntity = PlayerEntity()
+        entityManager.addEntity(playerEntity)
+        
     }
     
     
@@ -73,7 +82,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
      */
     @objc
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        print("Update at time!")
+        // Update loop for any calls (our game loop)
+        entityManager.entities.forEach { entity in
+            if let component = entity.component(ofType: MovementComponent.self) {
+                // Update entity based on movement component
+                component.move()
+            }
+        }
     }
     
 

@@ -14,7 +14,7 @@ class MovementComponent : GKComponent {
     
     // Add methods to handle movement logic, collisions, etc.
     func move() {
-        // Implement movement logic here based on the direction and speed
+        print("Player move called")
     }
     
     // You can override GKComponent's update method to update the component's state each frame

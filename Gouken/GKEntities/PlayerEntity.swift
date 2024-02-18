@@ -12,6 +12,7 @@ class PlayerEntity : GKEntity {
     override init() {
         super.init()
         
+        // The following code adds individual Components for our Player Entity
         let movementComponent = MovementComponent()
         addComponent(movementComponent)
     }
