@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F02176962B82B814000993B2 /* PlayerEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02176952B82B814000993B2 /* PlayerEntity.swift */; };
+		F02176992B82B8DA000993B2 /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F02176982B82B8D9000993B2 /* GameplayKit.framework */; };
+		F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F021769B2B82B958000993B2 /* MovementComponent.swift */; };
 		F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */; };
 		F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA0C2B7609EC00E3F4B5 /* art.scnassets */; };
 		F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */; };
@@ -16,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F02176952B82B814000993B2 /* PlayerEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEntity.swift; sourceTree = "<group>"; };
+		F02176982B82B8D9000993B2 /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
+		F021769B2B82B958000993B2 /* MovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementComponent.swift; sourceTree = "<group>"; };
 		F031DA072B7609EC00E3F4B5 /* Gouken.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gouken.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F031DA0C2B7609EC00E3F4B5 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -30,17 +36,44 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F02176992B82B8DA000993B2 /* GameplayKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F02176942B82B7D0000993B2 /* GKEntities */ = {
+			isa = PBXGroup;
+			children = (
+				F02176952B82B814000993B2 /* PlayerEntity.swift */,
+				F021769A2B82B935000993B2 /* GKComponents */,
+			);
+			path = GKEntities;
+			sourceTree = "<group>";
+		};
+		F02176972B82B8D9000993B2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F02176982B82B8D9000993B2 /* GameplayKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F021769A2B82B935000993B2 /* GKComponents */ = {
+			isa = PBXGroup;
+			children = (
+				F021769B2B82B958000993B2 /* MovementComponent.swift */,
+			);
+			path = GKComponents;
+			sourceTree = "<group>";
+		};
 		F031D9FE2B7609EC00E3F4B5 = {
 			isa = PBXGroup;
 			children = (
 				F031DA092B7609EC00E3F4B5 /* Gouken */,
 				F031DA082B7609EC00E3F4B5 /* Products */,
+				F02176972B82B8D9000993B2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,6 +88,7 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				F02176942B82B7D0000993B2 /* GKEntities */,
 				F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */,
 				F031DA0C2B7609EC00E3F4B5 /* art.scnassets */,
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
@@ -137,6 +171,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */,
+				F02176962B82B814000993B2 /* PlayerEntity.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
 			);
