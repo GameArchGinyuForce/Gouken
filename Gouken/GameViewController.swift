@@ -70,7 +70,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         
         // The following code initializes the Entities for our GKEntity set
-        
         let playerEntity = PlayerEntity()
         entityManager.addEntity(playerEntity)
         
