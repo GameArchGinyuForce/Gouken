@@ -8,10 +8,15 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import SpriteKit
+import GameplayKit
+import GameController
 
 class GameViewController: UIViewController {
     
-    // TODO: for testing state machine
+    // TODO: for testing state machine, player controls, and animations
+    var ninja: SCNNode?
+    var gamePad: GCExtendedGamepad?
     var baikenStateMachine: BaikenStateMachine?
     var displayLink: CADisplayLink?
     var lastFrameTime: Double = 0.0
@@ -91,6 +96,46 @@ class GameViewController: UIViewController {
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
         scnView.addGestureRecognizer(doubleTapGesture)
+        
+        // Player Controls Overlay
+        let overlayScene = GKScene(fileNamed: "Overlay")
+        let overlayNode = overlayScene?.rootNode as? Overlay
+        overlayNode?.scaleMode = .aspectFill
+        scnView.overlaySKScene = overlayNode
+        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
+        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
+        gamePad?.buttonA.valueChangedHandler = changeAnimationA
+        gamePad?.buttonB.valueChangedHandler = changeAnimationB
+        // ---------------------------- //
+        
+        // TODO: for testing player controls and animations
+        func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
+            if (!hasBeenPressed) { return }
+            
+            ninja?.removeAllAnimations(withBlendOutDuration: 1.0)
+            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.run)
+            ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.run)
+        }
+        
+        func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
+            if (!hasBeenPressed) { return }
+
+            ninja?.removeAllAnimations(withBlendOutDuration: 1.0)
+            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.attack)
+            ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.attack)
+        }
+        
+        func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
+            print("Thumbstick x=\(xValue) y=\(yValue)")
+        }
+        // ---------------------------- //
+        
+        // Spawn Ninja and play idle animation
+        let ninjaScene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
+        scene.rootNode.addChildNode(ninjaScene.rootNode)
+        ninja = scene.rootNode.childNode(withName: "Synty_Ninja_Root", recursively: true)!
+        let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
+        ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
         // ---------------------------- //
     }
     
@@ -141,9 +186,13 @@ class GameViewController: UIViewController {
         return true
     }
     
+    override var shouldAutorotate: Bool {
+        return true
+    }
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            return .landscapeLeft
         } else {
             return .all
         }

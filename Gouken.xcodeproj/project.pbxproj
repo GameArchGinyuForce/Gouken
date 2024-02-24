@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */; };
+		DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59F5682B89C71500B2D52D /* AnimationList.swift */; };
 		DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D362B7BAF44007C7323 /* StateMachine.swift */; };
 		DBC19D392B7BB38F007C7323 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D382B7BB38F007C7323 /* State.swift */; };
 		DBC19D3C2B7BB4A9007C7323 /* BaikenStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */; };
 		DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */; };
 		DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */; };
 		DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */; };
+		DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF1C45C2B85A79300B40007 /* Overlay.swift */; };
+		DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBF1C4602B85AB9800B40007 /* Overlay.sks */; };
+		DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */; };
 		F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */; };
 		F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA0C2B7609EC00E3F4B5 /* art.scnassets */; };
 		F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */; };
@@ -24,12 +28,16 @@
 
 /* Begin PBXFileReference section */
 		DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterStateMachine.swift; sourceTree = "<group>"; };
+		DB59F5682B89C71500B2D52D /* AnimationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationList.swift; sourceTree = "<group>"; };
 		DBC19D362B7BAF44007C7323 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
 		DBC19D382B7BB38F007C7323 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenStateMachine.swift; sourceTree = "<group>"; };
 		DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenIdleState.swift; sourceTree = "<group>"; };
 		DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenBaseState.swift; sourceTree = "<group>"; };
 		DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenWalkState.swift; sourceTree = "<group>"; };
+		DBF1C45C2B85A79300B40007 /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
+		DBF1C4602B85AB9800B40007 /* Overlay.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Overlay.sks; sourceTree = "<group>"; };
+		DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitExtensions.swift; sourceTree = "<group>"; };
 		F031DA072B7609EC00E3F4B5 /* Gouken.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gouken.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F031DA0C2B7609EC00E3F4B5 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -79,6 +87,15 @@
 			path = Baiken;
 			sourceTree = "<group>";
 		};
+		DBF1C4592B85A48700B40007 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				DBF1C4602B85AB9800B40007 /* Overlay.sks */,
+				DBF1C45C2B85A79300B40007 /* Overlay.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		F031D9FE2B7609EC00E3F4B5 = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +115,7 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				DBF1C4592B85A48700B40007 /* UI */,
 				DBC19D352B7BAEA7007C7323 /* States */,
 				DBC19D342B7BAE2C007C7323 /* StateMachines */,
 				F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */,
@@ -106,6 +124,8 @@
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
 				F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */,
+				DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */,
+				DB59F5682B89C71500B2D52D /* AnimationList.swift */,
 			);
 			path = Gouken;
 			sourceTree = "<group>";
@@ -169,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */,
+				DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */,
 				F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */,
 				F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */,
 				F031DA122B7609EC00E3F4B5 /* Main.storyboard in Resources */,
@@ -182,10 +203,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
+				DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */,
 				DBC19D3C2B7BB4A9007C7323 /* BaikenStateMachine.swift in Sources */,
 				DBC19D392B7BB38F007C7323 /* State.swift in Sources */,
 				DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */,
+				DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */,
 				DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */,
 				DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */,
 				DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */,
