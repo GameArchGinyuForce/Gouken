@@ -44,7 +44,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // ----------------------------- //
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let scene = SCNScene(named: "art.scnassets/AmazingBrentwood.scn")!
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
@@ -52,13 +52,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+        cameraNode.position = SCNVector3(x: 5, y: 2, z: -5)
+        cameraNode.eulerAngles.y = -Float.pi
         
         // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
         lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
+        lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
         scene.rootNode.addChildNode(lightNode)
         
         // create and add an ambient light to the scene
@@ -68,11 +69,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         ambientLightNode.light!.color = UIColor.darkGray
         scene.rootNode.addChildNode(ambientLightNode)
         
-        // retrieve the ship node
-        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
-        
-        // animate the 3d object
-        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
@@ -84,7 +80,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scnView.allowsCameraControl = true
         
         // show statistics such as fps and timing information
-        scnView.showsStatistics = true
+        //scnView.showsStatistics = true
         
         // configure the view
         scnView.backgroundColor = UIColor.black
@@ -95,8 +91,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
         
+        
+        // ---------------------------- //
+        
+        // Spawn Ninja and play idle animation
+        let ninjaScene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
+        scene.rootNode.addChildNode(ninjaScene.rootNode)
+        ninja = scene.rootNode.childNode(withName: "Synty_Ninja_Root", recursively: true)!
+        let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
+        ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
+//        ninja?.eulerAngles.y = Float.pi
+        // ---------------------------- //
+
+        
         // TODO: for testing state machine
-        baikenStateMachine = BaikenStateMachine(ship)
+        baikenStateMachine = BaikenStateMachine(ninja!)
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
         scnView.addGestureRecognizer(doubleTapGesture)
@@ -132,15 +141,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
             print("Thumbstick x=\(xValue) y=\(yValue)")
         }
-        // ---------------------------- //
-        
-        // Spawn Ninja and play idle animation
-        let ninjaScene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
-        scene.rootNode.addChildNode(ninjaScene.rootNode)
-        ninja = scene.rootNode.childNode(withName: "Synty_Ninja_Root", recursively: true)!
-        let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
-        ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
-        // ---------------------------- //
 
         // The following code initializes the Entities for our GKEntity set
         let playerEntity = PlayerEntity()
@@ -164,9 +164,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         entityManager.entities.forEach { entity in
             if let component = entity.component(ofType: MovementComponent.self) {
                 // Update entity based on movement component
-                component.move()
+                //component.move()
             }
         }
+//        print(gamePad?.leftThumbstick)
     }
     
 
