@@ -12,7 +12,9 @@ import SpriteKit
 import GameplayKit
 import GameController
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, SCNSceneRendererDelegate {
+    
+    var entityManager = EntityManager()
     
     // TODO: for testing state machine, player controls, and animations
     var ninja: SCNNode?
@@ -87,6 +89,8 @@ class GameViewController: UIViewController {
         // configure the view
         scnView.backgroundColor = UIColor.black
         
+        scnView.delegate = self
+        
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
@@ -137,6 +141,10 @@ class GameViewController: UIViewController {
         let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
         ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
         // ---------------------------- //
+
+        // The following code initializes the Entities for our GKEntity set
+        let playerEntity = PlayerEntity()
+        entityManager.addEntity(playerEntity)
     }
     
     // TODO: for testing state machine
@@ -146,6 +154,22 @@ class GameViewController: UIViewController {
     }
     // ---------------------------- //
     
+    
+    /*
+     This method is being called every frame and is our update() method.
+     */
+    @objc
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        // Update loop for any calls (our game loop)
+        entityManager.entities.forEach { entity in
+            if let component = entity.component(ofType: MovementComponent.self) {
+                // Update entity based on movement component
+                component.move()
+            }
+        }
+    }
+    
+
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
