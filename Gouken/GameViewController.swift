@@ -17,11 +17,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var entityManager = EntityManager()
     
     // TODO: for testing state machine, player controls, and animations
-    var ninja: SCNNode?
+    var player1: SCNNode?
+    var player2: SCNNode?
     var gamePad: GCExtendedGamepad?
     var baikenStateMachine: BaikenStateMachine?
     var displayLink: CADisplayLink?
     var lastFrameTime: Double = 0.0
+    var cameraNode : SCNNode = SCNNode()
     @objc func screenUpdated(displayLink: CADisplayLink) {
         update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
     }
@@ -44,17 +46,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // ----------------------------- //
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/AmazingBrentwood.scn")!
+        let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
         
         // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
-        
-        // place the camera
-        cameraNode.position = SCNVector3(x: 5, y: 2, z: -5)
-        cameraNode.eulerAngles.y = -Float.pi
-        
+        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+
         // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
@@ -72,6 +68,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
+        
+        scnView.debugOptions = [
+            SCNDebugOptions.renderAsWireframe
+        ]
         
         // set the scene to the view
         scnView.scene = scene
@@ -96,16 +96,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         // Spawn Ninja and play idle animation
         let ninjaScene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
-        scene.rootNode.addChildNode(ninjaScene.rootNode)
-        ninja = scene.rootNode.childNode(withName: "Synty_Ninja_Root", recursively: true)!
+        scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!.addChildNode(ninjaScene.rootNode)
+        player1 = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!.childNode(withName: "Synty_Ninja_Root", recursively: true)!
         let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
-        ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
+        player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
+        
+        let ninja2Scene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
+        scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!.addChildNode(ninja2Scene.rootNode)
+        player2 = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!.childNode(withName: "Synty_Ninja_Root", recursively: true)!
+        let anim2Player = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
+        player2!.addAnimationPlayer(anim2Player, forKey: AnimationList.idle)
+
 //        ninja?.eulerAngles.y = Float.pi
         // ---------------------------- //
 
         
         // TODO: for testing state machine
-        baikenStateMachine = BaikenStateMachine(ninja!)
+        baikenStateMachine = BaikenStateMachine(player1!)
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
         scnView.addGestureRecognizer(doubleTapGesture)
@@ -125,21 +132,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
             if (!hasBeenPressed) { return }
             
-            ninja?.removeAllAnimations(withBlendOutDuration: 1.0)
+            player1?.removeAllAnimations(withBlendOutDuration: 1.0)
             let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.run)
-            ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.run)
+            player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.run)
         }
         
         func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
             if (!hasBeenPressed) { return }
 
-            ninja?.removeAllAnimations(withBlendOutDuration: 1.0)
+            player1?.removeAllAnimations(withBlendOutDuration: 1.0)
             let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.attack)
-            ninja?.addAnimationPlayer(animPlayer, forKey: AnimationList.attack)
+            player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.attack)
         }
         
         func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
-            print("Thumbstick x=\(xValue) y=\(yValue)")
+//            print("Thumbstick x=\(xValue) y=\(yValue)")
+//            cameraNode.eulerAngles.z += xValue * 0.003
+//            cameraNode.eulerAngles.y += xValue * 0.003
         }
 
         // The following code initializes the Entities for our GKEntity set
@@ -167,7 +176,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                 //component.move()
             }
         }
+        let bu = Int.random(in: 0..<100)
+        if bu == 1 {
+            print ("jas is gayy!!!!!!")
+        }
+//        print(cameraNode.eulerAngles)
 //        print(gamePad?.leftThumbstick)
+       // print(player2?.presentation.transform)
     }
     
 
