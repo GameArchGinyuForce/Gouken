@@ -8,30 +8,54 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import SpriteKit
+import GameplayKit
+import GameController
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     var entityManager = EntityManager()
-
+    
+    // TODO: for testing state machine, player controls, and animations
+    var player1: SCNNode?
+    var player2: SCNNode?
+    var gamePad: GCExtendedGamepad?
+    var baikenStateMachine: BaikenStateMachine?
+    var displayLink: CADisplayLink?
+    var lastFrameTime: Double = 0.0
+    var cameraNode : SCNNode = SCNNode()
+    @objc func screenUpdated(displayLink: CADisplayLink) {
+        update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
+    }
+    func update(currentTime: Double) {
+        let deltaTime = currentTime - lastFrameTime
+        
+        baikenStateMachine?.update(deltaTime)
+        
+        lastFrameTime = currentTime
+    }
+    // ----------------------------- //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // TODO: for testing state machine
+        let screenUpdated = #selector(screenUpdated(displayLink:))
+        displayLink = CADisplayLink(target: self, selector: screenUpdated)
+        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
+        // ----------------------------- //
+        
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
         
         // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
-        
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
-        
+        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+
         // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
         lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
+        lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
         scene.rootNode.addChildNode(lightNode)
         
         // create and add an ambient light to the scene
@@ -41,14 +65,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         ambientLightNode.light!.color = UIColor.darkGray
         scene.rootNode.addChildNode(ambientLightNode)
         
-        // retrieve the ship node
-        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
-        
-        // animate the 3d object
-        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
+        
+        scnView.debugOptions = [
+            SCNDebugOptions.renderAsWireframe
+        ]
         
         // set the scene to the view
         scnView.scene = scene
@@ -57,7 +80,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scnView.allowsCameraControl = true
         
         // show statistics such as fps and timing information
-        scnView.showsStatistics = true
+        //scnView.showsStatistics = true
         
         // configure the view
         scnView.backgroundColor = UIColor.black
@@ -69,11 +92,76 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scnView.addGestureRecognizer(tapGesture)
         
         
+        // ---------------------------- //
+        
+        // Spawn Ninja and play idle animation
+        let ninjaScene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
+        scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!.addChildNode(ninjaScene.rootNode)
+        player1 = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!.childNode(withName: "Synty_Ninja_Root", recursively: true)!
+        let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
+        player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
+        
+        let ninja2Scene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
+        scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!.addChildNode(ninja2Scene.rootNode)
+        player2 = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!.childNode(withName: "Synty_Ninja_Root", recursively: true)!
+        let anim2Player = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
+        player2!.addAnimationPlayer(anim2Player, forKey: AnimationList.idle)
+
+//        ninja?.eulerAngles.y = Float.pi
+        // ---------------------------- //
+
+        
+        // TODO: for testing state machine
+        baikenStateMachine = BaikenStateMachine(player1!)
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        scnView.addGestureRecognizer(doubleTapGesture)
+        
+        // Player Controls Overlay
+        let overlayScene = GKScene(fileNamed: "Overlay")
+        let overlayNode = overlayScene?.rootNode as? Overlay
+        overlayNode?.scaleMode = .aspectFill
+        scnView.overlaySKScene = overlayNode
+        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
+        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
+        gamePad?.buttonA.valueChangedHandler = changeAnimationA
+        gamePad?.buttonB.valueChangedHandler = changeAnimationB
+        // ---------------------------- //
+        
+        // TODO: for testing player controls and animations
+        func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
+            if (!hasBeenPressed) { return }
+            
+            player1?.removeAllAnimations(withBlendOutDuration: 1.0)
+            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.run)
+            player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.run)
+        }
+        
+        func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
+            if (!hasBeenPressed) { return }
+
+            player1?.removeAllAnimations(withBlendOutDuration: 1.0)
+            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.attack)
+            player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.attack)
+        }
+        
+        func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
+//            print("Thumbstick x=\(xValue) y=\(yValue)")
+//            cameraNode.eulerAngles.z += xValue * 0.003
+//            cameraNode.eulerAngles.y += xValue * 0.003
+        }
+
         // The following code initializes the Entities for our GKEntity set
         let playerEntity = PlayerEntity()
         entityManager.addEntity(playerEntity)
-        
     }
+    
+    // TODO: for testing state machine
+    @objc
+    func handleDoubleTap(_ gestureRecognize: UIGestureRecognizer) {
+        baikenStateMachine?.exampleStateChange()
+    }
+    // ---------------------------- //
     
     
     /*
@@ -85,9 +173,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         entityManager.entities.forEach { entity in
             if let component = entity.component(ofType: MovementComponent.self) {
                 // Update entity based on movement component
-                component.move()
+                //component.move()
             }
         }
+        let bu = Int.random(in: 0..<100)
+        if bu == 1 {
+            print ("jas is gayy!!!!!!")
+        }
+//        print(cameraNode.eulerAngles)
+//        print(gamePad?.leftThumbstick)
+       // print(player2?.presentation.transform)
     }
     
 
@@ -131,9 +226,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         return true
     }
     
+    override var shouldAutorotate: Bool {
+        return true
+    }
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            return .landscapeLeft
         } else {
             return .all
         }
