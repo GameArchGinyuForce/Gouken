@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */; };
+		1C5F31D32B91C3CD006FE4DA /* InputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D22B91C3CD006FE4DA /* InputHandler.swift */; };
 		DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */; };
 		DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59F5682B89C71500B2D52D /* AnimationList.swift */; };
 		DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D362B7BAF44007C7323 /* StateMachine.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPlayer.swift; sourceTree = "<group>"; };
+		1C5F31D22B91C3CD006FE4DA /* InputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHandler.swift; sourceTree = "<group>"; };
 		DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterStateMachine.swift; sourceTree = "<group>"; };
 		DB59F5682B89C71500B2D52D /* AnimationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationList.swift; sourceTree = "<group>"; };
 		DBC19D362B7BAF44007C7323 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
@@ -69,6 +71,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C5F31D42B91C41A006FE4DA /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				1C5F31D22B91C3CD006FE4DA /* InputHandler.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
 		DBC19D342B7BAE2C007C7323 /* StateMachines */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +163,7 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				1C5F31D42B91C41A006FE4DA /* Input */,
 				DBF1C4592B85A48700B40007 /* UI */,
 				DBC19D352B7BAEA7007C7323 /* States */,
 				DBC19D342B7BAE2C007C7323 /* StateMachines */,
@@ -254,6 +265,7 @@
 				DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */,
 				DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */,
 				DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */,
+				1C5F31D32B91C3CD006FE4DA /* InputHandler.swift in Sources */,
 				DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */,
 				DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */,
 				1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */,

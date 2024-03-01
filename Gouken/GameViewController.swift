@@ -158,6 +158,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
      */
     @objc
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
+        readInput(fromGamePad: gamePad!, deltaTime: time)
+        
         // Update loop for any calls (our game loop)
         entityManager.entities.forEach { entity in
             if let component = entity.component(ofType: MovementComponent.self) {
