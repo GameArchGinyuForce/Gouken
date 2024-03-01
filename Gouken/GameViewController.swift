@@ -69,9 +69,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // retrieve the SCNView
         let scnView = self.view as! SCNView
         
-        scnView.debugOptions = [
-            SCNDebugOptions.renderAsWireframe
-        ]
+//        scnView.debugOptions = [
+//            SCNDebugOptions.renderAsWireframe
+//        ]
         
         // set the scene to the view
         scnView.scene = scene
