@@ -17,8 +17,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var entityManager = EntityManager()
     
     // TODO: for testing state machine, player controls, and animations
-    var player1: SCNNode?
-    var player2: SCNNode?
+    var player1: Character?
+    var player2: Character?
     var gamePad: GCExtendedGamepad?
     var baikenStateMachine: BaikenStateMachine?
     var displayLink: CADisplayLink?
@@ -91,28 +91,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
         
+        // Player Spawn Locations (Any stage we create MUST have these).
+        let p1Spawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+        let p2Spawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
         
-        // ---------------------------- //
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: p1Spawn, onPSide: PlayerType.P1)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: p2Spawn, onPSide: PlayerType.P2)
+        print(player1!.characterNode.presentation.worldPosition)
         
-        // Spawn Ninja and play idle animation
-        let ninjaScene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
-        scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!.addChildNode(ninjaScene.rootNode)
-        player1 = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!.childNode(withName: "Synty_Ninja_Root", recursively: true)!
-        let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
-        player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.idle)
-        
-        let ninja2Scene = SCNScene(named: "art.scnassets/Synty_Ninja_NoAnim.scn")!
-        scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!.addChildNode(ninja2Scene.rootNode)
-        player2 = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!.childNode(withName: "Synty_Ninja_Root", recursively: true)!
-        let anim2Player = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.idle)
-        player2!.addAnimationPlayer(anim2Player, forKey: AnimationList.idle)
-
-//        ninja?.eulerAngles.y = Float.pi
-        // ---------------------------- //
-
         
         // TODO: for testing state machine
-        baikenStateMachine = BaikenStateMachine(player1!)
+        baikenStateMachine = BaikenStateMachine(player1!.characterNode)
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
         scnView.addGestureRecognizer(doubleTapGesture)
@@ -131,18 +120,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // TODO: for testing player controls and animations
         func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
             if (!hasBeenPressed) { return }
-            
-            player1?.removeAllAnimations(withBlendOutDuration: 1.0)
-            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.run)
-            player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.run)
+            player1?.setState(withState: CharacterState.Running)
+//            player1?.removeAllAnimations()
+//            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: CharacterAnimations[CharacterName.Ninja]!.run)
+//            player1?.addAnimationPlayer(animPlayer, forKey: CharacterAnimations[CharacterName.Ninja]!.run)
         }
         
         func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
             if (!hasBeenPressed) { return }
-
-            player1?.removeAllAnimations(withBlendOutDuration: 1.0)
-            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: AnimationList.attack)
-            player1?.addAnimationPlayer(animPlayer, forKey: AnimationList.attack)
+            player1?.setState(withState: CharacterState.Attacking)
+//            player1?.removeAllAnimations()
+//            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: CharacterAnimations[CharacterName.Ninja]!.attack)
+//            player1?.addAnimationPlayer(animPlayer, forKey: CharacterAnimations[CharacterName.Ninja]!.attack)
         }
         
         func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
@@ -152,8 +141,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
 
         // The following code initializes the Entities for our GKEntity set
-        let playerEntity = PlayerEntity()
-        entityManager.addEntity(playerEntity)
+//        let playerEntity = CharacterEntity()
+//        entityManager.addEntity(playerEntity)
     }
     
     // TODO: for testing state machine
@@ -176,6 +165,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                 //component.move()
             }
         }
+
         let bu = Int.random(in: 0..<100)
         if bu == 1 {
             print ("jas is gayy!!!!!!")
