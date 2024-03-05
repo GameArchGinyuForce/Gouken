@@ -46,7 +46,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // ----------------------------- //
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
+        let scene = SCNScene(named: "art.scnassets/AmazingBrentwood.scn")!
         
         // create and add a camera to the scene
         cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
