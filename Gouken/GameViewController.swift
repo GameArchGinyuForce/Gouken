@@ -169,10 +169,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             }
         }
 
-        let bu = Int.random(in: 0..<100)
-        if bu == 1 {
-            print ("jas is gayy!!!!!!")
-        }
 //        print(cameraNode.eulerAngles)
 //        print(gamePad?.leftThumbstick)
        // print(player2?.presentation.transform)
