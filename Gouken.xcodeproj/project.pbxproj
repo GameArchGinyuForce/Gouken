@@ -11,6 +11,9 @@
 		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
 		A5D2DA682B98558D00A32416 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */; };
 		A5D2DA6C2B9859A800A32416 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5D2DA6B2B9859A600A32416 /* background.jpg */; };
+		1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */; };
+		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
+		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
 		DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */; };
 		DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59F5682B89C71500B2D52D /* AnimationList.swift */; };
 		DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D362B7BAF44007C7323 /* StateMachine.swift */; };
@@ -39,6 +42,9 @@
 		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
 		A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
 		A5D2DA6B2B9859A600A32416 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazingBrentwood.swift; sourceTree = "<group>"; };
+		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
+		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
 		DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterStateMachine.swift; sourceTree = "<group>"; };
 		DB59F5682B89C71500B2D52D /* AnimationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationList.swift; sourceTree = "<group>"; };
 		DBC19D362B7BAF44007C7323 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
@@ -75,6 +81,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C7C93182B981E6E00B59858 /* Stages */ = {
+			isa = PBXGroup;
+			children = (
+				1C7C931C2B981F1200B59858 /* Stage.swift */,
+				1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */,
+			);
+			path = Stages;
+			sourceTree = "<group>";
+		};
 		DBC19D342B7BAE2C007C7323 /* StateMachines */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				F021769B2B82B958000993B2 /* MovementComponent.swift */,
+				1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */,
 			);
 			path = GKComponents;
 			sourceTree = "<group>";
@@ -161,6 +177,7 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				1C7C93182B981E6E00B59858 /* Stages */,
 				DBF1C4592B85A48700B40007 /* UI */,
 				DBC19D352B7BAEA7007C7323 /* States */,
 				DBC19D342B7BAE2C007C7323 /* StateMachines */,
@@ -168,6 +185,7 @@
 				F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */,
 				F031DA0C2B7609EC00E3F4B5 /* art.scnassets */,
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
+				A5E8574C2B7C83EC0022B09F /* HitboxOverlayScene.swift */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
 				A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */,
@@ -257,6 +275,7 @@
 				DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */,
 				F021769E2B82BBAF000993B2 /* EntityManager.swift in Sources */,
 				F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */,
+				1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */,
 				F02176962B82B814000993B2 /* Character.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
 				DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */,
@@ -267,6 +286,8 @@
 				DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */,
 				DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */,
 				DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */,
+				1C7C931D2B981F1200B59858 /* Stage.swift in Sources */,
+				1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */,
 				DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */,
 				1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */,
 				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,

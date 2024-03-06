@@ -71,24 +71,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
-        let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
-            
-        // Create and add a camera to the scene
-        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+        // let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
+        var stage : Stage = AmazingBrentwood(withManager: entityManager)
+        let scene = stage.scene!
         
-        // Create and add a light to the scene
+        // create and add a camera to the scene
+        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+
+        // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
         lightNode.light!.type = .omni
         lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
         scene.rootNode.addChildNode(lightNode)
         
-        // Create and add an ambient light to the scene
+        // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
         ambientLightNode.light!.type = .ambient
         ambientLightNode.light!.color = UIColor.darkGray
         scene.rootNode.addChildNode(ambientLightNode)
+        
         
         // Retrieve the SCNView
         let scnViewNew = self.view as! SCNView
@@ -111,6 +114,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Initialize player characters
         player1 = Character(withName: CharacterName.Ninja, underParentNode: p1Spawn, onPSide: PlayerType.P1)
         player2 = Character(withName: CharacterName.Ninja, underParentNode: p2Spawn, onPSide: PlayerType.P2)
+
+        // configure the view
+        scnView.backgroundColor = UIColor.black
+        
+        // init floor physics
+        let floor = scene.rootNode.childNode(withName: "floor", recursively: true)!
+        floor.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        floor.physicsBody?.categoryBitMask = 1
+        floor.physicsBody?.collisionBitMask = 3
+        
+        initPlayerPhysics()
+        initHitboxAttack()
         
         // Initialize state machine for testing
         baikenStateMachine = BaikenStateMachine(player1!.characterNode)
@@ -147,6 +162,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var lastFrameTime: Double = 0.0
     var cameraNode : SCNNode = SCNNode()
     var playerSpawn : SCNNode?
+    var enemySpawn : SCNNode?
     var runSpeed = Float(0.1)
     
     //added
@@ -177,91 +193,58 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     override func viewDidLoad() {
         super.viewDidLoad()
         loadMenu()
-        // create a new scene
-//        let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
-//        
-//        // TODO: for testing state machine
-////        let screenUpdated = #selector(screenUpdated(displayLink:))
-////        displayLink = CADisplayLink(target: self, selector: screenUpdated)
-////        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
-//        // ----------------------------- //
-//        
-//        // create and add a camera to the scene
-//        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
-//
-//        // create and add a light to the scene
-//        let lightNode = SCNNode()
-//        lightNode.light = SCNLight()
-//        lightNode.light!.type = .omni
-//        lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
-//        scene.rootNode.addChildNode(lightNode)
-//        
-//        // create and add an ambient light to the scene
-//        let ambientLightNode = SCNNode()
-//        ambientLightNode.light = SCNLight()
-//        ambientLightNode.light!.type = .ambient
-//        ambientLightNode.light!.color = UIColor.darkGray
-//        scene.rootNode.addChildNode(ambientLightNode)
-//        
-//        
-//        // retrieve the SCNView
-//        let scnView = self.view as! SCNView
+    }
         
-//        scnView.debugOptions = [
-//            SCNDebugOptions.renderAsWireframe
-//        ]
+    func initPlayerPhysics(){
+        playerSpawn?.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        enemySpawn?.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+
+        //prevents wobbly behaviours by locking rotation
+        enemySpawn?.physicsBody?.angularVelocityFactor = SCNVector3(0, 0, 0)
+        enemySpawn?.physicsBody?.allowsResting = true
         
-        // set the scene to the view
-//        scnView.scene = scene
-//        
-//        // allows the user to manipulate the camera
-//        // scnView.allowsCameraControl = true
-//        
-//        // show statistics such as fps and timing information
-//        //scnView.showsStatistics = true
-//        
-//        // configure the view
-//        scnView.backgroundColor = UIColor.black
-//        
-//        scnView.delegate = self
-//        
-//        // add a tap gesture recognizer
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-//        scnView.addGestureRecognizer(tapGesture)
-//        
-//        // Player Spawn Locations (Any stage we create MUST have these).
-//        let p1Spawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
-//        let p2Spawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
-//        playerSpawn = p1Spawn
-//        
-//        player1 = Character(withName: CharacterName.Ninja, underParentNode: p1Spawn, onPSide: PlayerType.P1)
-//        player2 = Character(withName: CharacterName.Ninja, underParentNode: p2Spawn, onPSide: PlayerType.P2)
-//        
-//        print(player1!.characterNode.presentation.worldPosition)
-//        
-//        
-//        // TODO: for testing state machine
-//        baikenStateMachine = BaikenStateMachine(player1!.characterNode)
-//        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-//        doubleTapGesture.numberOfTapsRequired = 2
-//        scnView.addGestureRecognizer(doubleTapGesture)
-//        
-//        // Player Controls Overlay
-//        let overlayScene = GKScene(fileNamed: "Overlay")
-//        let overlayNode = overlayScene?.rootNode as? Overlay
-//        overlayNode?.scaleMode = .aspectFill
-//        scnView.overlaySKScene = overlayNode
-//        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
-//        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
-//        gamePad?.buttonA.valueChangedHandler = changeAnimationA
-//        gamePad?.buttonB.valueChangedHandler = changeAnimationB
-//        // ---------------------------- //
-//        
-////        loadMenu()
+        //prevents wobbly behaviours by locking rotation
+        playerSpawn?.physicsBody?.angularVelocityFactor = SCNVector3(0, 0, 0)
+        playerSpawn?.physicsBody?.allowsResting = true
+        
+        // locks lateral movement
+        playerSpawn?.physicsBody?.velocity.x = 0
+        playerSpawn?.physicsBody?.velocity.y = 0
+        playerSpawn?.physicsBody?.velocity.z = 0
+        
+        // locks lateral movement
+        enemySpawn?.physicsBody?.velocity.x = 0
+        enemySpawn?.physicsBody?.velocity.y = 0
+        enemySpawn?.physicsBody?.velocity.z = 0
+        
+        playerSpawn?.physicsBody?.categoryBitMask = 1
+        playerSpawn?.physicsBody?.collisionBitMask = 3
 
-
+        enemySpawn?.physicsBody?.categoryBitMask = 2
+        enemySpawn?.physicsBody?.collisionBitMask = 3
     }
     
+    func initHitboxAttack(){
+        // create hit box node with geometry
+        let hitboxGeometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
+        let hitboxNode = SCNNode(geometry: hitboxGeometry)
+        hitboxNode.name = "hitboxNode"
+        hitboxNode.position.z = 1.0
+        hitboxNode.position.y = 1.0
+        hitboxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
+        hitboxNode.physicsBody?.categoryBitMask = 4
+        hitboxNode.physicsBody?.collisionBitMask = 2
+
+        
+        // create a visible hitbox
+        let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
+        let redTransparentMaterial = SCNMaterial()
+        redTransparentMaterial.diffuse.contents = redColor
+        hitboxNode.geometry?.materials = [redTransparentMaterial]
+
+        // attach the hitbox to the playerSpawn node
+        playerSpawn?.addChildNode(hitboxNode)
+    }
     
     // TODO: for testing player controls and animations
     func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
@@ -272,16 +255,33 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //            player1?.addAnimationPlayer(animPlayer, forKey: CharacterAnimations[CharacterName.Ninja]!.run)
     }
     
-    func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
-        if (!hasBeenPressed) { return }
-        player1?.setState(withState: CharacterState.Attacking)
-//            player1?.removeAllAnimations()
-//            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: CharacterAnimations[CharacterName.Ninja]!.attack)
-//            player1?.addAnimationPlayer(animPlayer, forKey: CharacterAnimations[CharacterName.Ninja]!.attack)
+    // test collison between node a and node b
+    func testCollisionBetween(_ nodeA: SCNNode, _ nodeB: SCNNode) -> Bool {
+        guard let physicsBodyA = nodeA.physicsBody, let physicsBodyB = nodeB.physicsBody else {
+            return false
+        }
+
+        let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
+        return collision != nil && !collision!.isEmpty
     }
-    
+
+    func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
+        if hasBeenPressed {
+            // Check if enemySpawn is colliding with hitboxNode
+            if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
+                let enemySpawn = enemySpawn,
+                testCollisionBetween(hitboxNode, enemySpawn) {
+                print("COLLISION OCCURED!")
+            }
+
+            player1?.setState(withState: CharacterState.Attacking)
+        }
+    }
+
+
+
     func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
-        print("Thumbstick x=\(xValue) y=\(yValue)")
+        //print("Thumbstick x=\(xValue) y=\(yValue)")
         
         //rotate, play running animations, based on thumbstick input
         let deadZone = Float(0.2)
@@ -291,7 +291,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             player1?.setState(withState: CharacterState.Running)
             runRight = true
             runLeft = false
-            //player1?.characterNode.eulerAngles.y = Float.pi
             player.eulerAngles.y = 0
             print("Running Right")
         }else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
@@ -305,10 +304,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             runLeft = false
             player1?.setState(withState: CharacterState.Idle)
         }
-    
-        
-//            cameraNode.eulerAngles.z += xValue * 0.003
-//            cameraNode.eulerAngles.y += xValue * 0.003
     }
 
     // The following code initializes the Entities for our GKEntity set
@@ -390,6 +385,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             SCNTransaction.commit()
         }
     }
+    
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+            // Check which nodes collided
+            let nodeA = contact.nodeA
+            let nodeB = contact.nodeB
+
+            // Example handling of collision
+            if nodeA == playerSpawn || nodeB == playerSpawn {
+                // Handle collision with playerSpawn
+                print("Collision with player")
+            }
+
+            if nodeA == enemySpawn || nodeB == enemySpawn {
+                // Handle collision with enemySpawn
+                print("Collision with enemy")
+            }
+        }
     
     override var prefersStatusBarHidden: Bool {
         return true
