@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */; };
+		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
+		A5D2DA682B98558D00A32416 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */; };
+		A5D2DA6C2B9859A800A32416 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5D2DA6B2B9859A600A32416 /* background.jpg */; };
 		1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */; };
 		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
 		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
@@ -36,6 +39,9 @@
 
 /* Begin PBXFileReference section */
 		1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPlayer.swift; sourceTree = "<group>"; };
+		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
+		A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
+		A5D2DA6B2B9859A600A32416 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazingBrentwood.swift; sourceTree = "<group>"; };
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
@@ -118,6 +124,8 @@
 			children = (
 				DBF1C4602B85AB9800B40007 /* Overlay.sks */,
 				DBF1C45C2B85A79300B40007 /* Overlay.swift */,
+				A5D2DA652B981C4600A32416 /* MenuOverlay.swift */,
+				A5D2DA6B2B9859A600A32416 /* background.jpg */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -180,6 +188,7 @@
 				A5E8574C2B7C83EC0022B09F /* HitboxOverlayScene.swift */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
+				A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */,
 				F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */,
 				DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */,
 				DB59F5682B89C71500B2D52D /* AnimationList.swift */,
@@ -248,6 +257,8 @@
 			files = (
 				F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */,
 				DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */,
+				A5D2DA6C2B9859A800A32416 /* background.jpg in Resources */,
+				A5D2DA682B98558D00A32416 /* backgroundMusic.mp3 in Resources */,
 				F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */,
 				F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */,
 				F031DA122B7609EC00E3F4B5 /* Main.storyboard in Resources */,
@@ -268,6 +279,7 @@
 				F02176962B82B814000993B2 /* Character.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
 				DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */,
+				A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */,
 				DBC19D3C2B7BB4A9007C7323 /* BaikenStateMachine.swift in Sources */,
 				DBC19D392B7BB38F007C7323 /* State.swift in Sources */,
 				DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */,
