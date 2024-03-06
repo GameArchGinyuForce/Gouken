@@ -46,7 +46,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // ----------------------------- //
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/AmazingBrentwood.scn")!
+//        let scene = SCNScene(named: "art.scnassets/AmazingBrentwood.scn")!
+
+        var stage : Stage = AmazingBrentwood(withManager: entityManager)
+        let scene = stage.scene!
         
         // create and add a camera to the scene
         cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!

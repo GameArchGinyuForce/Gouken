@@ -6,8 +6,9 @@
 //
 
 import GameplayKit
+import SceneKit
 
-class DynamicEnvironmentComponent : GKComponent {
+class PerpetualEnvironmentComponent : GKComponent {
     
     var actions     : [SCNAction] = []
     var environment : SCNNode = SCNNode()
@@ -18,16 +19,15 @@ class DynamicEnvironmentComponent : GKComponent {
         environment = onNode
         
         super.init()
-                
+        
+        environment.runAction(SCNAction.repeatForever(SCNAction.sequence(actions)))
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    override func update(deltaTime seconds: TimeInterval) {
         
+    override func update(deltaTime seconds: TimeInterval) {
     }
-    
+
 }
