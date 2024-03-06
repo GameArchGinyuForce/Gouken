@@ -32,6 +32,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func loadMenu() {
         print("Hey from menu")
         
+        // Remove current SKView (menu overlay)
+        view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
+        
         // Load initial scene
         let scnScene = SCNScene() // Load your SCNScene for fancy background
 
