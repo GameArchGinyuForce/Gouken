@@ -27,11 +27,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     var playerSpawn : SCNNode?
     var enemySpawn : SCNNode?
     var runSpeed = Float(0.1)
+    var ninja2StateMachine: NinjaStateMachine?
     
     //added
     var runRight = false
     var runLeft = false
-    
     
 //    @objc func screenUpdated(displayLink: CADisplayLink) {
 //        update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
@@ -136,6 +136,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
         scnView.addGestureRecognizer(doubleTapGesture)
+        ninja2StateMachine = NinjaStateMachine(player2!.characterNode)
         
         // Player Controls Overlay
         let overlayScene = GKScene(fileNamed: "Overlay")
@@ -225,6 +226,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
                    let enemySpawn = enemySpawn,
                    testCollisionBetween(hitboxNode, enemySpawn) {
                     print("COLLISION OCCURED!")
+                    ninja2StateMachine?.health?.damage(25)
                 }
 
                 player1?.setState(withState: CharacterState.Attacking)
@@ -305,6 +307,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
 //        print(cameraNode.eulerAngles)
 //        print(gamePad?.leftThumbstick)
        // print(player2?.presentation.transform)
+        
+        let deltaTime = time - lastFrameTime
+        
+        ninja2StateMachine?.update(deltaTime)
+
+        lastFrameTime = time
     }
     
 

@@ -32,6 +32,7 @@ enum CharacterState {
     case Idle
     case Jumping
     case Blocking
+    case Downed
 }
 
 class Character {
