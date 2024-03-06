@@ -177,6 +177,7 @@
 				F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */,
 				F031DA0C2B7609EC00E3F4B5 /* art.scnassets */,
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
+				A5E8574C2B7C83EC0022B09F /* HitboxOverlayScene.swift */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
 				F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */,
