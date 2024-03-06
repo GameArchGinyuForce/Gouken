@@ -24,25 +24,41 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var displayLink: CADisplayLink?
     var lastFrameTime: Double = 0.0
     var cameraNode : SCNNode = SCNNode()
-    @objc func screenUpdated(displayLink: CADisplayLink) {
-        update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
-    }
-    func update(currentTime: Double) {
-        let deltaTime = currentTime - lastFrameTime
+    var playerSpawn : SCNNode?
+    var runSpeed = Float(0.1)
+    
+    //added
+    var runRight = false
+    var runLeft = false
+    
+    
+//    @objc func screenUpdated(displayLink: CADisplayLink) {
+//        update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
+//    }
+//    func update(currentTime: Double) {
+//        let deltaTime = currentTime - lastFrameTime
+//        
+//        baikenStateMachine?.update(deltaTime)
+//        
+//        lastFrameTime = currentTime
         
-        baikenStateMachine?.update(deltaTime)
-        
-        lastFrameTime = currentTime
-    }
+        //added
+//        if(runRight){
+//            scene.rootNode.childNode(withName: "p1Spawn", recursively: true).position.z += 1
+//        }
+//        if(runLeft){
+//            scene.rootNode.childNode(withName: "p1Spawn", recursively: true).position.z -= 1
+//        }
+//    }
     // ----------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // TODO: for testing state machine
-        let screenUpdated = #selector(screenUpdated(displayLink:))
-        displayLink = CADisplayLink(target: self, selector: screenUpdated)
-        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
+//        let screenUpdated = #selector(screenUpdated(displayLink:))
+//        displayLink = CADisplayLink(target: self, selector: screenUpdated)
+//        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
         // ----------------------------- //
         
         // create a new scene
@@ -77,7 +93,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         scnView.scene = scene
         
         // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
+        // scnView.allowsCameraControl = true
         
         // show statistics such as fps and timing information
         //scnView.showsStatistics = true
@@ -94,9 +110,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         // Player Spawn Locations (Any stage we create MUST have these).
         let p1Spawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
         let p2Spawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
+        playerSpawn = p1Spawn
         
         player1 = Character(withName: CharacterName.Ninja, underParentNode: p1Spawn, onPSide: PlayerType.P1)
         player2 = Character(withName: CharacterName.Ninja, underParentNode: p2Spawn, onPSide: PlayerType.P2)
+        
         print(player1!.characterNode.presentation.worldPosition)
         
         
@@ -135,7 +153,32 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
         
         func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
-//            print("Thumbstick x=\(xValue) y=\(yValue)")
+            print("Thumbstick x=\(xValue) y=\(yValue)")
+            
+            //rotate, play running animations, based on thumbstick input
+            let deadZone = Float(0.2)
+            let player = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+            
+            if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+                player1?.setState(withState: CharacterState.Running)
+                runRight = true
+                runLeft = false
+                //player1?.characterNode.eulerAngles.y = Float.pi
+                player.eulerAngles.y = 0
+                print("Running Right")
+            }else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+                player1?.setState(withState: CharacterState.Running)
+                runRight = false
+                runLeft = true
+                player.eulerAngles.y = Float.pi
+                print("Running Left")
+            } else if ( abs(xValue)<deadZone) {
+                runRight = false
+                runLeft = false
+                player1?.setState(withState: CharacterState.Idle)
+            }
+        
+            
 //            cameraNode.eulerAngles.z += xValue * 0.003
 //            cameraNode.eulerAngles.y += xValue * 0.003
         }
@@ -165,11 +208,20 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
                 //component.move()
             }
         }
-
-        let bu = Int.random(in: 0..<100)
-        if bu == 1 {
-            print ("jas is gayy!!!!!!")
+        
+        let player = playerSpawn!
+        
+        if(runRight){
+            player.position.z += runSpeed
         }
+        if(runLeft){
+            player.position.z -= runSpeed
+        }
+
+//        let bu = Int.random(in: 0..<100)
+//        if bu == 1 {
+//            print ("jas is gayy!!!!!!")
+//        }
 //        print(cameraNode.eulerAngles)
 //        print(gamePad?.leftThumbstick)
        // print(player2?.presentation.transform)
