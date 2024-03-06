@@ -110,6 +110,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         let p1Spawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
         let p2Spawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
         playerSpawn = p1Spawn
+        enemySpawn = p2Spawn
         
         // Initialize player characters
         player1 = Character(withName: CharacterName.Ninja, underParentNode: p1Spawn, onPSide: PlayerType.P1)
