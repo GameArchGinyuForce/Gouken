@@ -165,11 +165,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var playerSpawn : SCNNode?
     var enemySpawn : SCNNode?
     var runSpeed = Float(0.1)
+    var ninja2StateMachine: NinjaStateMachine?
     
     //added
     var runRight = false
     var runLeft = false
-    
     
 //    @objc func screenUpdated(displayLink: CADisplayLink) {
 //        update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
@@ -236,6 +236,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         hitboxNode.physicsBody?.categoryBitMask = 4
         hitboxNode.physicsBody?.collisionBitMask = 2
 
+
+        // TODO: for testing state machine
+        baikenStateMachine = BaikenStateMachine(player1!.characterNode)
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        scnView.addGestureRecognizer(doubleTapGesture)
+        ninja2StateMachine = NinjaStateMachine(player2!.characterNode)
         
         // create a visible hitbox
         let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
@@ -281,12 +288,57 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
 
 
-    func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
-        //print("Thumbstick x=\(xValue) y=\(yValue)")
-        
-        //rotate, play running animations, based on thumbstick input
-        let deadZone = Float(0.2)
-        let player = scnView.scene!.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+
+        // test collison between node a and node b
+        func testCollisionBetween(_ nodeA: SCNNode, _ nodeB: SCNNode) -> Bool {
+            guard let physicsBodyA = nodeA.physicsBody, let physicsBodyB = nodeB.physicsBody else {
+                return false
+            }
+
+            let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
+            return collision != nil && !collision!.isEmpty
+        }
+
+        func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
+            if hasBeenPressed {
+                // Check if enemySpawn is colliding with hitboxNode
+                if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
+                   let enemySpawn = enemySpawn,
+                   testCollisionBetween(hitboxNode, enemySpawn) {
+                    print("COLLISION OCCURED!")
+                    ninja2StateMachine?.health?.damage(25)
+                }
+
+                player1?.setState(withState: CharacterState.Attacking)
+            }
+        }
+
+
+
+        func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
+            //print("Thumbstick x=\(xValue) y=\(yValue)")
+            
+            //rotate, play running animations, based on thumbstick input
+            let deadZone = Float(0.2)
+            let player = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+            
+            if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+                player1?.setState(withState: CharacterState.Running)
+                runRight = true
+                runLeft = false
+                player.eulerAngles.y = 0
+                print("Running Right")
+            }else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+                player1?.setState(withState: CharacterState.Running)
+                runRight = false
+                runLeft = true
+                player.eulerAngles.y = Float.pi
+                print("Running Left")
+            } else if ( abs(xValue)<deadZone) {
+                runRight = false
+                runLeft = false
+                player1?.setState(withState: CharacterState.Idle)
+            }
         
         if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
             player1?.setState(withState: CharacterState.Running)
@@ -348,6 +400,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        print(cameraNode.eulerAngles)
 //        print(gamePad?.leftThumbstick)
        // print(player2?.presentation.transform)
+        
+        let deltaTime = time - lastFrameTime
+        
+        ninja2StateMachine?.update(deltaTime)
+
+        lastFrameTime = time
     }
     
 
