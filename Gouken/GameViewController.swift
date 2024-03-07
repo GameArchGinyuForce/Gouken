@@ -262,32 +262,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: CharacterAnimations[CharacterName.Ninja]!.run)
 //            player1?.addAnimationPlayer(animPlayer, forKey: CharacterAnimations[CharacterName.Ninja]!.run)
     }
-    
-    // test collison between node a and node b
-    func testCollisionBetween(_ nodeA: SCNNode, _ nodeB: SCNNode) -> Bool {
-        guard let physicsBodyA = nodeA.physicsBody, let physicsBodyB = nodeB.physicsBody else {
-            return false
-        }
-
-        let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
-        return collision != nil && !collision!.isEmpty
-    }
-
-    func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
-        if hasBeenPressed {
-            // Check if enemySpawn is colliding with hitboxNode
-            if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
-                let enemySpawn = enemySpawn,
-                testCollisionBetween(hitboxNode, enemySpawn) {
-                print("COLLISION OCCURED!")
-            }
-
-            player1?.setState(withState: CharacterState.Attacking)
-        }
-    }
-
-
-
 
         // test collison between node a and node b
         func testCollisionBetween(_ nodeA: SCNNode, _ nodeB: SCNNode) -> Bool {
@@ -314,13 +288,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
 
 
-
         func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
             //print("Thumbstick x=\(xValue) y=\(yValue)")
             
             //rotate, play running animations, based on thumbstick input
             let deadZone = Float(0.2)
-            let player = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+            let player = scnView.scene!.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.setState(withState: CharacterState.Running)
