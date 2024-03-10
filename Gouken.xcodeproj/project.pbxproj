@@ -11,9 +11,11 @@
 		1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */; };
 		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
 		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
+		954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */; };
+		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
+		954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* Hitboxes.swift */; };
+		954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765E2B9D6EF300CB7767 /* Colliders.swift */; };
 		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
-		A5D2DA682B98558D00A32416 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */; };
-		A5D2DA6C2B9859A800A32416 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5D2DA6B2B9859A600A32416 /* background.jpg */; };
 		DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DD52B984DAD0014C675 /* HealthComponent.swift */; };
 		DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DD82B984F820014C675 /* NinjaStateMachine.swift */; };
 		DB035DDC2B984FBF0014C675 /* NinjaBaseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DDB2B984FBF0014C675 /* NinjaBaseState.swift */; };
@@ -50,9 +52,11 @@
 		1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazingBrentwood.swift; sourceTree = "<group>"; };
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
+		954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
+		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		954F765C2B9D6ED700CB7767 /* Hitboxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitboxes.swift; sourceTree = "<group>"; };
+		954F765E2B9D6EF300CB7767 /* Colliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colliders.swift; sourceTree = "<group>"; };
 		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
-		A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
-		A5D2DA6B2B9859A600A32416 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		DB035DD52B984DAD0014C675 /* HealthComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthComponent.swift; sourceTree = "<group>"; };
 		DB035DD82B984F820014C675 /* NinjaStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaStateMachine.swift; sourceTree = "<group>"; };
 		DB035DDB2B984FBF0014C675 /* NinjaBaseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaBaseState.swift; sourceTree = "<group>"; };
@@ -106,6 +110,15 @@
 			path = Stages;
 			sourceTree = "<group>";
 		};
+		954F76592B9D6E9200CB7767 /* Collisions */ = {
+			isa = PBXGroup;
+			children = (
+				954F765C2B9D6ED700CB7767 /* Hitboxes.swift */,
+				954F765E2B9D6EF300CB7767 /* Colliders.swift */,
+			);
+			path = Collisions;
+			sourceTree = "<group>";
+		};
 		DB035DDA2B984FAF0014C675 /* Ninja */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,7 +169,6 @@
 				DBF1C4602B85AB9800B40007 /* Overlay.sks */,
 				DBF1C45C2B85A79300B40007 /* Overlay.swift */,
 				A5D2DA652B981C4600A32416 /* MenuOverlay.swift */,
-				A5D2DA6B2B9859A600A32416 /* background.jpg */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -209,6 +221,7 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				954F76592B9D6E9200CB7767 /* Collisions */,
 				1C7C93182B981E6E00B59858 /* Stages */,
 				DBF1C4592B85A48700B40007 /* UI */,
 				DBC19D352B7BAEA7007C7323 /* States */,
@@ -219,7 +232,8 @@
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
-				A5D2DA672B98558D00A32416 /* backgroundMusic.mp3 */,
+				954F76572B9D6DF500CB7767 /* background.jpg */,
+				954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */,
 				F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */,
 				DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */,
 				DB59F5682B89C71500B2D52D /* AnimationList.swift */,
@@ -288,8 +302,8 @@
 			files = (
 				F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */,
 				DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */,
-				A5D2DA6C2B9859A800A32416 /* background.jpg in Resources */,
-				A5D2DA682B98558D00A32416 /* backgroundMusic.mp3 in Resources */,
+				954F76582B9D6DF500CB7767 /* background.jpg in Resources */,
+				954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */,
 				F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */,
 				F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */,
 				F031DA122B7609EC00E3F4B5 /* Main.storyboard in Resources */,
@@ -327,10 +341,12 @@
 				1C7C931D2B981F1200B59858 /* Stage.swift in Sources */,
 				1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */,
 				DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */,
+				954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */,
 				DB035DE02B984FF40014C675 /* NinjaStunnedState.swift in Sources */,
 				1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */,
 				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
+				954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
