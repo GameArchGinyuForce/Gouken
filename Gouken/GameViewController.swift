@@ -120,13 +120,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnView.backgroundColor = UIColor.black
         
         // init floor physics
-        let floor = scene.rootNode.childNode(withName: "floor", recursively: true)!
-        floor.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        floor.physicsBody?.categoryBitMask = 1
-        floor.physicsBody?.collisionBitMask = 3
+        initWorld(scene: scene)
+        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
-        initPlayerPhysics()
-        initHitboxAttack()
+        initHitboxAttack(playerSpawn: playerSpawn)
         
         // Initialize state machine for testing
         baikenStateMachine = BaikenStateMachine(player1!.characterNode)
@@ -194,64 +191,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     override func viewDidLoad() {
         super.viewDidLoad()
         loadMenu()
-    }
-        
-    func initPlayerPhysics(){
-        playerSpawn?.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        enemySpawn?.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-
-        //prevents wobbly behaviours by locking rotation
-        enemySpawn?.physicsBody?.angularVelocityFactor = SCNVector3(0, 0, 0)
-        enemySpawn?.physicsBody?.allowsResting = true
-        
-        //prevents wobbly behaviours by locking rotation
-        playerSpawn?.physicsBody?.angularVelocityFactor = SCNVector3(0, 0, 0)
-        playerSpawn?.physicsBody?.allowsResting = true
-        
-        // locks lateral movement
-        playerSpawn?.physicsBody?.velocity.x = 0
-        playerSpawn?.physicsBody?.velocity.y = 0
-        playerSpawn?.physicsBody?.velocity.z = 0
-        
-        // locks lateral movement
-        enemySpawn?.physicsBody?.velocity.x = 0
-        enemySpawn?.physicsBody?.velocity.y = 0
-        enemySpawn?.physicsBody?.velocity.z = 0
-        
-        playerSpawn?.physicsBody?.categoryBitMask = 1
-        playerSpawn?.physicsBody?.collisionBitMask = 3
-
-        enemySpawn?.physicsBody?.categoryBitMask = 2
-        enemySpawn?.physicsBody?.collisionBitMask = 3
-    }
-    
-    func initHitboxAttack(){
-        // create hit box node with geometry
-        let hitboxGeometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
-        let hitboxNode = SCNNode(geometry: hitboxGeometry)
-        hitboxNode.name = "hitboxNode"
-        hitboxNode.position.z = 1.0
-        hitboxNode.position.y = 1.0
-        hitboxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
-        hitboxNode.physicsBody?.categoryBitMask = 4
-        hitboxNode.physicsBody?.collisionBitMask = 2
-
-
-        // TODO: for testing state machine
-        baikenStateMachine = BaikenStateMachine(player1!.characterNode)
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        scnView.addGestureRecognizer(doubleTapGesture)
-        ninja2StateMachine = NinjaStateMachine(player2!.characterNode)
-        
-        // create a visible hitbox
-        let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
-        let redTransparentMaterial = SCNMaterial()
-        redTransparentMaterial.diffuse.contents = redColor
-        hitboxNode.geometry?.materials = [redTransparentMaterial]
-
-        // attach the hitbox to the playerSpawn node
-        playerSpawn?.addChildNode(hitboxNode)
     }
     
     // TODO: for testing player controls and animations
