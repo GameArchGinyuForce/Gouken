@@ -142,7 +142,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         overlayNode?.scaleMode = .aspectFill
         scnViewNew.overlaySKScene = overlayNode
         gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
-        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
+        gamePad?.dpad.valueChangedHandler = thumbstickHandler
         gamePad?.buttonA.valueChangedHandler = changeAnimationA
         gamePad?.buttonB.valueChangedHandler = changeAnimationB
         
