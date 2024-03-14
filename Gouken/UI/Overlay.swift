@@ -15,9 +15,10 @@ class Overlay: SKScene {
 
         let controllerConfig = GCVirtualController.Configuration()
         controllerConfig.elements = [
-            GCInputLeftThumbstick,
+//            GCInputLeftThumbstick,
             GCInputButtonA,
-            GCInputButtonB
+            GCInputButtonB,
+            GCInputDirectionPad
         ]
         
         virtualController = GCVirtualController(configuration: controllerConfig)
