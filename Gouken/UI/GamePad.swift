@@ -17,8 +17,15 @@ let YPOS_RATIO   = 0.4835
 func createDpadBtn(ofSize size: CGSize, andRoundedEdges roundedEdge: CGFloat) -> SKShapeNode {
     
     let button = SKShapeNode(rectOf: size, cornerRadius: roundedEdge)
-    button.fillColor = pressedColour
+    button.fillColor = unpressedColour
     button.strokeColor = UIColor.black
+    button.isUserInteractionEnabled = false
+    return button
+}
+
+func createPunchBtn(withRadius radius: CGFloat) -> SKShapeNode {
+    let button = SKShapeNode(circleOfRadius: radius)
+    button.fillColor = unpressedColour
     button.isUserInteractionEnabled = false
     return button
 }
@@ -34,26 +41,33 @@ func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -
     let initXPos     = XPOS_RATIO * width
     let initYPos     = YPOS_RATIO * height
     
+    // Create all DPad Buttons
     let dpadUp = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0)
     dpadUp.position.x = initXPos
-    dpadUp.position.y = initYPos;
+    dpadUp.position.y = initYPos
     
     let dpadDown = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0)
-    dpadDown.position.x = initXPos;
+    dpadDown.position.x = initXPos
     dpadDown.position.y = initYPos - (2 * buttonLength);
     
     let dpadRight = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0)
-    dpadRight.position.x = initXPos + buttonLength;
-    dpadRight.position.y = initYPos - buttonLength;
+    dpadRight.position.x = initXPos + buttonLength
+    dpadRight.position.y = initYPos - buttonLength
     
     let dpadLeft = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0)
-    dpadLeft.position.x = initXPos - buttonLength;
-    dpadLeft.position.y = initYPos - buttonLength;
+    dpadLeft.position.x = initXPos - buttonLength
+    dpadLeft.position.y = initYPos - buttonLength
 
     skScene.addChild(dpadUp)
     skScene.addChild(dpadDown)
     skScene.addChild(dpadLeft)
     skScene.addChild(dpadRight)
-
+    
+    let HPbtn = createPunchBtn(withRadius: buttonLength / 1.2)
+    HPbtn.position.x = 4 * (initXPos)
+    HPbtn.position.y = initYPos
+    
+    skScene.addChild(HPbtn)
+    
     return skScene
 }
