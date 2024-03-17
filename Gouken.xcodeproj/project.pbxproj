@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C2B21F42BA77C87006928F5 /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2B21F32BA77C87006928F5 /* GamePad.swift */; };
 		1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */; };
 		1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */; };
 		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C2B21F32BA77C87006928F5 /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
 		1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPlayer.swift; sourceTree = "<group>"; };
 		1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazingBrentwood.swift; sourceTree = "<group>"; };
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				DBF1C4602B85AB9800B40007 /* Overlay.sks */,
 				DBF1C45C2B85A79300B40007 /* Overlay.swift */,
 				A5D2DA652B981C4600A32416 /* MenuOverlay.swift */,
+				1C2B21F32BA77C87006928F5 /* GamePad.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */,
 				DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */,
 				954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */,
+				1C2B21F42BA77C87006928F5 /* GamePad.swift in Sources */,
 				DB035DE02B984FF40014C675 /* NinjaStunnedState.swift in Sources */,
 				1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */,
 				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,

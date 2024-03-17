@@ -134,15 +134,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnViewNew.addGestureRecognizer(doubleTapGesture)
         
         // Player Controls Overlay
-        let overlayScene = GKScene(fileNamed: "Overlay")
-        let overlayNode = overlayScene?.rootNode as? Overlay
-        overlayNode?.scaleMode = .aspectFill
-        scnViewNew.overlaySKScene = overlayNode
-        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
-        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
-        gamePad?.buttonA.valueChangedHandler = changeAnimationA
-        gamePad?.buttonB.valueChangedHandler = changeAnimationB
-        
+//        let overlayScene = GKScene(fileNamed: "Overlay")
+//        let overlayNode = overlayScene?.rootNode as? Overlay
+//        overlayNode?.scaleMode = .aspectFill
+//        scnViewNew.overlaySKScene = overlayNode
+//        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
+//        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
+//        gamePad?.buttonA.valueChangedHandler = changeAnimationA
+//        gamePad?.buttonB.valueChangedHandler = changeAnimationB
+        scnViewNew.overlaySKScene = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
         // Configure the view
         scnViewNew.backgroundColor = UIColor.black
         
