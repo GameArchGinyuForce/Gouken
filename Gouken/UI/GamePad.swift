@@ -48,7 +48,7 @@ func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -
     
     let dpadDown = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0)
     dpadDown.position.x = initXPos
-    dpadDown.position.y = initYPos - (2 * buttonLength);
+    dpadDown.position.y = initYPos - (2 * buttonLength)
     
     let dpadRight = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0)
     dpadRight.position.x = initXPos + buttonLength
@@ -63,11 +63,16 @@ func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -
     skScene.addChild(dpadLeft)
     skScene.addChild(dpadRight)
     
-    let HPbtn = createPunchBtn(withRadius: buttonLength / 1.2)
-    HPbtn.position.x = 4 * (initXPos)
-    HPbtn.position.y = initYPos
+    let lpBtn = createPunchBtn(withRadius: buttonLength / 1.2)
+    lpBtn.position.x = 4 * (initXPos)
+    lpBtn.position.y = initYPos - 1.5 * buttonLength
     
-    skScene.addChild(HPbtn)
+    let hpBtn = createPunchBtn(withRadius: buttonLength / 1.2)
+    hpBtn.position.x = 4.8 * (initXPos)
+    hpBtn.position.y = initYPos - 0.5 * buttonLength
+    
+    skScene.addChild(lpBtn)
+    skScene.addChild(hpBtn)
     
     return skScene
 }
