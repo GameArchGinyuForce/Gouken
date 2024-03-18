@@ -2,34 +2,25 @@ import Foundation
 import GameplayKit
 
 class NinjaAttackingState: NinjaBaseState {
-    var stateMachine: NinjaStateMachine
-    var animDuration: TimeInterval!
-    var animTimer: TimeInterval!
-    var animPlayer: SCNAnimationPlayer?
+    var stateMachine: NinjaStateMachine!
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
-        
-        animDuration = 0
-        animTimer = 0
     }
     
     func enter() {
         print("enter NinjaAttackingState")
-        animPlayer = playAnimation(onNode: stateMachine.character!, withSCNFile: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!)
-        animDuration = animPlayer?.animation.duration
+        stateMachine.character.setState(withState: CharacterState.Attacking)
+        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
     }
     
     func tick(_ deltaTime: TimeInterval) {
-        animTimer? += deltaTime
-
-        if (animTimer >= animDuration) {
+        if (stateMachine.character.animator.currentTimeNormalized >= 1.0) {
             stateMachine.switchState(NinjaIdleState(stateMachine))
         }
     }
     
     func exit() {
         print("exit NinjaAttackingState")
-        StopAnimation(onNode: stateMachine.character!)
     }
 }

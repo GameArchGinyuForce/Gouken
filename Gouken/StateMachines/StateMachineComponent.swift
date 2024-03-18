@@ -1,7 +1,7 @@
 import Foundation
 import GameplayKit
 
-class StateMachine {
+class StateMachineComponent: GKComponent {
     var currentState: State?
     
     func switchState(_ newState: State) {
@@ -10,7 +10,9 @@ class StateMachine {
         currentState?.enter()
     }
     
-    func update(_ deltaTime: TimeInterval) {
-        currentState?.tick(deltaTime)
+    override func update(deltaTime seconds: TimeInterval) {
+        super.update(deltaTime: seconds)
+        
+        currentState?.tick(seconds)
     }
 }
