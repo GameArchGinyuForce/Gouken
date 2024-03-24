@@ -13,7 +13,7 @@ enum StageType {
 }
 
 let StageScnMapper : Dictionary = [
-    StageType.AmazingBrentwood: "art.scnassets/AmazingBrentwood.scn"
+    StageType.AmazingBrentwood: "art.scnassets/GizaPyramid.scn"
 ]
 
 let StageName : Dictionary = [
