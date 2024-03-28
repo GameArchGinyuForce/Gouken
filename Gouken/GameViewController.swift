@@ -30,7 +30,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func loadMenu() {
-        print("Hey from menu")
+        print("Loading Menu Scene")
         
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
@@ -39,7 +39,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         let scnScene = SCNScene() // Load your SCNScene for fancy background
 
         // Present the SceneKit scene
-        let scnViewNew = SCNView(frame: view.bounds)
+        // The menu bug present itself because the emulator confuses what orientation determines whats width/height
+        // Introduced a band-aid fix, should review later
+//        let scnViewNew = SCNView(frame: CGRect(origin: .zero, size: CGSize(width: max(view.frame.size.height, view.frame.size.width), height: min(view.frame.size.height, view.frame.size.width))))
+        let scnViewNew = SCNView(frame: view.bounds)    // original
+        
         scnViewNew.scene = scnScene
         let menuOverlay = MenuSceneOverlay(size: scnViewNew.bounds.size)
         menuOverlay.overlayDelegate = self
@@ -58,6 +62,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         guard let scnViewNew = self.view as? SCNView else {
             return // Ensure self.view is actually an SCNView
         }
+        
+        GameManager.Instance().doSomething();
+        
+        
     }
     
     func loadGame() {
