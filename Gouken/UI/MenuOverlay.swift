@@ -37,7 +37,7 @@ class MenuSceneOverlay: SKScene {
         backgroundColor = .clear
         
         // Play background music
-        playBackgroundMusic()
+//        playBackgroundMusic()
         
 //        setupMenu()
         showMenu();
@@ -202,21 +202,21 @@ class MenuSceneOverlay: SKScene {
         addText(to: quitButton, text: "Quit")
     }
     
-    func playBackgroundMusic() {
-        guard let url = Bundle.main.url(forResource: "backgroundMusic", withExtension: "mp3") else {
-            print("Could not find backgroundMusic.mp3")
-            return
-        }
-        
-        do {
-            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
-            backgroundMusicPlayer?.numberOfLoops = -1 // Loop indefinitely
-            backgroundMusicPlayer?.volume = 0.3
-            backgroundMusicPlayer?.play()
-        } catch {
-            print("Could not create audio player: \(error)")
-        }
-    }
+//    func playBackgroundMusic() {
+//        guard let url = Bundle.main.url(forResource: "backgroundMusic", withExtension: "mp3") else {
+//            print("Could not find backgroundMusic.mp3")
+//            return
+//        }
+//        
+//        do {
+//            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
+//            backgroundMusicPlayer?.numberOfLoops = -1 // Loop indefinitely
+//            backgroundMusicPlayer?.volume = 0.3
+//            backgroundMusicPlayer?.play()
+//        } catch {
+//            print("Could not create audio player: \(error)")
+//        }
+//    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }

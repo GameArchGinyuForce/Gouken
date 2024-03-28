@@ -64,7 +64,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         GameManager.Instance().doSomething();
-        
+        AudioManager.Instance().playMenuBackgroundMusic();
         
     }
     
