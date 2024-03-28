@@ -269,7 +269,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 
                 
                 
-            }else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+            } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.setState(withState: CharacterState.Running)
                 runRight = false
                 runLeft = true

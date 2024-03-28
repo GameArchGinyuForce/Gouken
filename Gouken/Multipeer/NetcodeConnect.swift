@@ -104,6 +104,7 @@ extension NetcodeConnect: MCNearbyServiceBrowserDelegate {
     }
 }
 
+//
 extension NetcodeConnect: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         log.info("peer \(peerID) didChangeState: \(state.debugDescription)")
@@ -133,6 +134,7 @@ extension NetcodeConnect: MCSessionDelegate {
                     self.avgLatency = Double(self.cumulativeTime) / Double(self.numberOfMovesSent)
 
                 }
+                print(roundTripLatency)
             } catch {
                 log.error("Error decoding move data: \(error)")
             }

@@ -147,7 +147,7 @@ class MenuSceneOverlay: SKScene {
         
         // Player 3 Placeholder
         selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 2)
+        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 3)
         selectPlayer1.name = "selectPlayerButton"
         selectPlayer1.strokeColor = .white
         selectPlayer1.lineWidth = 3
@@ -237,6 +237,8 @@ class MenuSceneOverlay: SKScene {
                 case "selectPVPButton":
                     showFindPlayers()
                 case "selectPlayerButton":
+                    // TODO: if dynamically changing buttons, each button must represent a different player. Find a way to differentiate between button presses
+
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 default:
                     break
