@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */; };
+		0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */; };
 		1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */; };
 		1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */; };
 		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
@@ -27,12 +29,7 @@
 		DB035DE62B98630C0014C675 /* NinjaRunningState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DE52B98630C0014C675 /* NinjaRunningState.swift */; };
 		DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */; };
 		DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59F5682B89C71500B2D52D /* AnimationList.swift */; };
-		DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D362B7BAF44007C7323 /* StateMachine.swift */; };
 		DBC19D392B7BB38F007C7323 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D382B7BB38F007C7323 /* State.swift */; };
-		DBC19D3C2B7BB4A9007C7323 /* BaikenStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */; };
-		DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */; };
-		DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */; };
-		DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */; };
 		DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF1C45C2B85A79300B40007 /* Overlay.swift */; };
 		DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBF1C4602B85AB9800B40007 /* Overlay.sks */; };
 		DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */; };
@@ -50,6 +47,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorComponent.swift; sourceTree = "<group>"; };
+		0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineComponent.swift; sourceTree = "<group>"; };
 		1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPlayer.swift; sourceTree = "<group>"; };
 		1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazingBrentwood.swift; sourceTree = "<group>"; };
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
@@ -70,12 +69,7 @@
 		DB035DE52B98630C0014C675 /* NinjaRunningState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaRunningState.swift; sourceTree = "<group>"; };
 		DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterStateMachine.swift; sourceTree = "<group>"; };
 		DB59F5682B89C71500B2D52D /* AnimationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationList.swift; sourceTree = "<group>"; };
-		DBC19D362B7BAF44007C7323 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
 		DBC19D382B7BB38F007C7323 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
-		DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenStateMachine.swift; sourceTree = "<group>"; };
-		DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenIdleState.swift; sourceTree = "<group>"; };
-		DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenBaseState.swift; sourceTree = "<group>"; };
-		DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaikenWalkState.swift; sourceTree = "<group>"; };
 		DBF1C45C2B85A79300B40007 /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		DBF1C4602B85AB9800B40007 /* Overlay.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Overlay.sks; sourceTree = "<group>"; };
 		DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitExtensions.swift; sourceTree = "<group>"; };
@@ -140,9 +134,8 @@
 		DBC19D342B7BAE2C007C7323 /* StateMachines */ = {
 			isa = PBXGroup;
 			children = (
-				DBC19D362B7BAF44007C7323 /* StateMachine.swift */,
+				0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */,
 				DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */,
-				DBC19D3B2B7BB4A9007C7323 /* BaikenStateMachine.swift */,
 				DB035DD82B984F820014C675 /* NinjaStateMachine.swift */,
 			);
 			path = StateMachines;
@@ -151,21 +144,10 @@
 		DBC19D352B7BAEA7007C7323 /* States */ = {
 			isa = PBXGroup;
 			children = (
-				DB035DDA2B984FAF0014C675 /* Ninja */,
 				DBC19D382B7BB38F007C7323 /* State.swift */,
-				DBC19D3A2B7BB444007C7323 /* Baiken */,
+				DB035DDA2B984FAF0014C675 /* Ninja */,
 			);
 			path = States;
-			sourceTree = "<group>";
-		};
-		DBC19D3A2B7BB444007C7323 /* Baiken */ = {
-			isa = PBXGroup;
-			children = (
-				DBC19D452B7BB667007C7323 /* BaikenBaseState.swift */,
-				DBC19D3D2B7BB4E6007C7323 /* BaikenIdleState.swift */,
-				DBC19D472B7BB785007C7323 /* BaikenWalkState.swift */,
-			);
-			path = Baiken;
 			sourceTree = "<group>";
 		};
 		DBF1C4592B85A48700B40007 /* UI */ = {
@@ -203,6 +185,7 @@
 				F021769B2B82B958000993B2 /* MovementComponent.swift */,
 				1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */,
 				DB035DD52B984DAD0014C675 /* HealthComponent.swift */,
+				0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */,
 			);
 			path = GKComponents;
 			sourceTree = "<group>";
@@ -339,16 +322,13 @@
 				DB035DDC2B984FBF0014C675 /* NinjaBaseState.swift in Sources */,
 				1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */,
 				F02176962B82B814000993B2 /* Character.swift in Sources */,
+				0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
 				DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */,
 				A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */,
-				DBC19D3C2B7BB4A9007C7323 /* BaikenStateMachine.swift in Sources */,
 				DBC19D392B7BB38F007C7323 /* State.swift in Sources */,
 				DB035DDE2B984FCB0014C675 /* NinjaDownedState.swift in Sources */,
-				DBC19D3E2B7BB4E6007C7323 /* BaikenIdleState.swift in Sources */,
 				DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */,
-				DBC19D462B7BB667007C7323 /* BaikenBaseState.swift in Sources */,
-				DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */,
 				DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */,
 				DB035DE42B9861CA0014C675 /* NinjaAttackingState.swift in Sources */,
 				A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */,
@@ -357,13 +337,13 @@
 				DB035DE62B98630C0014C675 /* NinjaRunningState.swift in Sources */,
 				1C7C931D2B981F1200B59858 /* Stage.swift in Sources */,
 				1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */,
-				DBC19D482B7BB785007C7323 /* BaikenWalkState.swift in Sources */,
 				954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */,
 				DB035DE02B984FF40014C675 /* NinjaStunnedState.swift in Sources */,
 				1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */,
 				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
 				954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */,
+				0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */,
 				F045520F2BB4FEB600B64ADB /* NetcodeConnect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

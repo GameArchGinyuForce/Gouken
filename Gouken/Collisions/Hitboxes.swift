@@ -17,14 +17,6 @@ func initHitboxAttack(playerSpawn:SCNNode?){
     hitboxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
     hitboxNode.physicsBody?.categoryBitMask = 4
     hitboxNode.physicsBody?.collisionBitMask = 2
-
-
-//    // TODO: for testing state machine
-//    baikenStateMachine = BaikenStateMachine(player1!.characterNode)
-//    let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-//    doubleTapGesture.numberOfTapsRequired = 2
-//    scnView.addGestureRecognizer(doubleTapGesture)
-//    ninja2StateMachine = NinjaStateMachine(player2!.characterNode)
     
     // create a visible hitbox
     let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
