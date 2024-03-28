@@ -96,7 +96,7 @@ extension NetcodeConnect: MCNearbyServiceBrowserDelegate {
 
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String: String]?) {
         log.info("ServiceBrowser found peer: \(peerID)")
-        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
+        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 1000)
     }
 
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -111,8 +111,11 @@ extension NetcodeConnect: MCSessionDelegate {
             self.connectedPeers = session.connectedPeers
         }
     }
-
+    
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        
+        
+        print("received")
             do {
                 let decoder = JSONDecoder()
                 let receivedData = try decoder.decode(MoveData.self, from: data)

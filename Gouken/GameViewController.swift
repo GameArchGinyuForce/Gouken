@@ -239,11 +239,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             let player = scnView.scene!.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+                
                 player1?.setState(withState: CharacterState.Running)
                 runRight = true
                 runLeft = false
                 player.eulerAngles.y = 0
                 print("Running Right")
+                
+                print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
+                
+                if (multipeerConnect.connectedPeers.count == 0) {
+                    print("!!!!without connected devices:")
+
+                    multipeerConnect.send(move: Move.left)
+                }
+                if (multipeerConnect.connectedPeers.count > 0) {
+                    print("!!!!with connected devices:")
+                    multipeerConnect.send(move: Move.left)
+                    player2?.setState(withState: CharacterState.Running)
+                }
+                
+                
+                
             }else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.setState(withState: CharacterState.Running)
                 runRight = false
@@ -314,10 +331,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         ninja2StateMachine?.update(deltaTime)
 
         lastFrameTime = time
-        
-        print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
-        
-        
         
     }
     
