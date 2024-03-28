@@ -15,7 +15,7 @@ import GameController
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate {
     var scnView: SCNView!
     var menuLoaded = false
-    var playerConnections = NetcodeConnect()
+    var multipeerConnect = NetcodeConnect()
 
     
     func playButtonPressed() {
@@ -129,6 +129,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // Initialize state machine for testing
         baikenStateMachine = BaikenStateMachine(player1!.characterNode)
+        enemyStateMachine = BaikenStateMachine(player2!.characterNode)
         
         // Add gesture recognizers for testing player controls and animations
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
@@ -158,6 +159,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var player2: Character?
     var gamePad: GCExtendedGamepad?
     var baikenStateMachine: BaikenStateMachine?
+    var enemyStateMachine: BaikenStateMachine?
     var displayLink: CADisplayLink?
     var lastFrameTime: Double = 0.0
     var cameraNode : SCNNode = SCNNode()
@@ -313,7 +315,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
         lastFrameTime = time
         
-        print(String(describing: playerConnections.connectedPeers.map(\.displayName)))
+        print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
+        
+        
         
     }
     
