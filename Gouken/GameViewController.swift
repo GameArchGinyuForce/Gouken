@@ -31,6 +31,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
     func loadMenu() {
         print("Loading Menu Scene")
+        AudioManager.Instance().stopAllAudioChannels()  // Stop all audio Playing
         
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
@@ -73,6 +74,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             print("Menu not loaded yet!")
             return
         }
+        
+        AudioManager.Instance().stopAllAudioChannels()  // Stop all audio Playing
         
         print("Game Scene Transition")
         

@@ -7,6 +7,9 @@
 
 import AVFoundation
 
+// Singleton AudioManager
+// Call methods via AudioManager.Instance().methodName()
+// Can be accessed globally
 class AudioManager {
     
     // Initial Implementation, consider better design
@@ -51,6 +54,13 @@ class AudioManager {
     
     func stopMenuBackgroundMusic() {
         backgroundMusicChannelPlayer?.stop();
+    }
+    
+    func stopAllAudioChannels() {
+        backgroundMusicChannelPlayer?.stop();
+        player1AudioChannelPlayer?.stop();
+        player2AudioChannelPlayer?.stop();
+        effectsAudioChannelPlayer?.stop();
     }
 
 }
