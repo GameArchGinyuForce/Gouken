@@ -17,6 +17,7 @@
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* Hitboxes.swift */; };
 		954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765E2B9D6EF300CB7767 /* Colliders.swift */; };
+		A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BA078B2BA7A5F00080B32E /* GameManager.swift */; };
 		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
 		DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DD52B984DAD0014C675 /* HealthComponent.swift */; };
 		DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DD82B984F820014C675 /* NinjaStateMachine.swift */; };
@@ -42,6 +43,7 @@
 		F031DA122B7609EC00E3F4B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F031DA102B7609EC00E3F4B5 /* Main.storyboard */; };
 		F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA132B7609ED00E3F4B5 /* Assets.xcassets */; };
 		F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */; };
+		F045520F2BB4FEB600B64ADB /* NetcodeConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045520E2BB4FEB600B64ADB /* NetcodeConnect.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,7 @@
 		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		954F765C2B9D6ED700CB7767 /* Hitboxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitboxes.swift; sourceTree = "<group>"; };
 		954F765E2B9D6EF300CB7767 /* Colliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colliders.swift; sourceTree = "<group>"; };
+		A5BA078B2BA7A5F00080B32E /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
 		DB035DD52B984DAD0014C675 /* HealthComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthComponent.swift; sourceTree = "<group>"; };
 		DB035DD82B984F820014C675 /* NinjaStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaStateMachine.swift; sourceTree = "<group>"; };
@@ -81,6 +84,8 @@
 		F031DA112B7609EC00E3F4B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F031DA132B7609ED00E3F4B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F031DA162B7609ED00E3F4B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F045520E2BB4FEB600B64ADB /* NetcodeConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetcodeConnect.swift; sourceTree = "<group>"; };
+		F07920342BB541D800253960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +165,7 @@
 			children = (
 				F021769D2B82BBAF000993B2 /* EntityManager.swift */,
 				F02176952B82B814000993B2 /* Character.swift */,
+				A5BA078B2BA7A5F00080B32E /* GameManager.swift */,
 				F021769A2B82B935000993B2 /* GKComponents */,
 			);
 			path = GKEntities;
@@ -204,6 +210,8 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				F07920342BB541D800253960 /* Info.plist */,
+				F045520D2BB4FE1800B64ADB /* Multipeer */,
 				954F76592B9D6E9200CB7767 /* Collisions */,
 				1C7C93182B981E6E00B59858 /* Stages */,
 				DBF1C4592B85A48700B40007 /* UI */,
@@ -223,6 +231,14 @@
 				1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */,
 			);
 			path = Gouken;
+			sourceTree = "<group>";
+		};
+		F045520D2BB4FE1800B64ADB /* Multipeer */ = {
+			isa = PBXGroup;
+			children = (
+				F045520E2BB4FEB600B64ADB /* NetcodeConnect.swift */,
+			);
+			path = Multipeer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,6 +331,7 @@
 				DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */,
 				DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */,
 				DB035DE42B9861CA0014C675 /* NinjaAttackingState.swift in Sources */,
+				A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */,
 				DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */,
 				DB035DE22B98509D0014C675 /* NinjaIdleState.swift in Sources */,
 				DB035DE62B98630C0014C675 /* NinjaRunningState.swift in Sources */,
@@ -327,6 +344,7 @@
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
 				954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */,
 				0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */,
+				F045520F2BB4FEB600B64ADB /* NetcodeConnect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,21 +496,23 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9Q7Q6VUJJ3;
+				DEVELOPMENT_TEAM = WM87T6723B;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Gouken/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.1;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BCIT.Gouken1;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.Gouken;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -507,21 +527,23 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9Q7Q6VUJJ3;
+				DEVELOPMENT_TEAM = WM87T6723B;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Gouken/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.1;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BCIT.Gouken1;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.Gouken;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

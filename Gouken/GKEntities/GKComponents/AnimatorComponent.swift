@@ -44,6 +44,7 @@ class AnimatorComponent: GKComponent {
         _currentTime = 0
         character.removeAllAnimations()
         animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: animName)
+        print("Animation named ", animName, " is this long: ", animPlayer!.animation.duration)
         if (!loop) {
             animPlayer.animation.repeatCount = 1
         }
