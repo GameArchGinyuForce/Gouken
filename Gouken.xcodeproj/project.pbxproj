@@ -15,6 +15,7 @@
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* Hitboxes.swift */; };
 		954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765E2B9D6EF300CB7767 /* Colliders.swift */; };
+		A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BA078B2BA7A5F00080B32E /* GameManager.swift */; };
 		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
 		DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DD52B984DAD0014C675 /* HealthComponent.swift */; };
 		DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DD82B984F820014C675 /* NinjaStateMachine.swift */; };
@@ -57,6 +58,7 @@
 		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		954F765C2B9D6ED700CB7767 /* Hitboxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitboxes.swift; sourceTree = "<group>"; };
 		954F765E2B9D6EF300CB7767 /* Colliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colliders.swift; sourceTree = "<group>"; };
+		A5BA078B2BA7A5F00080B32E /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
 		DB035DD52B984DAD0014C675 /* HealthComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthComponent.swift; sourceTree = "<group>"; };
 		DB035DD82B984F820014C675 /* NinjaStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaStateMachine.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			children = (
 				F021769D2B82BBAF000993B2 /* EntityManager.swift */,
 				F02176952B82B814000993B2 /* Character.swift */,
+				A5BA078B2BA7A5F00080B32E /* GameManager.swift */,
 				F021769A2B82B935000993B2 /* GKComponents */,
 			);
 			path = GKEntities;
@@ -348,6 +351,7 @@
 				DBC19D372B7BAF44007C7323 /* StateMachine.swift in Sources */,
 				DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */,
 				DB035DE42B9861CA0014C675 /* NinjaAttackingState.swift in Sources */,
+				A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */,
 				DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */,
 				DB035DE22B98509D0014C675 /* NinjaIdleState.swift in Sources */,
 				DB035DE62B98630C0014C675 /* NinjaRunningState.swift in Sources */,
