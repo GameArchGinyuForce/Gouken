@@ -157,6 +157,8 @@ class MenuSceneOverlay: SKScene {
     }
     
     func showMenu() {
+        menuContainer.removeAllChildren()
+
         // Add play button
         let playButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
         playButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y)
