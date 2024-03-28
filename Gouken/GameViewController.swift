@@ -15,6 +15,8 @@ import GameController
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate {
     var scnView: SCNView!
     var menuLoaded = false
+    var playerConnections = NetcodeConnect()
+
     
     func playButtonPressed() {
         // Print a message when play button is pressed
@@ -305,19 +307,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             player.position.z -= runSpeed
         }
 
-//        let bu = Int.random(in: 0..<100)
-//        if bu == 1 {
-//            print ("jas is gayy!!!!!!")
-//        }
-//        print(cameraNode.eulerAngles)
-//        print(gamePad?.leftThumbstick)
-       // print(player2?.presentation.transform)
-        
         let deltaTime = time - lastFrameTime
         
         ninja2StateMachine?.update(deltaTime)
 
         lastFrameTime = time
+        
+        print(String(describing: playerConnections.connectedPeers.map(\.displayName)))
+        
     }
     
 
