@@ -89,6 +89,7 @@
 		F031DA132B7609ED00E3F4B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F031DA162B7609ED00E3F4B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F045520E2BB4FEB600B64ADB /* NetcodeConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetcodeConnect.swift; sourceTree = "<group>"; };
+		F07920342BB541D800253960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +224,7 @@
 		F031DA092B7609EC00E3F4B5 /* Gouken */ = {
 			isa = PBXGroup;
 			children = (
+				F07920342BB541D800253960 /* Info.plist */,
 				F045520D2BB4FE1800B64ADB /* Multipeer */,
 				954F76592B9D6E9200CB7767 /* Collisions */,
 				1C7C93182B981E6E00B59858 /* Stages */,
@@ -512,6 +514,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WM87T6723B;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Gouken/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -541,6 +545,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WM87T6723B;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Gouken/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

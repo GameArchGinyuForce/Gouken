@@ -20,7 +20,7 @@ struct MoveData: Codable {
 }
 
 class NetcodeConnect: NSObject, ObservableObject {
-    private let serviceType = "multiplayer"
+    private let serviceType = "GoukenMP"
     private let session: MCSession
     
     // TODO: Get the GameCenter Username from the apple device
