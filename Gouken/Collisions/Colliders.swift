@@ -35,6 +35,8 @@ func initPlayerPhysics(player1:SCNNode?, player2:SCNNode?){
 
     player2?.physicsBody?.categoryBitMask = 2
     player2?.physicsBody?.collisionBitMask = 3
+//    player2?.physicsBody?.categoryBitMask = 2  // Assuming player2 is in category 2
+//    player2?.physicsBody?.collisionBitMask = 1 // Assuming floor is in category 1
 }
 
 func initWorld(scene:SCNScene){

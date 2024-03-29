@@ -22,8 +22,14 @@ func initHurtboxAttack(
 //    hitboxNode.position.y = 1.0
     hitboxNode.position = position;
     hitboxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
-    hitboxNode.physicsBody?.categoryBitMask = 4
-    hitboxNode.physicsBody?.collisionBitMask = 2
+    hitboxNode.physicsBody?.isAffectedByGravity = false
+    
+//    hitboxNode.physicsBody?.categoryBitMask = 4
+//    hitboxNode.physicsBody?.collisionBitMask = 2
+    hitboxNode.physicsBody?.categoryBitMask = 2 // Assuming hurt boxes are in category 2
+    hitboxNode.physicsBody?.collisionBitMask = 1 // Set collision bit mask to include category 1 (hotboxes)
+    
+
     
     // create a visible hitbox
     let whiteColor = UIColor.white.withAlphaComponent(0.5) // Adjust the alpha value for transparency

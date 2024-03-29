@@ -140,6 +140,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
         setUpHitboxes(player: player1)
+        setUpHurtboxes(player: player2)
+        
+//        // Enable debug options to show physics shapes
+//        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
+        scnViewNew.debugOptions = [.showPhysicsShapes]
+
         
         // Add gesture recognizers for testing player controls and animations
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
@@ -198,7 +204,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
     
         modelSCNNode = player?.characterMesh.childNode(withName: "Hand_R", recursively: true)
-        initHitboxAttack(playerSpawn: modelSCNNode, width: 20.0, height: 20.0, length: 20.0, position: SCNVector3(-10, 0, 0))
+        initHitboxAttack(playerSpawn: modelSCNNode, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0))
+    
+    }
+    
+    func setUpHurtboxes(player: Character?) {
+        // initHitboxAttack(playerSpawn: playerSpawn)    // Old Hitbox
+        var modelSCNNode: SCNNode?
+        
+//        // Retrieve pelvis node and add hitbox
+//        modelSCNNode = player?.characterMesh.childNode(withName: "Pelvis", recursively: true)
+//        initHitboxAttack(playerSpawn: modelSCNNode, width: 50.0, height: 50.0, length: 50.0, position: SCNVector3(0, 0, 0))
+    
+        
+//        modelSCNNode = player?.characterMesh
+        modelSCNNode = enemySpawn
+        initHurtboxAttack(playerSpawn: modelSCNNode, width: 1, height: 1, length: 1, position: SCNVector3(0, 1, 0))
     
     }
     
@@ -224,6 +245,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
                let enemySpawn = enemySpawn,
                testCollisionBetween(hitboxNode, enemySpawn) {
+                
+               print("hitboxNode")
+               print(hitboxNode)
                 print("COLLISION OCCURED!")
                 player2?.health.damage(10)
             }
@@ -352,6 +376,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             // Check which nodes collided
             let nodeA = contact.nodeA
             let nodeB = contact.nodeB
+        
+        print("Contact:")
+        print(contact)
 
             // Example handling of collision
             if nodeA == playerSpawn || nodeB == playerSpawn {
