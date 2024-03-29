@@ -74,6 +74,12 @@ class NetcodeConnect: NSObject, ObservableObject {
             }
         }
     }
+    
+    
+    func disablePlayerSearch() {
+        self.serviceAdvertiser.stopAdvertisingPeer()
+        self.serviceBrowser.stopBrowsingForPeers()
+    }
 }
 
 extension NetcodeConnect: MCNearbyServiceAdvertiserDelegate {

@@ -21,6 +21,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func playButtonPressed() {
         // Print a message when play button is pressed
         print("Play button pressed!")
+//        multipeerConnect.disablePlayerSearch()
         removeMenuOverlay()
         loadGame()
     }

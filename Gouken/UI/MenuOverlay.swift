@@ -103,16 +103,16 @@ class MenuSceneOverlay: SKScene {
         addText(to: selectPVPButton, text: "PVP")
     }
     
-    func showFindPlayers() {
+    func startMatchmaking() {
         menuContainer.removeAllChildren()
         
         // Players found Nearby
-        let label = SKLabelNode(text: "Players Found Nearby")
+        let label = SKLabelNode(text: "Matchmaking...")
         label.fontName = "Helvetica"
         label.fontSize = 48
         label.fontColor = .white
         // Calculate the position of the label to ensure it's centered on the button
-        label.position = CGPoint(x: frame.width / 2, y: frame.height - 60)
+        label.position = CGPoint(x: frame.width / 2, y: frame.height - 100)
         menuContainer.addChild(label)
         
         // Back button
@@ -125,35 +125,16 @@ class MenuSceneOverlay: SKScene {
         menuContainer.addChild(backButton)
         addText(to: backButton, text: "Back")
         
+        
         // Player 1 Placeholder
         var selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 1)
+        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 80 - (buttonSize.height + buttonSpacing) * 1)
         selectPlayer1.name = "selectPlayerButton"
         selectPlayer1.strokeColor = .white
         selectPlayer1.lineWidth = 3
         selectPlayer1.fillColor = .black // Set fill color
         menuContainer.addChild(selectPlayer1)
         addText(to: selectPlayer1, text: "Player 1")
-        
-        // Player 2 Placeholder
-        selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 2)
-        selectPlayer1.name = "selectPlayerButton"
-        selectPlayer1.strokeColor = .white
-        selectPlayer1.lineWidth = 3
-        selectPlayer1.fillColor = .black // Set fill color
-        menuContainer.addChild(selectPlayer1)
-        addText(to: selectPlayer1, text: "Player 2")
-        
-        // Player 3 Placeholder
-        selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 3)
-        selectPlayer1.name = "selectPlayerButton"
-        selectPlayer1.strokeColor = .white
-        selectPlayer1.lineWidth = 3
-        selectPlayer1.fillColor = .black // Set fill color
-        menuContainer.addChild(selectPlayer1)
-        addText(to: selectPlayer1, text: "Player 3")
     }
     
     func showMenu() {
@@ -235,7 +216,7 @@ class MenuSceneOverlay: SKScene {
                 case "selectPVEButton":
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 case "selectPVPButton":
-                    showFindPlayers()
+                    startMatchmaking()
                 case "selectPlayerButton":
                     // TODO: if dynamically changing buttons, each button must represent a different player. Find a way to differentiate between button presses
 
