@@ -21,13 +21,15 @@ enum ButtonType {
     case Down
     case LP
     case HP
+    case Neutral
 }
 
 class GamePadButton : SKShapeNode {
     
     var type : ButtonType
-    var buttonCallback : (ButtonType) -> Void
+    var buttonCallback : (InputBuffer, ButtonType) async -> Void
     var buttonShape : SKShapeNode
+    var inputBuffer : InputBuffer
     
     /** Forces an interactable button */
     override var isUserInteractionEnabled: Bool {
@@ -39,11 +41,12 @@ class GamePadButton : SKShapeNode {
         }
     }
     
-    required init(ofShape button: SKShapeNode, andButtonType : ButtonType, uponPressed : @escaping (ButtonType) -> Void) {
+    required init(withBuffer buffer: InputBuffer, ofShape button: SKShapeNode, andButtonType : ButtonType, uponPressed : @escaping (InputBuffer, ButtonType) async -> Void) {
         type = andButtonType
         buttonCallback = uponPressed
         print("making dpad")
         buttonShape = button
+        inputBuffer = buffer
         super.init()
         addChild(buttonShape)
 
@@ -55,11 +58,14 @@ class GamePadButton : SKShapeNode {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("touched")
-        buttonCallback(type)
+        Task {
+            await buttonCallback(inputBuffer, type)
+        }
     }
 }
 
-func ProcessInput(buttonType : ButtonType) {
+func ProcessInput(buffer: InputBuffer, buttonType : ButtonType) async {
+    await buffer.insertInput(withPress: buttonType)
     switch buttonType {
     case .Up:
         print("Up pressed!")
@@ -84,19 +90,19 @@ func ProcessInput(buttonType : ButtonType) {
     }
 }
 
-func createDpadBtn(ofSize size: CGSize, andRoundedEdges roundedEdge: CGFloat, andType: ButtonType) -> SKShapeNode {
+func createDpadBtn(onBuffer buffer: InputBuffer, ofSize size: CGSize, andRoundedEdges roundedEdge: CGFloat, andType: ButtonType) -> SKShapeNode {
     
     let button = SKShapeNode(rectOf: size, cornerRadius: roundedEdge)
     button.fillColor = unpressedColour
     button.strokeColor = UIColor.black
     
-    return GamePadButton(ofShape: button, andButtonType: andType, uponPressed: ProcessInput)
+    return GamePadButton(withBuffer: buffer, ofShape: button, andButtonType: andType, uponPressed: ProcessInput)
 }
 
-func createPunchBtn(withRadius radius: CGFloat, andType type: ButtonType) -> SKShapeNode {
+func createPunchBtn(onBuffer buffer: InputBuffer, withRadius radius: CGFloat, andType type: ButtonType) -> SKShapeNode {
     let button = SKShapeNode(circleOfRadius: radius)
     button.fillColor = unpressedColour	
-    return GamePadButton(ofShape: button, andButtonType: type, uponPressed: ProcessInput)
+    return GamePadButton(withBuffer: buffer, ofShape: button, andButtonType: type, uponPressed: ProcessInput)
 }
 
 func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -> SKScene {
@@ -111,19 +117,19 @@ func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -
     let initYPos     = YPOS_RATIO * height
     
     // Create all DPad Buttons
-    let dpadUp = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Up)
+    let dpadUp = createDpadBtn(onBuffer: P1Buffer, ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Up)
     dpadUp.position.x = initXPos
     dpadUp.position.y = initYPos
     
-    let dpadDown = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Down)
+    let dpadDown = createDpadBtn(onBuffer: P1Buffer, ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Down)
     dpadDown.position.x = initXPos
     dpadDown.position.y = initYPos - (2 * buttonLength)
     
-    let dpadRight = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Right)
+    let dpadRight = createDpadBtn(onBuffer: P1Buffer, ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Right)
     dpadRight.position.x = initXPos + buttonLength
     dpadRight.position.y = initYPos - buttonLength
     
-    let dpadLeft = createDpadBtn(ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Left)
+    let dpadLeft = createDpadBtn(onBuffer: P1Buffer, ofSize: CGSize(width: buttonLength, height: buttonLength), andRoundedEdges: 5.0, andType: ButtonType.Left)
     dpadLeft.position.x = initXPos - buttonLength
     dpadLeft.position.y = initYPos - buttonLength
 
@@ -132,11 +138,11 @@ func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -
     skScene.addChild(dpadLeft)
     skScene.addChild(dpadRight)
     
-    let lpBtn = createPunchBtn(withRadius: buttonLength / 1.2, andType: ButtonType.LP)
+    let lpBtn = createPunchBtn(onBuffer: P1Buffer, withRadius: buttonLength / 1.2, andType: ButtonType.LP)
     lpBtn.position.x = 4 * (initXPos)
     lpBtn.position.y = initYPos - 1.5 * buttonLength
     
-    let hpBtn = createPunchBtn(withRadius: buttonLength / 1.2, andType: ButtonType.HP)
+    let hpBtn = createPunchBtn(onBuffer: P1Buffer, withRadius: buttonLength / 1.2, andType: ButtonType.HP)
     hpBtn.position.x = 4.8 * (initXPos)
     hpBtn.position.y = initYPos - 0.5 * buttonLength
     
