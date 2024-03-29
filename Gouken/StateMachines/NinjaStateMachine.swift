@@ -16,6 +16,6 @@ class NinjaStateMachine: CharacterStateMachine {
             self.switchState(NinjaDownedState(self))
         }
         
-        switchState(NinjaIdleState(self))
+        self.switchState(NinjaIdleState(self))
     }
 }

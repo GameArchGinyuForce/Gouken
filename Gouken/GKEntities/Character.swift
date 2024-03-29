@@ -7,6 +7,7 @@
 
 import GameplayKit
 import Foundation
+import MultipeerConnectivity
 
 // Character List
 enum CharacterName {
@@ -43,15 +44,18 @@ class Character {
     var characterMesh     : SCNNode
     var playerSide        : PlayerType
     var state             : CharacterState
-    
-    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = []) {
+    var playerID          : MCPeerID?
+       
+    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, playerID: MCPeerID?, components : [GKComponent] = []) {
+           characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
+           playerSide = side
+           self.playerID = playerID // Initialize player's peer ID
         characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
         playerSide = side
         
         parentNode.addChildNode(characterMesh)
         characterNode = parentNode.childNodes[parentNode.childNodes.count - 1]
         characterName = name
-        
         
         // The following code adds individual Components for our Character Entity
         let movementComponent = MovementComponent(onSide: side)
