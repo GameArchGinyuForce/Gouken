@@ -71,8 +71,8 @@ class MultipeerConnection: NSObject, ObservableObject {
     }
 
     func send(player: SeralizableCharacter) {
-        precondition(Thread.isMainThread)
-
+        //precondition(Thread.isMainThread)
+        print("sending")
         if !session.connectedPeers.isEmpty {
             let timestamp = Date().timeIntervalSince1970
             let playerData = PlayerData(player: player, timestamp: timestamp)

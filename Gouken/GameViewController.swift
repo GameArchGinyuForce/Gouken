@@ -227,13 +227,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
                 print("Running Right")
-                multipeerConnect.send(player: SeralizableCharacter(characterState: CharacterState.RunningRight))
             } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
                 //player?.eulerAngles.y = Float.pi
                 print("Running Left")
-                multipeerConnect.send(player: SeralizableCharacter(characterState: CharacterState.RunningLeft))
-                
                 // print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
                 
                 // if (multipeerConnect.connectedPeers.count == 0) {
@@ -263,7 +260,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
         lastFrameTime = time
-        
         // Update loop for any calls (our game loop)
         entityManager.entities.forEach { entity in
             
@@ -276,6 +272,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
+        multipeerConnect.send(player: SeralizableCharacter(characterState: player1!.state))
 
         if (player1?.state == CharacterState.RunningLeft) {
             playerSpawn?.position.z -= runSpeed
@@ -313,6 +310,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         multipeerConnect.receivedDataHandler = { [weak self] receivedData in
             // Handle received data here
             // For example, update game state with received data
+            print("receiving")
             self?.handleReceivedData(receivedData)
         }
         
@@ -323,14 +321,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         print("Received data: \(receivedData)")
         var enemyState = receivedData.player.characterState
         
-        if (player2?.state == CharacterState.Idle && enemyState == CharacterState.RunningRight){
-            
+        if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
             print("enemy running right")
             player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
-        } else if (player2?.state == CharacterState.Idle && enemyState == CharacterState.RunningLeft){
+        } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
             print("enemy running left")
-
             player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+        } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
+            print("enemy idle")
+            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
+            print("enemy stunned")
+            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
+            print("enemy attacking")
+            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
         }
     }
     
