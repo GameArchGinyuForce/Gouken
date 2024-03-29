@@ -115,18 +115,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             playerSpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
         }
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, playerID: multipeerConnect.myPeerId)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, playerID: multipeerConnect.connectedPeers.first!)
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, playerID: multipeerConnect.myPeerId, withManager: entityManager)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, playerID: multipeerConnect.connectedPeers.first!, withManager: entityManager)
         
-        // Player Spawn Locations (Any stage we create MUST have these).
-        let p1Spawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
-        let p2Spawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
-        playerSpawn = p1Spawn
-        enemySpawn = p2Spawn
-        
-        // Initialize player characters
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: p1Spawn, onPSide: PlayerType.P1, withManager: entityManager)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: p2Spawn, onPSide: PlayerType.P2, withManager: entityManager)
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
         player1?.characterNode.name = "Ninja1"
@@ -225,7 +216,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         //rotate, play running animations, based on thumbstick input
         let deadZone = Float(0.2)
-        let player = scnView.scene!.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+        let player = playerSpawn
         
         if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
             player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
