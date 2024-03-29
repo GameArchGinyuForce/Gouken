@@ -2,22 +2,16 @@ import Foundation
 import GameplayKit
 
 class NinjaIdleState: NinjaBaseState {
-    var stateMachine: NinjaStateMachine
-    var animDuration: TimeInterval!
-    var animTimer: TimeInterval!
-    var animPlayer: SCNAnimationPlayer?
+    var stateMachine: NinjaStateMachine!
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
-        
-        animDuration = 0
-        animTimer = 0
     }
     
     func enter() {
         print("enter NinjaIdleState")
-        animPlayer = playAnimation(onNode: stateMachine.character!, withSCNFile: characterAnimations[CharacterName.Ninja]![CharacterState.Idle]!)
-        animDuration = animPlayer?.animation.duration
+        stateMachine.character.setState(withState: CharacterState.Idle)
+        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Idle]!, loop: true)
     }
     
     func tick(_ deltaTime: TimeInterval) {
@@ -25,6 +19,5 @@ class NinjaIdleState: NinjaBaseState {
     
     func exit() {
         print("exit NinjaIdleState")
-        StopAnimation(onNode: stateMachine.character!)
     }
 }
