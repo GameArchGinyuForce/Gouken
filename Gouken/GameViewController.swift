@@ -18,9 +18,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var multipeerConnect = NetcodeConnect()
     
     
+    
+
+    
     func playButtonPressed() {
-        // Print a message when play button is pressed
-        print("Play button pressed!")
         removeMenuOverlay()
         loadGame()
     }
@@ -76,7 +77,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return
         }
         
-        print("Game Scene Transition")
         
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
@@ -84,23 +84,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
         var stage : Stage = AmazingBrentwood(withManager: entityManager)
         let scene = stage.scene!
-        
-        // create and add a camera to the scene
-        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
-        
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
-        scene.rootNode.addChildNode(lightNode)
-        
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor.darkGray
-        scene.rootNode.addChildNode(ambientLightNode)
         
         
         // Retrieve the SCNView
@@ -112,9 +95,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Set the delegate
         scnViewNew.delegate = self
         
+        // create and add a camera to the scene
+        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+        
+        initLighting(scene:scene)
+        
         // Add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnViewNew.addGestureRecognizer(tapGesture)
+    
+        //decide who is p1 and p2
+        if("\(multipeerConnect.myPeerId)" > "\(multipeerConnect.connectedPeers.first!)"){
+            // Player Spawn Locations (Any stage we create MUST have these).
+            playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+            enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
+   
+        }else{
+            // Player Spawn Locations (Any stage we create MUST have these).
+            playerSpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
+            enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+        }
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, playerID: multipeerConnect.myPeerId)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, playerID: multipeerConnect.connectedPeers.first!)
         
         // Player Spawn Locations (Any stage we create MUST have these).
         let p1Spawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
@@ -136,7 +138,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // init floor physics
         initWorld(scene: scene)
         initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
-        
         initHitboxAttack(playerSpawn: playerSpawn)
         
         // Add gesture recognizers for testing player controls and animations
@@ -158,6 +159,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnViewNew.backgroundColor = UIColor.black
         
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?
+        
+        
     }
     
     var entityManager = EntityManager()
@@ -228,13 +231,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
             runRight = true
             runLeft = false
-            player.eulerAngles.y = 0
+            player?.eulerAngles.y = 0
             print("Running Right")
         } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
             player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
             runRight = false
             runLeft = true
-            player.eulerAngles.y = Float.pi
+            player?.eulerAngles.y = Float.pi
             print("Running Left")
             
             print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
@@ -348,6 +351,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 print("Collision with enemy")
             }
         }
+    
+    func initLighting(scene:SCNScene){
+        // create and add a light to the scene
+        let lightNode = SCNNode()
+        lightNode.light = SCNLight()
+        lightNode.light!.type = .omni
+        lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
+        scene.rootNode.addChildNode(lightNode)
+        
+        // create and add an ambient light to the scene
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = SCNLight()
+        ambientLightNode.light!.type = .ambient
+        ambientLightNode.light!.color = UIColor.darkGray
+        scene.rootNode.addChildNode(ambientLightNode)
+    }
     
     override var prefersStatusBarHidden: Bool {
         return true
