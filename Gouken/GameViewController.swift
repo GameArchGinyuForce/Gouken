@@ -227,10 +227,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
                 print("Running Right")
+                multipeerConnect.send(player: SeralizableCharacter(characterState: CharacterState.RunningRight))
             } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
                 //player?.eulerAngles.y = Float.pi
                 print("Running Left")
+                multipeerConnect.send(player: SeralizableCharacter(characterState: CharacterState.RunningLeft))
                 
                 // print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
                 
@@ -277,8 +279,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
         if (player1?.state == CharacterState.RunningLeft) {
             playerSpawn?.position.z -= runSpeed
-            
             playerSpawn?.eulerAngles.y = Float.pi
+            
         } else if (player1?.state == CharacterState.RunningRight) {
             playerSpawn?.position.z += runSpeed
             playerSpawn?.eulerAngles.y = 0
@@ -306,6 +308,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // }
 
         lastFrameTime = time
+        
         
         multipeerConnect.receivedDataHandler = { [weak self] receivedData in
             // Handle received data here
