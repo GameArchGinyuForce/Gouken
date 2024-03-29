@@ -101,7 +101,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnViewNew.addGestureRecognizer(tapGesture)
     
         //decide who is p1 and p2
-        if("\(multipeerConnect.myPeerId)" > "\(multipeerConnect.connectedPeers.first!)"){
+        if("\(multipeerConnect.myPeerId)" > "\(multipeerConnect.connectedPeers.first)"){
             // Player Spawn Locations (Any stage we create MUST have these).
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
@@ -111,8 +111,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             playerSpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
         }
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, playerID: multipeerConnect.myPeerId, withManager: entityManager)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, playerID: multipeerConnect.connectedPeers.first!, withManager: entityManager)
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, withManager: entityManager)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, withManager: entityManager)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
