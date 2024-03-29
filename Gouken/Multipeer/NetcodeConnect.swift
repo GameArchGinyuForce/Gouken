@@ -14,10 +14,11 @@ enum Move: String, CaseIterable, Codable {
     case left, right, jump, crouch, lowDash, midDash, block
 }
 
-struct MoveData: Codable {
-    let move: Move
+struct PlayerData: Codable {
+    let player: CodableCharacter
     let timestamp: TimeInterval
 }
+
 
 class NetcodeConnect: NSObject, ObservableObject {
     private let serviceType = "GoukenMP"
@@ -31,7 +32,7 @@ class NetcodeConnect: NSObject, ObservableObject {
     private var numberOfMovesSent = 0;
     private var cumulativeTime: TimeInterval = 0.0
 
-    @Published var currentMove: Move? = nil
+    @Published var currentMove: String? = nil
     @Published var latency: TimeInterval = 0.0
     @Published var maxLatency: TimeInterval = 0.0
     @Published var avgLatency: TimeInterval = 0.0
@@ -58,16 +59,15 @@ class NetcodeConnect: NSObject, ObservableObject {
         self.serviceBrowser.stopBrowsingForPeers()
     }
 
-    func send(move: Move) {
+    func send(player: CodableCharacter) {
         precondition(Thread.isMainThread)
-        log.info("sendMove: \(String(describing: move)) to \(self.session.connectedPeers.count) peers")
 
         if !session.connectedPeers.isEmpty {
             let timestamp = Date().timeIntervalSince1970
-            let moveData = MoveData(move: move, timestamp: timestamp)
+            let playerData = PlayerData(player: player, timestamp: timestamp)
             do {
                 let encoder = JSONEncoder()
-                let data = try encoder.encode(moveData)
+                let data = try encoder.encode(playerData)
                 try session.send(data, toPeers: session.connectedPeers, with: .reliable)
             } catch {
                 log.error("Error for sending move: \(error)")
@@ -125,16 +125,18 @@ extension NetcodeConnect: MCSessionDelegate {
         print("received")
             do {
                 let decoder = JSONDecoder()
-                let receivedData = try decoder.decode(MoveData.self, from: data)
+                let receivedData = try decoder.decode(PlayerData.self, from: data)
 
-                log.info("didReceive move \(receivedData.move.rawValue)")
+                log.info("didReceive move \(receivedData.player.characterState.rawValue)")
+                
+                log.info("Player is moving \(receivedData.player.runRight == true ? "right" : "left")")
 
                 let currentTimestamp = Date().timeIntervalSince1970
                 let roundTripLatency = (currentTimestamp - receivedData.timestamp)
                 DispatchQueue.main.async {
                     self.numberOfMovesSent += 1
                     self.cumulativeTime+=roundTripLatency
-                    self.currentMove = receivedData.move
+                    self.currentMove = receivedData.player.characterState.rawValue
                     self.latency = roundTripLatency
                     self.maxLatency = (roundTripLatency > self.maxLatency) ? roundTripLatency : self.maxLatency
                     self.avgLatency = Double(self.cumulativeTime) / Double(self.numberOfMovesSent)

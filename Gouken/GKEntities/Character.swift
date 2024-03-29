@@ -25,7 +25,7 @@ enum PlayerType {
 }
 
 // States that characters can go into
-enum CharacterState {
+enum CharacterState : String, Codable {
     case Stunned
     case Running
     case Attacking

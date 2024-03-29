@@ -259,13 +259,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 
                 if (multipeerConnect.connectedPeers.count == 0) {
                     print("!!!!without connected devices:")
-
-                    multipeerConnect.send(move: Move.left)
                 }
                 if (multipeerConnect.connectedPeers.count > 0) {
                     print("!!!!with connected devices:")
-                    multipeerConnect.send(move: Move.left)
-                    player2?.setState(withState: CharacterState.Running)
+                    multipeerConnect.send(player: CodableCharacter(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
                 }
                 
                 
