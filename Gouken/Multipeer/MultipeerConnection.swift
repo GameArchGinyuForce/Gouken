@@ -8,6 +8,7 @@
 import Foundation
 import MultipeerConnectivity
 import os
+import Combine
 
 
 enum Move: String, CaseIterable, Codable {
@@ -37,7 +38,16 @@ class MultipeerConnection: NSObject, ObservableObject {
     @Published var latency: TimeInterval = 0.0
     @Published var maxLatency: TimeInterval = 0.0
     @Published var avgLatency: TimeInterval = 0.0
-    @Published var connectedPeers: [MCPeerID] = []
+    @Published var connectedPeers: [MCPeerID] = [] {
+        didSet {
+            // Notify observers that the connection status changed
+            objectWillChange.send()
+        }
+    }
+    // Add objectWillChange publisher
+    let objectWillChange = PassthroughSubject<Void, Never>()
+
+
 
     override init() {
         precondition(Thread.isMainThread)

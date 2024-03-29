@@ -44,7 +44,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         let scnViewNew = SCNView(frame: view.bounds)    // original
         
         scnViewNew.scene = scnScene
-        let menuOverlay = MenuSceneOverlay(size: scnViewNew.bounds.size)
+        let menuOverlay = MenuSceneOverlay(size: scnViewNew.bounds.size, multipeerConnect: multipeerConnect)
         menuOverlay.overlayDelegate = self
         scnViewNew.overlaySKScene = menuOverlay
         scnViewNew.backgroundColor = .white
@@ -101,7 +101,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnViewNew.addGestureRecognizer(tapGesture)
     
         //decide who is player 1 and player 2
-        if multipeerConnect.connectedPeers.count > 1 {
+        if multipeerConnect.connectedPeers.count > 0 {
        
             let myPeerDisplayName = multipeerConnect.myPeerId.displayName
             let firstConnectedPeerDisplayName = multipeerConnect.connectedPeers.first!.displayName
@@ -116,7 +116,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             }
         } else {
-         
+            print("SINGLEPLAYER")
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
            

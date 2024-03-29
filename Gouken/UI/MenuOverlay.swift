@@ -1,5 +1,6 @@
 import SpriteKit
 import AVFoundation
+import Combine
 
 
 // Allows us to call functions outside the overlay
@@ -11,13 +12,55 @@ protocol SKOverlayDelegate: AnyObject {
 class MenuSceneOverlay: SKScene {
     weak var overlayDelegate: SKOverlayDelegate?
     var backgroundMusicPlayer: AVAudioPlayer?
-    
     var menuContainer: SKNode = SKNode()
+    
+    var multipeerConnect: MultipeerConnection?
+    
+    func setupMultipeerConnect() {
+        guard let multipeerConnect = multipeerConnect else {
+            return
+        }
+        print("connection changed1")
+        handleConnectionChange()
+        cancellable = multipeerConnect.objectWillChange.sink { [weak self] _ in
+            self?.handleConnectionChange()
+        }
+    }
+    
+    init(size: CGSize, multipeerConnect: MultipeerConnection) {
+        self.multipeerConnect = multipeerConnect
+        print("test")
+        print(multipeerConnect)
+        super.init(size: size)
+        self.setupMultipeerConnect()
+     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // Add other buttons
     let buttonSize = CGSize(width: 150, height: 50)
     let offsetFromMiddle = CGPoint(x: 0, y: -20)
     let buttonSpacing: CGFloat = 10
+    
+    var connectionStatusLabel: SKLabelNode?
+    
+    var cancellable: AnyCancellable?
+    
+    func handleConnectionChange() {
+            print("Connection status changed")
+            // Update UI based on the new connection status
+            // For example:
+            if multipeerConnect?.connectedPeers.isEmpty ?? true {
+                // No connected peers
+                connectionStatusLabel?.text = "No connection"
+            } else {
+                // At least one peer connected
+                connectionStatusLabel?.text = "Connection established"
+            }
+        }
+
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
@@ -42,7 +85,17 @@ class MenuSceneOverlay: SKScene {
 //        setupMenu()
         showMenu();
         addChild(menuContainer)
+        
+        connectionStatusLabel = SKLabelNode(text: "Connecting...")
+        connectionStatusLabel?.fontName = "Helvetica"
+        connectionStatusLabel?.fontSize = 20
+        connectionStatusLabel?.fontColor = .white
+        connectionStatusLabel?.position = CGPoint(x: frame.midX, y: size.height - 50)
+        addChild(connectionStatusLabel!)
+        
+        multipeerConnect?.objectWillChange.send()
     }
+    
     
     private func addText(to node: SKNode, text: String) {
         let label = SKLabelNode(text: text)
