@@ -1,13 +1,13 @@
 //
-//  Hitboxes.swift
+//  HurtBoxes.swift
 //  Gouken
 //
-//  Created by Jeff Phan on 2024-03-09.
+//  Created by Nathan Dong on 2024-03-28.
 //
 
 import SceneKit
 
-func initHitboxAttack(
+func initHurtboxAttack(
     playerSpawn:SCNNode?,
     width: CGFloat = 1.0,
     height: CGFloat = 1.0,
@@ -26,11 +26,12 @@ func initHitboxAttack(
     hitboxNode.physicsBody?.collisionBitMask = 2
     
     // create a visible hitbox
-    let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
-    let redTransparentMaterial = SCNMaterial()
-    redTransparentMaterial.diffuse.contents = redColor
-    hitboxNode.geometry?.materials = [redTransparentMaterial]
+    let whiteColor = UIColor.white.withAlphaComponent(0.5) // Adjust the alpha value for transparency
+    let whiteTransparentMaterial = SCNMaterial()
+    whiteTransparentMaterial.diffuse.contents = whiteColor
+    hitboxNode.geometry?.materials = [whiteTransparentMaterial]
 
     // attach the hitbox to the playerSpawn node
     playerSpawn?.addChildNode(hitboxNode)
 }
+

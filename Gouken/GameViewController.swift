@@ -130,6 +130,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         player1?.characterNode.name = "Ninja1"
         player2?.characterNode.name = "Ninja2"
         
+
+        
         // configure the view
         scnView.backgroundColor = UIColor.black
         
@@ -137,7 +139,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         initWorld(scene: scene)
         initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
-        initHitboxAttack(playerSpawn: playerSpawn)
+        setUpHitboxes(player: player1)
         
         // Add gesture recognizers for testing player controls and animations
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
@@ -184,6 +186,20 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     override func viewDidLoad() {
         super.viewDidLoad()
         loadMenu()
+    }
+    
+    func setUpHitboxes(player: Character?) {
+        // initHitboxAttack(playerSpawn: playerSpawn)    // Old Hitbox
+        var modelSCNNode: SCNNode?
+        
+//        // Retrieve pelvis node and add hitbox
+//        modelSCNNode = player?.characterMesh.childNode(withName: "Pelvis", recursively: true)
+//        initHitboxAttack(playerSpawn: modelSCNNode, width: 50.0, height: 50.0, length: 50.0, position: SCNVector3(0, 0, 0))
+    
+    
+        modelSCNNode = player?.characterMesh.childNode(withName: "Hand_R", recursively: true)
+        initHitboxAttack(playerSpawn: modelSCNNode, width: 20.0, height: 20.0, length: 20.0, position: SCNVector3(-10, 0, 0))
+    
     }
     
     // TODO: for testing player controls and animations
