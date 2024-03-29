@@ -14,7 +14,7 @@ let BUTTON_RATIO = 0.152
 let XPOS_RATIO   = 0.1701
 let YPOS_RATIO   = 0.4835
 
-enum ButtonType {
+enum ButtonType : Int {
     case Up
     case Left
     case Right
@@ -27,7 +27,7 @@ enum ButtonType {
 class GamePadButton : SKShapeNode {
     
     var type : ButtonType
-    var buttonCallback : (InputBuffer, ButtonType) async -> Void
+    var buttonCallback : (InputBuffer, ButtonType) -> Void
     var buttonShape : SKShapeNode
     var inputBuffer : InputBuffer
     
@@ -41,7 +41,7 @@ class GamePadButton : SKShapeNode {
         }
     }
     
-    required init(withBuffer buffer: InputBuffer, ofShape button: SKShapeNode, andButtonType : ButtonType, uponPressed : @escaping (InputBuffer, ButtonType) async -> Void) {
+    required init(withBuffer buffer: InputBuffer, ofShape button: SKShapeNode, andButtonType : ButtonType, uponPressed : @escaping (InputBuffer, ButtonType) -> Void) {
         type = andButtonType
         buttonCallback = uponPressed
         print("making dpad")
@@ -64,26 +64,26 @@ class GamePadButton : SKShapeNode {
     }
 }
 
-func ProcessInput(buffer: InputBuffer, buttonType : ButtonType) async {
-    await buffer.insertInput(withPress: buttonType)
+func ProcessInput(buffer: InputBuffer, buttonType : ButtonType) {
+    buffer.insertInput(withPress: buttonType)
     switch buttonType {
     case .Up:
-        print("Up pressed!")
+//        print("Up pressed!")
         break
     case .Down:
-        print("Down pressed!")
+//        print("Down pressed!")
         break
     case .Right:
-        print("Right pressed!")
+//        print("Right pressed!")
         break
     case .Left:
-        print("Left pressed!")
+//        print("Left pressed!")
         break
     case .LP:
-        print("Light punch pressed!")
+//        print("Light punch pressed!")
         break
     case .HP:
-        print("Heavy punch pressed!")
+//        print("Heavy punch pressed!")
         break
     default:
         break

@@ -15,6 +15,7 @@
 		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
 		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
 		1CDA63062BB6497600B76510 /* InputProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDA63052BB6497600B76510 /* InputProcessor.swift */; };
+		1CDA63092BB663F500B76510 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = 1CDA63082BB663F500B76510 /* Atomics */; };
 		954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */; };
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* Hitboxes.swift */; };
@@ -98,6 +99,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F02176992B82B8DA000993B2 /* GameplayKit.framework in Frameworks */,
+				1CDA63092BB663F500B76510 /* Atomics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +273,9 @@
 			dependencies = (
 			);
 			name = Gouken;
+			packageProductDependencies = (
+				1CDA63082BB663F500B76510 /* Atomics */,
+			);
 			productName = Gouken;
 			productReference = F031DA072B7609EC00E3F4B5 /* Gouken.app */;
 			productType = "com.apple.product-type.application";
@@ -299,6 +304,9 @@
 				Base,
 			);
 			mainGroup = F031D9FE2B7609EC00E3F4B5;
+			packageReferences = (
+				1CDA63072BB663F500B76510 /* XCRemoteSwiftPackageReference "swift-atomics" */,
+			);
 			productRefGroup = F031DA082B7609EC00E3F4B5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -589,6 +597,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1CDA63072BB663F500B76510 /* XCRemoteSwiftPackageReference "swift-atomics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-atomics.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1CDA63082BB663F500B76510 /* Atomics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1CDA63072BB663F500B76510 /* XCRemoteSwiftPackageReference "swift-atomics" */;
+			productName = Atomics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F031D9FF2B7609EC00E3F4B5 /* Project object */;
 }
