@@ -12,7 +12,7 @@ import SpriteKit
 import GameplayKit
 import GameController
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate {
+class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = NetcodeConnect()
@@ -51,6 +51,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         menuOverlay.overlayDelegate = self
         scnViewNew.overlaySKScene = menuOverlay
         scnViewNew.backgroundColor = .white
+        scnViewNew.isPlaying = true
         view.addSubview(scnViewNew)
         
         // Remove current SKView
@@ -65,6 +66,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return // Ensure self.view is actually an SCNView
         }
         
+        if let scene = scnView.scene {
+            scene.physicsWorld.contactDelegate = self
+        }
+//        
         GameManager.Instance().doSomething();
         
         
@@ -137,7 +142,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // init floor physics
         initWorld(scene: scene)
-        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
+//        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
         setUpHitboxes(player: player1)
         setUpHurtboxes(player: player2)
@@ -204,8 +209,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
     
         modelSCNNode = player?.characterMesh.childNode(withName: "Hand_R", recursively: true)
-        initHitboxAttack(playerSpawn: modelSCNNode, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0))
-    
+        var hitbox = initHitboxAttack(playerSpawn: modelSCNNode, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player!.playerSide)
+        player1?.hitboxes.append(hitbox)
     }
     
     func setUpHurtboxes(player: Character?) {
@@ -213,14 +218,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         var modelSCNNode: SCNNode?
         
 //        // Retrieve pelvis node and add hitbox
-//        modelSCNNode = player?.characterMesh.childNode(withName: "Pelvis", recursively: true)
 //        initHitboxAttack(playerSpawn: modelSCNNode, width: 50.0, height: 50.0, length: 50.0, position: SCNVector3(0, 0, 0))
     
         
 //        modelSCNNode = player?.characterMesh
+//        modelSCNNode = player2?.characterMesh
+//        modelSCNNode = player2?.characterMesh.childNode(withName: "Pelvis", recursively: true)
         modelSCNNode = enemySpawn
-        initHurtboxAttack(playerSpawn: modelSCNNode, width: 1, height: 1, length: 1, position: SCNVector3(0, 1, 0))
-    
+        var hurtbox = initHurtboxAttack(playerSpawn: modelSCNNode, width: 1, height: 1, length: 1, position: SCNVector3(0, 1, 0), pside: player2!.playerSide)
+        player2?.hurtboxes.append(hurtbox)
     }
     
     // TODO: for testing player controls and animations
@@ -239,19 +245,87 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         return collision != nil && !collision!.isEmpty
     }
     
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        print("collision")
+            // Check which nodes collided
+            let nodeA = contact.nodeA
+            let nodeB = contact.nodeB
+        
+        print("Contact:")
+        print(contact)
+
+            // Example handling of collision
+            if nodeA == playerSpawn || nodeB == playerSpawn {
+                // Handle collision with playerSpawn
+                print("Collision with player")
+            }
+
+            if nodeA == enemySpawn || nodeB == enemySpawn {
+                // Handle collision with enemySpawn
+                print("Collision with enemy")
+            }
+        }
+
+    
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
-            // Check if enemySpawn is colliding with hitboxNode
+//            // Check if enemySpawn is colliding with hitboxNode
             if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
                let enemySpawn = enemySpawn,
                testCollisionBetween(hitboxNode, enemySpawn) {
-                
+
                print("hitboxNode")
                print(hitboxNode)
                 print("COLLISION OCCURED!")
                 player2?.health.damage(10)
             }
-            
+//
+            if let hitboxes = player1?.hitboxes,
+               hitboxes != nil {
+                
+                print("Looking through hitboxes")
+                for hitbox in hitboxes {
+                    print(hitbox)
+                    guard var physicsBodyA = hitbox.physicsBody else { continue }
+                    let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
+                    print(collision)
+                    
+                    for coll in collision! {
+                        print(coll.nodeA.name, " with category bitmask: ", coll.nodeA.physicsBody?.categoryBitMask, " and collision bitmask: ", coll.nodeA.physicsBody?.collisionBitMask, ", collided with ")
+                        print(coll.nodeB.name, " with category bitmask: ", coll.nodeB.physicsBody?.categoryBitMask, " and collision bitmask: ", coll.nodeB.physicsBody?.collisionBitMask)
+                    }
+                    
+                    // If collision detected
+                    if (collision != nil && !collision!.isEmpty) {
+//                        print("COLLISION OCCURED!")
+                        player2?.health.damage(10)
+                    }
+                }
+            }
+            if let hurtboxes = player2?.hurtboxes,
+               hurtboxes != nil {
+                
+                print("Looking through hurtboxes")
+                for hurtbox in hurtboxes {
+                    print(hurtbox)
+                    guard var physicsBodyA = hurtbox.physicsBody else { continue }
+                    let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
+                                        print(collision)
+                    
+                    for coll in collision! {
+                        print(coll.nodeA.name, " with category bitmask: ", coll.nodeA.physicsBody?.categoryBitMask, " and collision bitmask: ", coll.nodeA.physicsBody?.collisionBitMask, ", collided with ")
+                        print(coll.nodeB.name, " with category bitmask: ", coll.nodeB.physicsBody?.categoryBitMask, " and collision bitmask: ", coll.nodeB.physicsBody?.collisionBitMask)
+                        
+                        // If collision detected
+                        if (collision != nil && !collision!.isEmpty) {
+                            //                        print("COLLISION OCCURED!")
+                            player2?.health.damage(10)
+                        }
+                    }
+                }
+            }
+
+
             player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
         }
     }
@@ -372,25 +446,26 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
     }
     
-    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-            // Check which nodes collided
-            let nodeA = contact.nodeA
-            let nodeB = contact.nodeB
-        
-        print("Contact:")
-        print(contact)
-
-            // Example handling of collision
-            if nodeA == playerSpawn || nodeB == playerSpawn {
-                // Handle collision with playerSpawn
-                print("Collision with player")
-            }
-
-            if nodeA == enemySpawn || nodeB == enemySpawn {
-                // Handle collision with enemySpawn
-                print("Collision with enemy")
-            }
-        }
+//    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+//        print("collision")
+//            // Check which nodes collided
+//            let nodeA = contact.nodeA
+//            let nodeB = contact.nodeB
+//        
+//        print("Contact:")
+//        print(contact)
+//
+//            // Example handling of collision
+//            if nodeA == playerSpawn || nodeB == playerSpawn {
+//                // Handle collision with playerSpawn
+//                print("Collision with player")
+//            }
+//
+//            if nodeA == enemySpawn || nodeB == enemySpawn {
+//                // Handle collision with enemySpawn
+//                print("Collision with enemy")
+//            }
+//        }
     
     override var prefersStatusBarHidden: Bool {
         return true
