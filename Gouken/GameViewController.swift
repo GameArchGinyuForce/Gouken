@@ -286,10 +286,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
 
         if (player2?.state == CharacterState.RunningLeft) {
-            player2?.characterNode.position.z -= runSpeed
-
+            enemySpawn?.position.z -= runSpeed
+            enemySpawn?.eulerAngles.y = Float.pi
         } else if (player2?.state == CharacterState.RunningRight) {
-            player2?.characterNode.position.z += runSpeed
+            enemySpawn?.position.z += runSpeed
+            enemySpawn?.eulerAngles.y = 0
 
         }
 
@@ -316,13 +317,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
     
     func handleReceivedData(_ receivedData: PlayerData) {
-        // Handle received data here
-        // For example, update game state with received data
-
         print("Received data: \(receivedData)")
-        // Example: Update game state based on received data
-        // You can access player data like receivedData.player.characterState, receivedData.timestamp, etc.
-    
+        var enemyState = receivedData.player.characterState
+        
+        if (player2?.state == CharacterState.Idle && enemyState == CharacterState.RunningRight){
+            
+            print("enemy running right")
+            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
+        } else if (player2?.state == CharacterState.Idle && enemyState == CharacterState.RunningLeft){
+            print("enemy running left")
+
+            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+        }
     }
     
     @objc

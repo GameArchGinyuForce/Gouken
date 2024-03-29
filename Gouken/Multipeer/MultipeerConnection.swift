@@ -16,7 +16,7 @@ enum Move: String, CaseIterable, Codable {
 }
 
 struct PlayerData: Codable {
-    let player: CodableCharacter
+    let player: SeralizableCharacter
     let timestamp: TimeInterval
 }
 
@@ -70,7 +70,7 @@ class MultipeerConnection: NSObject, ObservableObject {
         self.serviceBrowser.stopBrowsingForPeers()
     }
 
-    func send(player: CodableCharacter) {
+    func send(player: SeralizableCharacter) {
         precondition(Thread.isMainThread)
 
         if !session.connectedPeers.isEmpty {
@@ -140,7 +140,7 @@ extension MultipeerConnection: MCSessionDelegate {
 
                 log.info("didReceive move \(receivedData.player.characterState.rawValue)")
                 
-                log.info("Player is moving \(receivedData.player.runRight == true ? "right" : "left")")
+                log.info("Player is moving \(receivedData.player.characterState == CharacterState.RunningRight ? "right" : "left")")
 
                 let currentTimestamp = Date().timeIntervalSince1970
                 let roundTripLatency = (currentTimestamp - receivedData.timestamp)
