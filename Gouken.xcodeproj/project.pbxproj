@@ -47,7 +47,7 @@
 		F031DA122B7609EC00E3F4B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F031DA102B7609EC00E3F4B5 /* Main.storyboard */; };
 		F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA132B7609ED00E3F4B5 /* Assets.xcassets */; };
 		F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */; };
-		F045520F2BB4FEB600B64ADB /* NetcodeConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045520E2BB4FEB600B64ADB /* NetcodeConnect.swift */; };
+		F045520F2BB4FEB600B64ADB /* MultipeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045520E2BB4FEB600B64ADB /* MultipeerConnection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,7 +92,7 @@
 		F031DA112B7609EC00E3F4B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F031DA132B7609ED00E3F4B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F031DA162B7609ED00E3F4B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F045520E2BB4FEB600B64ADB /* NetcodeConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetcodeConnect.swift; sourceTree = "<group>"; };
+		F045520E2BB4FEB600B64ADB /* MultipeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnection.swift; sourceTree = "<group>"; };
 		F07920342BB541D800253960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -256,7 +256,7 @@
 		F045520D2BB4FE1800B64ADB /* Multipeer */ = {
 			isa = PBXGroup;
 			children = (
-				F045520E2BB4FEB600B64ADB /* NetcodeConnect.swift */,
+				F045520E2BB4FEB600B64ADB /* MultipeerConnection.swift */,
 			);
 			path = Multipeer;
 			sourceTree = "<group>";
@@ -368,7 +368,7 @@
 				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
 				954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */,
-				F045520F2BB4FEB600B64ADB /* NetcodeConnect.swift in Sources */,
+				F045520F2BB4FEB600B64ADB /* MultipeerConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

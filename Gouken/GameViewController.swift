@@ -15,7 +15,7 @@ import GameController
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate {
     var scnView: SCNView!
     var menuLoaded = false
-    var multipeerConnect = NetcodeConnect()
+    var multipeerConnect = MultipeerConnection()
 
     
     func playButtonPressed() {
