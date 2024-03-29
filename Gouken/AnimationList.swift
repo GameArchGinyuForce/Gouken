@@ -5,7 +5,8 @@ let characterModels     : Dictionary = [
 let characterAnimations : Dictionary = [
     CharacterName.Ninja: [
         CharacterState.Idle         :   "art.scnassets/Synty_Frank_RPG_Katana_Stance1_Idle.dae",
-        CharacterState.Running      :    "art.scnassets/Synty_Frank_RPG_Katana_Run01.dae",
+        CharacterState.RunningLeft      :    "art.scnassets/Synty_Frank_RPG_Katana_Run01.dae",
+        CharacterState.RunningRight      :    "art.scnassets/Synty_Frank_RPG_Katana_Run01.dae",
         CharacterState.Jumping      :   "art.scnassets/Synty_Frank_RPG_Katana_Jump_ZeroHeight.dae",
         CharacterState.Attacking    : "art.scnassets/Synty_Frank_RPG_Katana_S1_Combo01_All__IP.dae",
         CharacterState.Blocking     :  "art.scnassets/Synty_Frank_RPG_Katana_Guard.dae",

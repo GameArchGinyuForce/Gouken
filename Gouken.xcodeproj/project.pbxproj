@@ -26,7 +26,6 @@
 		DB035DE02B984FF40014C675 /* NinjaStunnedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DDF2B984FF40014C675 /* NinjaStunnedState.swift */; };
 		DB035DE22B98509D0014C675 /* NinjaIdleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DE12B98509D0014C675 /* NinjaIdleState.swift */; };
 		DB035DE42B9861CA0014C675 /* NinjaAttackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DE32B9861CA0014C675 /* NinjaAttackingState.swift */; };
-		DB035DE62B98630C0014C675 /* NinjaRunningState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DE52B98630C0014C675 /* NinjaRunningState.swift */; };
 		DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */; };
 		DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59F5682B89C71500B2D52D /* AnimationList.swift */; };
 		DBC19D392B7BB38F007C7323 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D382B7BB38F007C7323 /* State.swift */; };
@@ -45,6 +44,8 @@
 		F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA132B7609ED00E3F4B5 /* Assets.xcassets */; };
 		F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */; };
 		F045520F2BB4FEB600B64ADB /* MultipeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045520E2BB4FEB600B64ADB /* MultipeerConnection.swift */; };
+		F05BD1112BB7616800C4BEB8 /* NinjaRunningRightState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05BD1102BB7616800C4BEB8 /* NinjaRunningRightState.swift */; };
+		F05BD1132BB7617D00C4BEB8 /* NinjaRunningLeftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,7 +68,6 @@
 		DB035DDF2B984FF40014C675 /* NinjaStunnedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaStunnedState.swift; sourceTree = "<group>"; };
 		DB035DE12B98509D0014C675 /* NinjaIdleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaIdleState.swift; sourceTree = "<group>"; };
 		DB035DE32B9861CA0014C675 /* NinjaAttackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaAttackingState.swift; sourceTree = "<group>"; };
-		DB035DE52B98630C0014C675 /* NinjaRunningState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaRunningState.swift; sourceTree = "<group>"; };
 		DB0BBABD2B7CA68200A7A585 /* CharacterStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterStateMachine.swift; sourceTree = "<group>"; };
 		DB59F5682B89C71500B2D52D /* AnimationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationList.swift; sourceTree = "<group>"; };
 		DBC19D382B7BB38F007C7323 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
@@ -87,6 +87,8 @@
 		F031DA132B7609ED00E3F4B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F031DA162B7609ED00E3F4B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F045520E2BB4FEB600B64ADB /* MultipeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnection.swift; sourceTree = "<group>"; };
+		F05BD1102BB7616800C4BEB8 /* NinjaRunningRightState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaRunningRightState.swift; sourceTree = "<group>"; };
+		F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaRunningLeftState.swift; sourceTree = "<group>"; };
 		F07920342BB541D800253960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,7 +130,8 @@
 				DB035DDF2B984FF40014C675 /* NinjaStunnedState.swift */,
 				DB035DE12B98509D0014C675 /* NinjaIdleState.swift */,
 				DB035DE32B9861CA0014C675 /* NinjaAttackingState.swift */,
-				DB035DE52B98630C0014C675 /* NinjaRunningState.swift */,
+				F05BD1102BB7616800C4BEB8 /* NinjaRunningRightState.swift */,
+				F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */,
 			);
 			path = Ninja;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
 				DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */,
+				F05BD1112BB7616800C4BEB8 /* NinjaRunningRightState.swift in Sources */,
 				A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */,
 				DBC19D392B7BB38F007C7323 /* State.swift in Sources */,
 				DB035DDE2B984FCB0014C675 /* NinjaDownedState.swift in Sources */,
@@ -337,7 +341,7 @@
 				A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */,
 				DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */,
 				DB035DE22B98509D0014C675 /* NinjaIdleState.swift in Sources */,
-				DB035DE62B98630C0014C675 /* NinjaRunningState.swift in Sources */,
+				F05BD1132BB7617D00C4BEB8 /* NinjaRunningLeftState.swift in Sources */,
 				1C7C931D2B981F1200B59858 /* Stage.swift in Sources */,
 				1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */,
 				954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */,

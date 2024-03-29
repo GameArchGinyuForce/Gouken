@@ -190,7 +190,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     // TODO: for testing player controls and animations
     func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if (!hasBeenPressed) { return }
-        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
+//        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
     }
     
     // test collison between node a and node b
@@ -209,7 +209,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
                let enemySpawn = enemySpawn,
                testCollisionBetween(hitboxNode, enemySpawn) {
-                print("COLLISION OCCURED!")
                 player2?.health.damage(10)
             }
             
@@ -224,32 +223,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             let deadZone = Float(0.2)
             let player = playerSpawn
             
+            // Control everything therough state
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
-                runRight = true
-                runLeft = false
-                player?.eulerAngles.y = 0
+                player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
                 print("Running Right")
             } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
-                runRight = false
-                runLeft = true
-                player?.eulerAngles.y = Float.pi
+                player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
+                //player?.eulerAngles.y = Float.pi
                 print("Running Left")
                 
-                print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
+                // print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
                 
-                if (multipeerConnect.connectedPeers.count == 0) {
-                    print("!!!!without connected devices:")
-                }
-                if (multipeerConnect.connectedPeers.count > 0) {
-                    print("!!!!with connected devices:")
-                    multipeerConnect.send(player: CodableCharacter(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
-                }
+                // if (multipeerConnect.connectedPeers.count == 0) {
+                //     print("!!!!without connected devices:")
+                // }
+                // if (multipeerConnect.connectedPeers.count > 0) {
+                //     print("!!!!with connected devices:")
+                //     multipeerConnect.send(player: CodableCharacter(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
+                // }
                 
             } else if ( abs(xValue)<deadZone) {
-                runRight = false
-                runLeft = false
+                // runRight = false
+                // runLeft = false
                 player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
             }
     }
@@ -279,14 +274,35 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
-        let player = playerSpawn!
+
+        if (player1?.state == CharacterState.RunningLeft) {
+            playerSpawn?.position.z -= runSpeed
+            
+            playerSpawn?.eulerAngles.y = Float.pi
+        } else if (player1?.state == CharacterState.RunningRight) {
+            playerSpawn?.position.z += runSpeed
+            playerSpawn?.eulerAngles.y = 0
+        }
         
-        if(runRight){
-            player.position.z += runSpeed
+
+        if (player2?.state == CharacterState.RunningLeft) {
+            player2?.characterNode.position.z -= runSpeed
+
+        } else if (player2?.state == CharacterState.RunningRight) {
+            player2?.characterNode.position.z += runSpeed
+
         }
-        if(runLeft){
-            player.position.z -= runSpeed
-        }
+
+
+
+       // let player = playerSpawn!
+        
+        // if(runRight){
+        //     player.position.z += runSpeed
+        // }
+        // if(runLeft){
+        //     player.position.z -= runSpeed
+        // }
 
         lastFrameTime = time
         
