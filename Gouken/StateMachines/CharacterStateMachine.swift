@@ -1,8 +1,16 @@
 import Foundation
 import GameplayKit
 
-class CharacterStateMachine: StateMachine {
-    var character: SCNNode?
-    var health: HealthComponent?
-    // put all components that the character needs here
+class CharacterStateMachine: StateMachineComponent {
+    var character: Character!
+    
+    init(_ character: Character) {
+        super.init()
+        
+        self.character = character
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 }

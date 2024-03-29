@@ -3,19 +3,20 @@ import GameplayKit
 
 class NinjaStateMachine: CharacterStateMachine {
     
-    init(_ characterNode: SCNNode) {
-        super.init()
+    override init(_ character: Character) {
+        super.init(character)
         
-        character = characterNode
-        
-        health = HealthComponent(maxHealth: 100)
-        health?.onDamage = {
+        character.health.onDamage = {
             self.switchState(NinjaStunnedState(self))
         }
-        health?.onDie = {
+        character.health.onDie = {
             self.switchState(NinjaDownedState(self))
         }
         
-        switchState(NinjaIdleState(self))
+        self.switchState(NinjaIdleState(self))
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 }

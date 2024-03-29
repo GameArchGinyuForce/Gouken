@@ -26,7 +26,7 @@ class MultipeerConnection: NSObject, ObservableObject {
     var receivedDataHandler: ((PlayerData) -> Void)?
     
     // TODO: Get the GameCenter Username from the apple device
-    private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
+    public let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     private let log = Logger()

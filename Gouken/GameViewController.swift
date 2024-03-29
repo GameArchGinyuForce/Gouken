@@ -16,12 +16,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
-
     
     func playButtonPressed() {
-        // Print a message when play button is pressed
-        print("Play button pressed!")
-//        multipeerConnect.disablePlayerSearch()
         removeMenuOverlay()
         loadGame()
     }
@@ -40,11 +36,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // Load initial scene
         let scnScene = SCNScene() // Load your SCNScene for fancy background
-
+        
         // Present the SceneKit scene
         // The menu bug present itself because the emulator confuses what orientation determines whats width/height
         // Introduced a band-aid fix, should review later
-//        let scnViewNew = SCNView(frame: CGRect(origin: .zero, size: CGSize(width: max(view.frame.size.height, view.frame.size.width), height: min(view.frame.size.height, view.frame.size.width))))
+        //        let scnViewNew = SCNView(frame: CGRect(origin: .zero, size: CGSize(width: max(view.frame.size.height, view.frame.size.width), height: min(view.frame.size.height, view.frame.size.width))))
         let scnViewNew = SCNView(frame: view.bounds)    // original
         
         scnViewNew.scene = scnScene
@@ -53,7 +49,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnViewNew.overlaySKScene = menuOverlay
         scnViewNew.backgroundColor = .white
         view.addSubview(scnViewNew)
-
+        
         // Remove current SKView
         view.subviews.first(where: { $0 is SKView })?.removeFromSuperview()
         
@@ -77,7 +73,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return
         }
         
-        print("Game Scene Transition")
         
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
@@ -85,23 +80,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
         var stage : Stage = AmazingBrentwood(withManager: entityManager)
         let scene = stage.scene!
-        
-        // create and add a camera to the scene
-        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
-
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
-        scene.rootNode.addChildNode(lightNode)
-        
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor.darkGray
-        scene.rootNode.addChildNode(ambientLightNode)
         
         
         // Retrieve the SCNView
@@ -113,32 +91,41 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Set the delegate
         scnViewNew.delegate = self
         
+        // create and add a camera to the scene
+        cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+        
+        initLighting(scene:scene)
+        
         // Add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnViewNew.addGestureRecognizer(tapGesture)
+    
+        //decide who is p1 and p2
+        if("\(multipeerConnect.myPeerId)" > "\(multipeerConnect.connectedPeers.first!)"){
+            // Player Spawn Locations (Any stage we create MUST have these).
+            playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+            enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
+   
+        }else{
+            // Player Spawn Locations (Any stage we create MUST have these).
+            playerSpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
+            enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+        }
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, playerID: multipeerConnect.myPeerId, withManager: entityManager)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, playerID: multipeerConnect.connectedPeers.first!, withManager: entityManager)
         
-        // Player Spawn Locations (Any stage we create MUST have these).
-        let p1Spawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
-        let p2Spawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
-        playerSpawn = p1Spawn
-        enemySpawn = p2Spawn
+        player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
+        player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
+        player1?.characterNode.name = "Ninja1"
+        player2?.characterNode.name = "Ninja2"
         
-        // Initialize player characters
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: p1Spawn, onPSide: PlayerType.P1)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: p2Spawn, onPSide: PlayerType.P2)
-
         // configure the view
         scnView.backgroundColor = UIColor.black
         
         // init floor physics
         initWorld(scene: scene)
         initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
-        
         initHitboxAttack(playerSpawn: playerSpawn)
-        
-        // Initialize state machine for testing
-        baikenStateMachine = BaikenStateMachine(player1!.characterNode)
-        enemyStateMachine = BaikenStateMachine(player2!.characterNode)
         
         // Add gesture recognizers for testing player controls and animations
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
@@ -159,6 +146,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnViewNew.backgroundColor = UIColor.black
         
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?
+        
+        
     }
     
     var entityManager = EntityManager()
@@ -167,39 +156,20 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var player1: Character?
     var player2: Character?
     var gamePad: GCExtendedGamepad?
-    var baikenStateMachine: BaikenStateMachine?
-    var enemyStateMachine: BaikenStateMachine?
+    //    var baikenStateMachine: BaikenStateMachine?
+    //    var enemyStateMachine: BaikenStateMachine?
     var displayLink: CADisplayLink?
     var lastFrameTime: Double = 0.0
     var cameraNode : SCNNode = SCNNode()
     var playerSpawn : SCNNode?
     var enemySpawn : SCNNode?
     var runSpeed = Float(0.1)
-    var ninja2StateMachine: NinjaStateMachine?
+    
     
     //added
     var runRight = false
     var runLeft = false
     
-//    @objc func screenUpdated(displayLink: CADisplayLink) {
-//        update(currentTime: Date.timeIntervalSinceReferenceDate as Double)
-//    }
-//    func update(currentTime: Double) {
-//        let deltaTime = currentTime - lastFrameTime
-//        
-//        baikenStateMachine?.update(deltaTime)
-//        
-//        lastFrameTime = currentTime
-        
-        //added
-//        if(runRight){
-//            scene.rootNode.childNode(withName: "p1Spawn", recursively: true).position.z += 1
-//        }
-//        if(runLeft){
-//            scene.rootNode.childNode(withName: "p1Spawn", recursively: true).position.z -= 1
-//        }
-//    }
-    // ----------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,51 +179,52 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     // TODO: for testing player controls and animations
     func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if (!hasBeenPressed) { return }
-        player1?.setState(withState: CharacterState.Running)
-//            player1?.removeAllAnimations()
-//            let animPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: CharacterAnimations[CharacterName.Ninja]!.run)
-//            player1?.addAnimationPlayer(animPlayer, forKey: CharacterAnimations[CharacterName.Ninja]!.run)
+        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
     }
-
-        // test collison between node a and node b
-        func testCollisionBetween(_ nodeA: SCNNode, _ nodeB: SCNNode) -> Bool {
-            guard let physicsBodyA = nodeA.physicsBody, let physicsBodyB = nodeB.physicsBody else {
-                return false
-            }
-
-            let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
-            return collision != nil && !collision!.isEmpty
+    
+    // test collison between node a and node b
+    func testCollisionBetween(_ nodeA: SCNNode, _ nodeB: SCNNode) -> Bool {
+        guard let physicsBodyA = nodeA.physicsBody, let physicsBodyB = nodeB.physicsBody else {
+            return false
         }
-
-        func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
-            if hasBeenPressed {
-                // Check if enemySpawn is colliding with hitboxNode
-                if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
-                   let enemySpawn = enemySpawn,
-                   testCollisionBetween(hitboxNode, enemySpawn) {
-                    print("COLLISION OCCURED!")
-                    ninja2StateMachine?.health?.damage(25)
-                }
-
-                player1?.setState(withState: CharacterState.Attacking)
+        
+        let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
+        return collision != nil && !collision!.isEmpty
+    }
+    
+    func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
+        if hasBeenPressed {
+            // Check if enemySpawn is colliding with hitboxNode
+            if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
+               let enemySpawn = enemySpawn,
+               testCollisionBetween(hitboxNode, enemySpawn) {
+                print("COLLISION OCCURED!")
+                player2?.health.damage(10)
             }
+            
+            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
         }
-
-
+    }
+        
         func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
             //print("Thumbstick x=\(xValue) y=\(yValue)")
             
             //rotate, play running animations, based on thumbstick input
             let deadZone = Float(0.2)
-            let player = scnView.scene!.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+            let player = playerSpawn
             
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                
-                player1?.setState(withState: CharacterState.Running)
+                player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
                 runRight = true
                 runLeft = false
-                player.eulerAngles.y = 0
+                player?.eulerAngles.y = 0
                 print("Running Right")
+            } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+                player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
+                runRight = false
+                runLeft = true
+                player?.eulerAngles.y = Float.pi
+                print("Running Left")
                 
                 print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
                 
@@ -265,49 +236,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                     multipeerConnect.send(player: CodableCharacter(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
                 }
                 
-                
-                
-            } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                player1?.setState(withState: CharacterState.Running)
-                runRight = false
-                runLeft = true
-                player.eulerAngles.y = Float.pi
-                print("Running Left")
             } else if ( abs(xValue)<deadZone) {
                 runRight = false
                 runLeft = false
-                player1?.setState(withState: CharacterState.Idle)
+                player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
             }
-        
-        if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-            player1?.setState(withState: CharacterState.Running)
-            runRight = true
-            runLeft = false
-            player.eulerAngles.y = 0
-            print("Running Right")
-        }else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-            player1?.setState(withState: CharacterState.Running)
-            runRight = false
-            runLeft = true
-            player.eulerAngles.y = Float.pi
-            print("Running Left")
-        } else if ( abs(xValue)<deadZone) {
-            runRight = false
-            runLeft = false
-            player1?.setState(withState: CharacterState.Idle)
-        }
     }
 
-    // The following code initializes the Entities for our GKEntity set
-//        let playerEntity = CharacterEntity()
-//        entityManager.addEntity(playerEntity)
-    
-    // TODO: for testing state machine
     @objc
     func handleDoubleTap(_ gestureRecognize: UIGestureRecognizer) {
-        baikenStateMachine?.exampleStateChange()
     }
-    // ---------------------------- //
     
     
     /*
@@ -315,11 +253,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
      */
     @objc
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
+        lastFrameTime = time
+        
         // Update loop for any calls (our game loop)
         entityManager.entities.forEach { entity in
+            
+            entity.update(deltaTime: deltaTime)
+            
             if let component = entity.component(ofType: MovementComponent.self) {
                 // Update entity based on movement component
                 //component.move()
+                
             }
         }
         
@@ -332,10 +277,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             player.position.z -= runSpeed
         }
 
-        let deltaTime = time - lastFrameTime
-        
-        ninja2StateMachine?.update(deltaTime)
-
         lastFrameTime = time
         
         multipeerConnect.receivedDataHandler = { [weak self] receivedData in
@@ -347,16 +288,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     
-    
     func handleReceivedData(_ receivedData: PlayerData) {
         // Handle received data here
         // For example, update game state with received data
+
         print("Received data: \(receivedData)")
         // Example: Update game state based on received data
         // You can access player data like receivedData.player.characterState, receivedData.timestamp, etc.
+    
     }
     
-
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
@@ -409,6 +350,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 print("Collision with enemy")
             }
         }
+    
+    func initLighting(scene:SCNScene){
+        // create and add a light to the scene
+        let lightNode = SCNNode()
+        lightNode.light = SCNLight()
+        lightNode.light!.type = .omni
+        lightNode.position = SCNVector3(x: 0, y: 2, z: 10)
+        scene.rootNode.addChildNode(lightNode)
+        
+        // create and add an ambient light to the scene
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = SCNLight()
+        ambientLightNode.light!.type = .ambient
+        ambientLightNode.light!.color = UIColor.darkGray
+        scene.rootNode.addChildNode(ambientLightNode)
+    }
     
     override var prefersStatusBarHidden: Bool {
         return true
