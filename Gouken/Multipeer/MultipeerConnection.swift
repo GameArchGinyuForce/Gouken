@@ -23,6 +23,7 @@ struct PlayerData: Codable {
 class MultipeerConnection: NSObject, ObservableObject {
     private let serviceType = "GoukenMP"
     private let session: MCSession
+    var receivedDataHandler: ((PlayerData) -> Void)?
     
     // TODO: Get the GameCenter Username from the apple device
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
@@ -142,7 +143,7 @@ extension MultipeerConnection: MCSessionDelegate {
                     self.avgLatency = Double(self.cumulativeTime) / Double(self.numberOfMovesSent)
 
                 }
-                print(roundTripLatency)
+                receivedDataHandler?(receivedData)
             } catch {
                 log.error("Error decoding move data: \(error)")
             }

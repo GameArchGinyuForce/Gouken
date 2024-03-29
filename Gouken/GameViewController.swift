@@ -338,6 +338,22 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
         lastFrameTime = time
         
+        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
+            // Handle received data here
+            // For example, update game state with received data
+            self?.handleReceivedData(receivedData)
+        }
+        
+    }
+    
+    
+    
+    func handleReceivedData(_ receivedData: PlayerData) {
+        // Handle received data here
+        // For example, update game state with received data
+        print("Received data: \(receivedData)")
+        // Example: Update game state based on received data
+        // You can access player data like receivedData.player.characterState, receivedData.timestamp, etc.
     }
     
 
