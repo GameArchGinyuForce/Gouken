@@ -48,6 +48,9 @@ class Character {
     var health            : HealthComponent
     var hitboxes          : [SCNNode]
     
+    // Callback Events
+    var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
+    
     init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
            playerSide = side
@@ -79,6 +82,32 @@ class Character {
         withManager.addEntity(entity)
         
         hitboxes = [SCNNode]()
+        
+        // Set up callbacks
+        toggleHitboxesCallback = { [weak self] param1, param2, param3 in
+            self?.togglePlayerHitboxes()
+        }
+    }
+    
+    func togglePlayerHitboxes() {
+        print("Toggling hitboxes")
+        for _hitbox in hitboxes {
+            _hitbox.isHidden = !_hitbox.isHidden
+        }
+    }
+    
+    func activateHitboxes() {
+        print("Activating hitboxes")
+        for _hitbox in hitboxes {
+            _hitbox.isHidden = true
+        }
+    }
+    
+    func deactivateHitboxes() {
+        print("Deactivating hitboxes")
+        for _hitbox in hitboxes {
+            _hitbox.isHidden = false
+        }
     }
     
     func update(deltaTime seconds : TimeInterval) {

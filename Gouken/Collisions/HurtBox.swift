@@ -20,7 +20,7 @@ func initHurtboxAttack(
     let hurtBoxNode = SCNNode(geometry: hurtBoxGeometry)
     hurtBoxNode.name = "hurtBoxNode"
     
-    hurtBoxNode.scale = SCNVector3(200, 200, 200) // Scale up by a factor of 10 in all directions
+    hurtBoxNode.scale = SCNVector3(100, 100, 100) // Scale up by a factor of 10 in all directions
     
     //    hitboxNode.position.z = 1.0
     //    hitboxNode.position.y = 1.0
@@ -41,13 +41,8 @@ func initHurtboxAttack(
 
     print("Created a hurtbox with category mask: ", hurtBoxNode.physicsBody!.categoryBitMask, " and collision mask: ", hurtBoxNode.physicsBody!.collisionBitMask, " and contact bitmask: ", hurtBoxNode.physicsBody!.contactTestBitMask)
 
-    
-//    hitboxNode.physicsBody?.categoryBitMask = 1 | 4 | 8
-//    hitboxNode.physicsBody?.collisionBitMask = 6
-
-    
     // create a visible hitbox
-    let greenColor = UIColor.green.withAlphaComponent(0.5) // Adjust the alpha value for transparency
+    let greenColor = UIColor.green.withAlphaComponent(0.2) // Adjust the alpha value for transparency
     let greenTransparentMaterial = SCNMaterial()
     greenTransparentMaterial.diffuse.contents = greenColor
     hurtBoxNode.geometry?.materials = [greenTransparentMaterial]

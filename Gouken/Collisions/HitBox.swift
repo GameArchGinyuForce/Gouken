@@ -25,7 +25,7 @@ func initHitboxAttack(
     hitBoxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
     hitBoxNode.physicsBody?.isAffectedByGravity = false
     
-//    hitBoxNode.scale = SCNVector3(200, 200, 200) // Scale up by a factor of 10 in all directions
+    hitBoxNode.scale = SCNVector3(100, 100, 100) // Scale up by a factor of 10 in all directions
     
     if pside == PlayerType.P1 {
         hitBoxNode.physicsBody?.categoryBitMask = p1HitBox
@@ -41,14 +41,11 @@ func initHitboxAttack(
     print("Created a hitbox with category mask: ", hitBoxNode.physicsBody!.categoryBitMask, " and collision mask: ", hitBoxNode.physicsBody!.collisionBitMask, " and test bit mask: ",
           hitBoxNode.physicsBody!.collisionBitMask
     )
-
-//    hurtboxNode.physicsBody?.categoryBitMask = 2 | 8
-//    hurtboxNode.physicsBody?.collisionBitMask = 4
-    
+ 
 
     
     // create a visible hitbox
-    let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
+    let redColor = UIColor.red.withAlphaComponent(0.8) // Adjust the alpha value for transparency
     let redTransparentMaterial = SCNMaterial()
     redTransparentMaterial.diffuse.contents = redColor
     hitBoxNode.geometry?.materials = [redTransparentMaterial]
