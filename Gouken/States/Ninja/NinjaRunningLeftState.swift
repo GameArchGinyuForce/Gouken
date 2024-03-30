@@ -1,7 +1,7 @@
 import Foundation
 import GameplayKit
 
-class NinjaRunningState: NinjaBaseState {
+class NinjaRunningLeftState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
     required init(_ stateMachine: NinjaStateMachine) {
@@ -10,8 +10,9 @@ class NinjaRunningState: NinjaBaseState {
     
     func enter() {
         print("enter NinjaRunningState")
-        stateMachine.character.setState(withState: CharacterState.Running)
-        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Running]!, loop: true)
+        stateMachine.character.setState(withState: CharacterState.RunningLeft)
+        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.RunningLeft]!, loop: true)
+
     }
     
     func tick(_ deltaTime: TimeInterval) {

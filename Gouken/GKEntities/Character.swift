@@ -25,9 +25,10 @@ enum PlayerType {
 }
 
 // States that characters can go into
-enum CharacterState {
+enum CharacterState : String, Codable {
     case Stunned
-    case Running
+    case RunningLeft
+    case RunningRight
     case Attacking
     case Idle
     case Jumping
@@ -48,6 +49,8 @@ class Character {
     var health            : HealthComponent
     
     init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager) {
+           characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
+           playerSide = side
         characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
         playerSide = side
         

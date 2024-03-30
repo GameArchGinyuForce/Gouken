@@ -1,5 +1,6 @@
 import SpriteKit
 import AVFoundation
+import Combine
 
 
 // Allows us to call functions outside the overlay
@@ -11,13 +12,55 @@ protocol SKOverlayDelegate: AnyObject {
 class MenuSceneOverlay: SKScene {
     weak var overlayDelegate: SKOverlayDelegate?
     var backgroundMusicPlayer: AVAudioPlayer?
-    
     var menuContainer: SKNode = SKNode()
+    
+    var multipeerConnect: MultipeerConnection?
+    
+    func setupMultipeerConnect() {
+        guard let multipeerConnect = multipeerConnect else {
+            return
+        }
+        print("connection changed1")
+        handleConnectionChange()
+        cancellable = multipeerConnect.objectWillChange.sink { [weak self] _ in
+            self?.handleConnectionChange()
+        }
+    }
+    
+    init(size: CGSize, multipeerConnect: MultipeerConnection) {
+        self.multipeerConnect = multipeerConnect
+        print("test")
+        print(multipeerConnect)
+        super.init(size: size)
+        self.setupMultipeerConnect()
+     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // Add other buttons
     let buttonSize = CGSize(width: 150, height: 50)
     let offsetFromMiddle = CGPoint(x: 0, y: -20)
     let buttonSpacing: CGFloat = 10
+    
+    var connectionStatusLabel: SKLabelNode?
+    
+    var cancellable: AnyCancellable?
+    
+    func handleConnectionChange() {
+            print("Connection status changed")
+            // Update UI based on the new connection status
+            // For example:
+            if multipeerConnect?.connectedPeers.isEmpty ?? true {
+                // No connected peers
+                connectionStatusLabel?.text = "No connection"
+            } else {
+                // At least one peer connected
+                connectionStatusLabel?.text = "Connection established"
+            }
+        }
+
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
@@ -42,7 +85,17 @@ class MenuSceneOverlay: SKScene {
 //        setupMenu()
         showMenu();
         addChild(menuContainer)
+        
+        connectionStatusLabel = SKLabelNode(text: "Connecting...")
+        connectionStatusLabel?.fontName = "Helvetica"
+        connectionStatusLabel?.fontSize = 20
+        connectionStatusLabel?.fontColor = .white
+        connectionStatusLabel?.position = CGPoint(x: frame.midX, y: size.height - 50)
+        addChild(connectionStatusLabel!)
+        
+        multipeerConnect?.objectWillChange.send()
     }
+    
     
     private func addText(to node: SKNode, text: String) {
         let label = SKLabelNode(text: text)
@@ -103,16 +156,16 @@ class MenuSceneOverlay: SKScene {
         addText(to: selectPVPButton, text: "PVP")
     }
     
-    func showFindPlayers() {
+    func startMatchmaking() {
         menuContainer.removeAllChildren()
         
         // Players found Nearby
-        let label = SKLabelNode(text: "Players Found Nearby")
+        let label = SKLabelNode(text: "Matchmaking...")
         label.fontName = "Helvetica"
         label.fontSize = 48
         label.fontColor = .white
         // Calculate the position of the label to ensure it's centered on the button
-        label.position = CGPoint(x: frame.width / 2, y: frame.height - 60)
+        label.position = CGPoint(x: frame.width / 2, y: frame.height - 100)
         menuContainer.addChild(label)
         
         // Back button
@@ -125,35 +178,16 @@ class MenuSceneOverlay: SKScene {
         menuContainer.addChild(backButton)
         addText(to: backButton, text: "Back")
         
+        
         // Player 1 Placeholder
         var selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 1)
+        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 80 - (buttonSize.height + buttonSpacing) * 1)
         selectPlayer1.name = "selectPlayerButton"
         selectPlayer1.strokeColor = .white
         selectPlayer1.lineWidth = 3
         selectPlayer1.fillColor = .black // Set fill color
         menuContainer.addChild(selectPlayer1)
         addText(to: selectPlayer1, text: "Player 1")
-        
-        // Player 2 Placeholder
-        selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 2)
-        selectPlayer1.name = "selectPlayerButton"
-        selectPlayer1.strokeColor = .white
-        selectPlayer1.lineWidth = 3
-        selectPlayer1.fillColor = .black // Set fill color
-        menuContainer.addChild(selectPlayer1)
-        addText(to: selectPlayer1, text: "Player 2")
-        
-        // Player 3 Placeholder
-        selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 40 - (buttonSize.height + buttonSpacing) * 3)
-        selectPlayer1.name = "selectPlayerButton"
-        selectPlayer1.strokeColor = .white
-        selectPlayer1.lineWidth = 3
-        selectPlayer1.fillColor = .black // Set fill color
-        menuContainer.addChild(selectPlayer1)
-        addText(to: selectPlayer1, text: "Player 3")
     }
     
     func showMenu() {
@@ -235,7 +269,7 @@ class MenuSceneOverlay: SKScene {
                 case "selectPVEButton":
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 case "selectPVPButton":
-                    showFindPlayers()
+                    startMatchmaking()
                 case "selectPlayerButton":
                     // TODO: if dynamically changing buttons, each button must represent a different player. Find a way to differentiate between button presses
 

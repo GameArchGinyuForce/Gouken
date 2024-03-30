@@ -8,34 +8,46 @@
 import Foundation
 import MultipeerConnectivity
 import os
+import Combine
 
 
 enum Move: String, CaseIterable, Codable {
     case left, right, jump, crouch, lowDash, midDash, block
 }
 
-struct MoveData: Codable {
-    let move: Move
+struct PlayerData: Codable {
+    let player: SeralizableCharacter
     let timestamp: TimeInterval
 }
 
-class NetcodeConnect: NSObject, ObservableObject {
+
+class MultipeerConnection: NSObject, ObservableObject {
     private let serviceType = "GoukenMP"
     private let session: MCSession
+    var receivedDataHandler: ((PlayerData) -> Void)?
     
     // TODO: Get the GameCenter Username from the apple device
-    private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
+    public let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     private let log = Logger()
     private var numberOfMovesSent = 0;
     private var cumulativeTime: TimeInterval = 0.0
 
-    @Published var currentMove: Move? = nil
+    @Published var currentMove: String? = nil
     @Published var latency: TimeInterval = 0.0
     @Published var maxLatency: TimeInterval = 0.0
     @Published var avgLatency: TimeInterval = 0.0
-    @Published var connectedPeers: [MCPeerID] = []
+    @Published var connectedPeers: [MCPeerID] = [] {
+        didSet {
+            // Notify observers that the connection status changed
+            objectWillChange.send()
+        }
+    }
+    // Add objectWillChange publisher
+    let objectWillChange = PassthroughSubject<Void, Never>()
+
+
 
     override init() {
         precondition(Thread.isMainThread)
@@ -58,25 +70,30 @@ class NetcodeConnect: NSObject, ObservableObject {
         self.serviceBrowser.stopBrowsingForPeers()
     }
 
-    func send(move: Move) {
-        precondition(Thread.isMainThread)
-        log.info("sendMove: \(String(describing: move)) to \(self.session.connectedPeers.count) peers")
-
+    func send(player: SeralizableCharacter) {
+        //precondition(Thread.isMainThread)
+        print("sending")
         if !session.connectedPeers.isEmpty {
             let timestamp = Date().timeIntervalSince1970
-            let moveData = MoveData(move: move, timestamp: timestamp)
+            let playerData = PlayerData(player: player, timestamp: timestamp)
             do {
                 let encoder = JSONEncoder()
-                let data = try encoder.encode(moveData)
+                let data = try encoder.encode(playerData)
                 try session.send(data, toPeers: session.connectedPeers, with: .reliable)
             } catch {
                 log.error("Error for sending move: \(error)")
             }
         }
     }
+    
+    
+    func disablePlayerSearch() {
+        self.serviceAdvertiser.stopAdvertisingPeer()
+        self.serviceBrowser.stopBrowsingForPeers()
+    }
 }
 
-extension NetcodeConnect: MCNearbyServiceAdvertiserDelegate {
+extension MultipeerConnection: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
         precondition(Thread.isMainThread)
         log.error("ServiceAdvertiser didNotStartAdvertisingPeer: \(String(describing: error))")
@@ -89,7 +106,7 @@ extension NetcodeConnect: MCNearbyServiceAdvertiserDelegate {
     }
 }
 
-extension NetcodeConnect: MCNearbyServiceBrowserDelegate {
+extension MultipeerConnection: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
         log.error("ServiceBrowser didNotStartBrowsingForPeers: \(String(describing: error))")
     }
@@ -105,7 +122,7 @@ extension NetcodeConnect: MCNearbyServiceBrowserDelegate {
 }
 
 //
-extension NetcodeConnect: MCSessionDelegate {
+extension MultipeerConnection: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         log.info("peer \(peerID) didChangeState: \(state.debugDescription)")
         DispatchQueue.main.async {
@@ -119,22 +136,24 @@ extension NetcodeConnect: MCSessionDelegate {
         print("received")
             do {
                 let decoder = JSONDecoder()
-                let receivedData = try decoder.decode(MoveData.self, from: data)
+                let receivedData = try decoder.decode(PlayerData.self, from: data)
 
-                log.info("didReceive move \(receivedData.move.rawValue)")
+                log.info("didReceive move \(receivedData.player.characterState.rawValue)")
+                
+                log.info("Player is moving \(receivedData.player.characterState == CharacterState.RunningRight ? "right" : "left")")
 
                 let currentTimestamp = Date().timeIntervalSince1970
                 let roundTripLatency = (currentTimestamp - receivedData.timestamp)
                 DispatchQueue.main.async {
                     self.numberOfMovesSent += 1
                     self.cumulativeTime+=roundTripLatency
-                    self.currentMove = receivedData.move
+                    self.currentMove = receivedData.player.characterState.rawValue
                     self.latency = roundTripLatency
                     self.maxLatency = (roundTripLatency > self.maxLatency) ? roundTripLatency : self.maxLatency
                     self.avgLatency = Double(self.cumulativeTime) / Double(self.numberOfMovesSent)
 
                 }
-                print(roundTripLatency)
+                receivedDataHandler?(receivedData)
             } catch {
                 log.error("Error decoding move data: \(error)")
             }
