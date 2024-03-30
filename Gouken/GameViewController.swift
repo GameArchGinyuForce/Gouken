@@ -312,7 +312,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         multipeerConnect.receivedDataHandler = { [weak self] receivedData in
             // Handle received data here
             // For example, update game state with received data
-            print("receiving")
             self?.handleReceivedData(receivedData)
         }
         
@@ -320,23 +319,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
     
     func handleReceivedData(_ receivedData: PlayerData) {
-        print("Received data: \(receivedData)")
         var enemyState = receivedData.player.characterState
         
         if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
-            print("enemy running right")
             player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
         } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
-            print("enemy running left")
             player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
         } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
-            print("enemy idle")
             player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
         }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
-            print("enemy stunned")
             player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
         }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
-            print("enemy attacking")
             player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
         }
     }
