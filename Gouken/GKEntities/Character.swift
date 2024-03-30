@@ -46,6 +46,7 @@ class Character {
     var animator          : AnimatorComponent
     var stateMachine      : CharacterStateMachine?
     var health            : HealthComponent
+    var hitboxes          : [SCNNode]
     
     init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
@@ -76,6 +77,8 @@ class Character {
         state = CharacterState.Idle
         
         withManager.addEntity(entity)
+        
+        hitboxes = [SCNNode]()
     }
     
     func update(deltaTime seconds : TimeInterval) {
