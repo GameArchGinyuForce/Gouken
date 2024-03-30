@@ -7,7 +7,7 @@
 
 import SceneKit
 
-func initHurtboxAttack(
+func initHitboxAttack(
     playerSpawn:SCNNode?,
     width: CGFloat = 1.0,
     height: CGFloat = 1.0,
@@ -25,9 +25,15 @@ func initHurtboxAttack(
     hurtboxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
     hurtboxNode.physicsBody?.isAffectedByGravity = false
     
-    hurtboxNode.physicsBody?.categoryBitMask = p2HurtBox
-    hurtboxNode.physicsBody?.collisionBitMask = p1HitBox
-    hurtboxNode.physicsBody?.contactTestBitMask = p1HitBox
+    if pside == PlayerType.P1 {
+        hurtboxNode.physicsBody?.categoryBitMask = p1HurtBox
+        hurtboxNode.physicsBody?.collisionBitMask = p2HitBox
+        hurtboxNode.physicsBody?.contactTestBitMask = p2HitBox
+    } else {
+        hurtboxNode.physicsBody?.categoryBitMask = p2HurtBox
+        hurtboxNode.physicsBody?.collisionBitMask = p1HitBox
+        hurtboxNode.physicsBody?.contactTestBitMask = p1HitBox
+    }
     
     
     print("Created a hurtbox with category mask: ", hurtboxNode.physicsBody!.categoryBitMask, " and collision mask: ", hurtboxNode.physicsBody!.collisionBitMask, " and test bit mask: ",
