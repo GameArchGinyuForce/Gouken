@@ -200,13 +200,6 @@ class MenuSceneOverlay: SKScene {
         matchmaking.fontName = "Robota"
         matchmaking.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 100 - (buttonSize.height + buttonSpacing) * 1)
         menuContainer.addChild(matchmaking)
-
-        let fadeInAction = SKAction.fadeIn(withDuration: 2)
-        let fadeOutAction = SKAction.fadeOut(withDuration: 0.5)
-        let blinkSequence = SKAction.sequence([fadeOutAction, fadeInAction])
-        blinkAction = SKAction.repeatForever(blinkSequence)
-        
-        matchmaking.run(blinkAction)
     }
     
     func showMenu() {
