@@ -13,7 +13,9 @@ class MenuSceneOverlay: SKScene {
     weak var overlayDelegate: SKOverlayDelegate?
     var backgroundMusicPlayer: AVAudioPlayer?
     var menuContainer: SKNode = SKNode()
-    
+    var blinkAction: SKAction!
+    var matchmaking: SKLabelNode!
+
     var multipeerConnect: MultipeerConnection?
     
     func setupMultipeerConnect() {
@@ -159,35 +161,49 @@ class MenuSceneOverlay: SKScene {
     func startMatchmaking() {
         menuContainer.removeAllChildren()
         
-        // Players found Nearby
-        let label = SKLabelNode(text: "Matchmaking...")
-        label.fontName = "Helvetica"
-        label.fontSize = 48
-        label.fontColor = .white
-        // Calculate the position of the label to ensure it's centered on the button
-        label.position = CGPoint(x: frame.width / 2, y: frame.height - 100)
-        menuContainer.addChild(label)
+        // Display label for indicating matchmaking status
+        let matchmakingLabel = SKLabelNode(text: "Finding Nearby Matches...")
+        matchmakingLabel.fontName = "Helvetica"
+        matchmakingLabel.fontSize = 24
+        matchmakingLabel.fontColor = .white
+        matchmakingLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        menuContainer.addChild(matchmakingLabel)
         
-        // Back button
-        let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        backButton.position = CGPoint(x: buttonSize.width / 2, y: size.height - buttonSize.height / 2)
-        backButton.name = "backToSelectGameModeButton"
-        backButton.strokeColor = .white
-        backButton.lineWidth = 3
-        backButton.fillColor = .black // Set fill color
-        menuContainer.addChild(backButton)
-        addText(to: backButton, text: "Back")
+        // TODO: Add check if match is found
+        DispatchQueue.global().async {
+            Thread.sleep(forTimeInterval: 2)
+            
+            DispatchQueue.main.async {
+                matchmakingLabel.text = "Matches Found!"
+            }
+        }
         
+        // Add a button to cancel matchmaking if needed
+        let cancelButton = SKLabelNode(text: "Cancel")
+        cancelButton.fontName = "Helvetica"
+        cancelButton.fontSize = 18
+        cancelButton.fontColor = .red
+        cancelButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 40)
+        cancelButton.name = "cancelMatchmakingButton"
+        menuContainer.addChild(cancelButton)
+    }
+    
+    
+    func addMatchmakingText() {
+        var matchmaking = SKLabelNode(text: "Matchmaking...")
+        matchmaking.name = "Loading"
+        matchmaking.fontColor = .yellow
+        matchmaking.fontSize = 24
+        matchmaking.fontName = "Robota"
+        matchmaking.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 100 - (buttonSize.height + buttonSpacing) * 1)
+        self.addChild(matchmaking)
+
+        let fadeInAction = SKAction.fadeIn(withDuration: 2)
+        let fadeOutAction = SKAction.fadeOut(withDuration: 0.5)
+        let blinkSequence = SKAction.sequence([fadeOutAction, fadeInAction])
+        blinkAction = SKAction.repeatForever(blinkSequence)
         
-        // Player 1 Placeholder
-        var selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 80 - (buttonSize.height + buttonSpacing) * 1)
-        selectPlayer1.name = "selectPlayerButton"
-        selectPlayer1.strokeColor = .white
-        selectPlayer1.lineWidth = 3
-        selectPlayer1.fillColor = .black // Set fill color
-        menuContainer.addChild(selectPlayer1)
-        addText(to: selectPlayer1, text: "Player 1")
+        matchmaking.run(blinkAction)
     }
     
     func showMenu() {
@@ -252,6 +268,10 @@ class MenuSceneOverlay: SKScene {
         }
     }
     
+    func removeMatchmakingText() {
+        
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -270,6 +290,7 @@ class MenuSceneOverlay: SKScene {
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 case "selectPVPButton":
                     startMatchmaking()
+                    addMatchmakingText()
                 case "selectPlayerButton":
                     // TODO: if dynamically changing buttons, each button must represent a different player. Find a way to differentiate between button presses
 
