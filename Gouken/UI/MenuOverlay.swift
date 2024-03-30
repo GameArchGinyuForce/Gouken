@@ -166,7 +166,7 @@ class MenuSceneOverlay: SKScene {
         matchmakingLabel.fontName = "Helvetica"
         matchmakingLabel.fontSize = 24
         matchmakingLabel.fontColor = .white
-        matchmakingLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        matchmakingLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 80)
         menuContainer.addChild(matchmakingLabel)
         
         

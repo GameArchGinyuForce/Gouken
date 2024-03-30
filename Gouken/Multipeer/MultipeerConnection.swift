@@ -25,6 +25,8 @@ class MultipeerConnection: NSObject, ObservableObject {
     private let serviceType = "GoukenMP"
     private let session: MCSession
     var receivedDataHandler: ((PlayerData) -> Void)?
+    private var invitationAccepted = false
+
     
     // TODO: Get the GameCenter Username from the apple device
     public let myPeerId = MCPeerID(displayName: UIDevice.current.name)
@@ -72,7 +74,6 @@ class MultipeerConnection: NSObject, ObservableObject {
 
     func send(player: SeralizableCharacter) {
         //precondition(Thread.isMainThread)
-        print("sending")
         if !session.connectedPeers.isEmpty {
             let timestamp = Date().timeIntervalSince1970
             let playerData = PlayerData(player: player, timestamp: timestamp)
@@ -102,7 +103,15 @@ extension MultipeerConnection: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         precondition(Thread.isMainThread)
         log.info("didReceiveInvitationFromPeer \(peerID)")
-        invitationHandler(true, session)
+        
+        if !invitationAccepted {
+            invitationAccepted = true
+            invitationHandler(true, session)
+        } else {
+            invitationHandler(false, nil)
+        }
+
+            
     }
 }
 
@@ -113,6 +122,10 @@ extension MultipeerConnection: MCNearbyServiceBrowserDelegate {
 
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String: String]?) {
         log.info("ServiceBrowser found peer: \(peerID)")
+        
+        self.serviceAdvertiser.stopAdvertisingPeer()
+        self.serviceBrowser.stopBrowsingForPeers()
+
         browser.invitePeer(peerID, to: session, withContext: nil, timeout: 1000)
     }
 
@@ -126,14 +139,14 @@ extension MultipeerConnection: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         log.info("peer \(peerID) didChangeState: \(state.debugDescription)")
         DispatchQueue.main.async {
-            self.connectedPeers = session.connectedPeers
+            if (self.connectedPeers.count == 0) {
+                self.connectedPeers = session.connectedPeers
+            }
         }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         
-        
-        print("received")
             do {
                 let decoder = JSONDecoder()
                 let receivedData = try decoder.decode(PlayerData.self, from: data)
