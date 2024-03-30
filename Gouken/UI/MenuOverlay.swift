@@ -115,6 +115,7 @@ class MenuSceneOverlay: SKScene {
     
     func showSelectGameMode() {
         menuContainer.removeAllChildren()
+        removeMatchmakingText()
         
         // Title
         let label = SKLabelNode(text: "Gouken")
@@ -169,14 +170,24 @@ class MenuSceneOverlay: SKScene {
         matchmakingLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
         menuContainer.addChild(matchmakingLabel)
         
+        // Back button
+        let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        backButton.position = CGPoint(x: buttonSize.width / 2, y: size.height - buttonSize.height / 2)
+        backButton.name = "backToSelectGameModeButton"
+        backButton.strokeColor = .white
+        backButton.lineWidth = 3
+        backButton.fillColor = .black // Set fill color
+        menuContainer.addChild(backButton)
+        addText(to: backButton, text: "Back")
+        
         // TODO: Add check if match is found
-        DispatchQueue.global().async {
-            Thread.sleep(forTimeInterval: 2)
-            
-            DispatchQueue.main.async {
-                matchmakingLabel.text = "Matches Found!"
-            }
-        }
+//        DispatchQueue.global().async {
+//            Thread.sleep(forTimeInterval: 2)
+//            
+//            DispatchQueue.main.async {
+//                matchmakingLabel.text = "Matches Found!"
+//            }
+//        }
         
         // Add a button to cancel matchmaking if needed
         let cancelButton = SKLabelNode(text: "Cancel")
@@ -269,7 +280,11 @@ class MenuSceneOverlay: SKScene {
     }
     
     func removeMatchmakingText() {
+        self.childNode(withName: "Loading")?.removeFromParent()
         
+        if let matchmakingNode = self.childNode(withName: "Loading") as? SKLabelNode {
+            matchmakingNode.removeAction(forKey: "blinkAction")
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
