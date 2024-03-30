@@ -12,7 +12,7 @@ import SpriteKit
 import GameplayKit
 import GameController
 
-class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate {
+class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
@@ -84,6 +84,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // Retrieve the SCNView
         let scnViewNew = self.view as! SCNView
+        scnViewNew.scene?.physicsWorld.contactDelegate = self
         
         // Set the scene to the view
         scnViewNew.scene = scene
@@ -136,8 +137,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // init floor physics
         initWorld(scene: scene)
         initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
-        initHitboxAttack(playerSpawn: playerSpawn)
-        
+
+//        initHitboxAttack(playerSpawn: playerSpawn)
+        setUpHitboxes(player: player1!)
+        setUpHurtBoxes(player: player2!)
+        scnViewNew.debugOptions = [.showPhysicsShapes]
+
         // Add gesture recognizers for testing player controls and animations
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
@@ -175,7 +180,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var playerSpawn : SCNNode?
     var enemySpawn : SCNNode?
     var runSpeed = Float(0.1)
-    
+    var hitbox = SCNNode()
+    var hurtbox = SCNNode()
     
     //added
     var runRight = false
@@ -187,6 +193,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         loadMenu()
     }
     
+    func setUpHurtBoxes(player: Character?) {
+        var modelSCNNode = player2?.characterNode.childNode(withName: "Pelvis", recursively: true)
+        hurtbox = initHurtboxAttack(playerSpawn: enemySpawn, width: 1, height: 1, length: 1, position: SCNVector3(0, 1, 0), pside: player2!.playerSide)
+    }
+    
+    func setUpHitboxes(player: Character?) {
+        var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
+        hitbox = initHitboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0))
+    }
+
     // TODO: for testing player controls and animations
     func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if (!hasBeenPressed) { return }
@@ -200,20 +216,25 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
+        print(collision)
         return collision != nil && !collision!.isEmpty
     }
     
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
             // Check if enemySpawn is colliding with hitboxNode
-            if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
-               let enemySpawn = enemySpawn,
-               testCollisionBetween(hitboxNode, enemySpawn) {
-                print("COLLISION OCCURED!")
-                player2?.health.damage(10)
-            }
-            
-            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
+//            testCollisionBetween(hitbox, hurtbox)
+            let collision = scnView.scene?.physicsWorld.contactTest(with: hitbox.physicsBody!, options: nil)
+            print(collision)
+
+//            if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
+//               let enemySpawn = enemySpawn,
+//               testCollisionBetween(hitboxNode, enemySpawn) {
+//                print("COLLISION OCCURED!")
+//                player2?.health.damage(10)
+//            }
+//            
+//            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
         }
     }
         
@@ -245,7 +266,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 if (multipeerConnect.connectedPeers.count > 0) {
                     print("!!!!with connected devices:")
                     multipeerConnect.send(player: CodableCharacter(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
-                }
+                }	
                 
             } else if ( abs(xValue)<deadZone) {
                 runRight = false
@@ -349,17 +370,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             // Check which nodes collided
             let nodeA = contact.nodeA
             let nodeB = contact.nodeB
-
-            // Example handling of collision
-            if nodeA == playerSpawn || nodeB == playerSpawn {
-                // Handle collision with playerSpawn
-                print("Collision with player")
-            }
-
-            if nodeA == enemySpawn || nodeB == enemySpawn {
-                // Handle collision with enemySpawn
-                print("Collision with enemy")
-            }
+            print("Contact Delegate Called")
         }
     
     func initLighting(scene:SCNScene){
