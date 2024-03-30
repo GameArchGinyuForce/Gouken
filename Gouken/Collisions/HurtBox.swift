@@ -18,7 +18,7 @@ func initHurtboxAttack(
     // create hit box node with geometry
     let hurtBoxGeometry = SCNBox(width: width, height: height, length: length, chamferRadius: 0.0)
     let hurtBoxNode = SCNNode(geometry: hurtBoxGeometry)
-    hurtBoxNode.name = "hitboxNode"
+    hurtBoxNode.name = "hurtBoxNode"
     
     hurtBoxNode.scale = SCNVector3(200, 200, 200) // Scale up by a factor of 10 in all directions
     
@@ -29,17 +29,17 @@ func initHurtboxAttack(
     hurtBoxNode.physicsBody?.isAffectedByGravity = false
     
     if pside == PlayerType.P1 {
-        hurtBoxNode.physicsBody?.categoryBitMask = p1HitBox
-        hurtBoxNode.physicsBody?.collisionBitMask = p2HurtBox
-        hurtBoxNode.physicsBody?.contactTestBitMask = p2HurtBox
+        hurtBoxNode.physicsBody?.categoryBitMask = p1HurtBox
+        hurtBoxNode.physicsBody?.collisionBitMask = p2HitBox
+        hurtBoxNode.physicsBody?.contactTestBitMask = p2HitBox
     } else {
-        hurtBoxNode.physicsBody?.categoryBitMask = p2HitBox
-        hurtBoxNode.physicsBody?.collisionBitMask = p1HurtBox
-        hurtBoxNode.physicsBody?.contactTestBitMask = p1HurtBox
+        hurtBoxNode.physicsBody?.categoryBitMask = p2HurtBox
+        hurtBoxNode.physicsBody?.collisionBitMask = p1HitBox
+        hurtBoxNode.physicsBody?.contactTestBitMask = p1HitBox
     }
 
 
-    print("Created a hitbox with category mask: ", hurtBoxNode.physicsBody!.categoryBitMask, " and collision mask: ", hurtBoxNode.physicsBody!.collisionBitMask, " and contact bitmask: ", hurtBoxNode.physicsBody!.contactTestBitMask)
+    print("Created a hurtbox with category mask: ", hurtBoxNode.physicsBody!.categoryBitMask, " and collision mask: ", hurtBoxNode.physicsBody!.collisionBitMask, " and contact bitmask: ", hurtBoxNode.physicsBody!.contactTestBitMask)
 
     
 //    hitboxNode.physicsBody?.categoryBitMask = 1 | 4 | 8
@@ -47,10 +47,10 @@ func initHurtboxAttack(
 
     
     // create a visible hitbox
-    let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
-    let redTransparentMaterial = SCNMaterial()
-    redTransparentMaterial.diffuse.contents = redColor
-    hurtBoxNode.geometry?.materials = [redTransparentMaterial]
+    let greenColor = UIColor.green.withAlphaComponent(0.5) // Adjust the alpha value for transparency
+    let greenTransparentMaterial = SCNMaterial()
+    greenTransparentMaterial.diffuse.contents = greenColor
+    hurtBoxNode.geometry?.materials = [greenTransparentMaterial]
 
     // attach the hitbox to the playerSpawn node
     playerSpawn.addChildNode(hurtBoxNode)

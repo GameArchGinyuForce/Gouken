@@ -8,21 +8,30 @@
 import SceneKit
 
 
-// Below we define all of our bitmasks.
+/**
+ Important notes about Gouken physics:
+ - We only use the base SceneKit physics simulation for moving the meshes, handling body-blocking, and
+   stopping them from falling through the floor.
+ 
+ - We utilize sensors (think Unity triggers) for our actual Hitbox and Hurtbox implementation, with the BitMasks
+   defined below.
+ */
 
-// Unrelated to core game logic, just to stop characters
-// from falling through the floor and to let them body-block eachother's
-// movement.
-let floorBitMask = 1 << 1
-let p1MeshBitMask = 1 << 3
-let p2MeshBitMask = 1 << 5
+
+/* Below we define all of our bitmasks. Nathan and Jas worked on this in crunch-time,
+ consider verifying for best practices later. */
+
+// IMPORTANT NOTE: FUCK YOU APPLE, 64 IS MAXIMUM SIZE FOR BIT MASKS.
+let floorBitMask = 1 << 1       // Binary: 00000010
+let p1MeshBitMask = 1 << 3      // Binary: 00001000
+let p2MeshBitMask = 1 << 5      // Binary: 00100000
 
 
 // Hitboxes and Hurtboxes bitmasks.
-let p1HitBox = 1 << 0
-let p2HitBox = 1 << 6
-let p1HurtBox = 1 << 4
-let p2HurtBox = 1 << 2
+let p1HitBox = 1 << 0           // Binary: 00000001
+let p2HitBox = 1 << 6           // Binary: 01000000
+let p1HurtBox = 1 << 4          // Binary: 00010000
+let p2HurtBox = 1 << 2          // Binary: 00000100
 
 
 

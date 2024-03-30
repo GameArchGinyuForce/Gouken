@@ -141,7 +141,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        initHitboxAttack(playerSpawn: playerSpawn)
         setUpHitboxes(player: player1!)
         setUpHurtBoxes(player: player2!)
+
         scnViewNew.debugOptions = [.showPhysicsShapes]
+//        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
+//        scnViewNew.debugOptions = [.showWireframe]
+
 
         // Add gesture recognizers for testing player controls and animations
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
@@ -194,13 +198,82 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func setUpHurtBoxes(player: Character?) {
-        var modelSCNNode = player2?.characterNode.childNode(withName: "Pelvis", recursively: true)
-        hurtbox = initHurtboxAttack(playerSpawn: enemySpawn, width: 1, height: 1, length: 1, position: SCNVector3(0, 1, 0), pside: player2!.playerSide)
+        // Player 1 Hurtboxes Start
+        var modelSCNNode = player2?.characterNode.childNode(withName: "head", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.15, height: 0.15, length: 0.15, position: SCNVector3(0, 0, -10), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "UpperArm_R", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "lowerarm_r", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "UpperArm_L", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "lowerarm_l", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "Pelvis", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.2, position: SCNVector3(0, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "spine_02", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.1, position: SCNVector3(1, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "Thigh_R", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.1, length: 0.1, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "calf_r", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(20, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "Thigh_L", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.1, length: 0.1, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
+        
+        modelSCNNode = player2?.characterNode.childNode(withName: "calf_l", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(-20, 0, 0), pside: player2!.playerSide)
+        
+        // Player 1 Hurtboxes Start
+        modelSCNNode = player1?.characterNode.childNode(withName: "head", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.15, height: 0.15, length: 0.15, position: SCNVector3(0, 0, -10), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "UpperArm_R", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "lowerarm_r", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "UpperArm_L", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "lowerarm_l", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "Pelvis", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "spine_02", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.1, position: SCNVector3(1, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "Thigh_R", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.1, length: 0.1, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "calf_r", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(20, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "Thigh_L", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.1, length: 0.1, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "calf_l", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.1, length: 0.1, position: SCNVector3(-20, 0, 0), pside: player1!.playerSide)
     }
     
     func setUpHitboxes(player: Character?) {
+//        var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
         var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
-        hitbox = initHitboxAttack(withParentNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0))
+        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
+        
+        modelSCNNode = player1?.characterNode.childNode(withName: "Hand_L", recursively: true)
+        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
     }
 
     // TODO: for testing player controls and animations

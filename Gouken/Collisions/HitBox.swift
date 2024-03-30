@@ -8,7 +8,7 @@
 import SceneKit
 
 func initHitboxAttack(
-    playerSpawn:SCNNode?,
+    withPlayerNode: SCNNode,
     width: CGFloat = 1.0,
     height: CGFloat = 1.0,
     length: CGFloat = 1.0,
@@ -17,27 +17,29 @@ func initHitboxAttack(
 ) -> SCNNode {
     // create hit box node with geometry
     let hitboxGeometry = SCNBox(width: width, height: height, length: length, chamferRadius: 0.0)
-    let hurtboxNode = SCNNode(geometry: hitboxGeometry)
-    hurtboxNode.name = "hurtboxNode"
+    let hitBoxNode = SCNNode(geometry: hitboxGeometry)
+    hitBoxNode.name = "hitBoxNode"
 //    hitboxNode.position.z = 1.0
 //    hitboxNode.position.y = 1.0
-    hurtboxNode.position = position;
-    hurtboxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
-    hurtboxNode.physicsBody?.isAffectedByGravity = false
+    hitBoxNode.position = position;
+    hitBoxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
+    hitBoxNode.physicsBody?.isAffectedByGravity = false
+    
+//    hitBoxNode.scale = SCNVector3(200, 200, 200) // Scale up by a factor of 10 in all directions
     
     if pside == PlayerType.P1 {
-        hurtboxNode.physicsBody?.categoryBitMask = p1HurtBox
-        hurtboxNode.physicsBody?.collisionBitMask = p2HitBox
-        hurtboxNode.physicsBody?.contactTestBitMask = p2HitBox
+        hitBoxNode.physicsBody?.categoryBitMask = p1HitBox
+        hitBoxNode.physicsBody?.collisionBitMask = p2HurtBox
+        hitBoxNode.physicsBody?.contactTestBitMask = p2HurtBox
     } else {
-        hurtboxNode.physicsBody?.categoryBitMask = p2HurtBox
-        hurtboxNode.physicsBody?.collisionBitMask = p1HitBox
-        hurtboxNode.physicsBody?.contactTestBitMask = p1HitBox
+        hitBoxNode.physicsBody?.categoryBitMask = p2HitBox
+        hitBoxNode.physicsBody?.collisionBitMask = p1HurtBox
+        hitBoxNode.physicsBody?.contactTestBitMask = p1HurtBox
     }
     
     
-    print("Created a hurtbox with category mask: ", hurtboxNode.physicsBody!.categoryBitMask, " and collision mask: ", hurtboxNode.physicsBody!.collisionBitMask, " and test bit mask: ",
-          hurtboxNode.physicsBody!.collisionBitMask
+    print("Created a hitbox with category mask: ", hitBoxNode.physicsBody!.categoryBitMask, " and collision mask: ", hitBoxNode.physicsBody!.collisionBitMask, " and test bit mask: ",
+          hitBoxNode.physicsBody!.collisionBitMask
     )
 
 //    hurtboxNode.physicsBody?.categoryBitMask = 2 | 8
@@ -46,13 +48,13 @@ func initHitboxAttack(
 
     
     // create a visible hitbox
-    let whiteColor = UIColor.white.withAlphaComponent(0.5) // Adjust the alpha value for transparency
-    let whiteTransparentMaterial = SCNMaterial()
-    whiteTransparentMaterial.diffuse.contents = whiteColor
-    hurtboxNode.geometry?.materials = [whiteTransparentMaterial]
+    let redColor = UIColor.red.withAlphaComponent(0.5) // Adjust the alpha value for transparency
+    let redTransparentMaterial = SCNMaterial()
+    redTransparentMaterial.diffuse.contents = redColor
+    hitBoxNode.geometry?.materials = [redTransparentMaterial]
 
     // attach the hitbox to the playerSpawn node
-    playerSpawn?.addChildNode(hurtboxNode)
-    return hurtboxNode
+    withPlayerNode.addChildNode(hitBoxNode)
+    return hitBoxNode
 }
 
