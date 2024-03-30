@@ -73,7 +73,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return
         }
         
-        
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
@@ -116,7 +115,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             }
         } else {
-            print("SINGLEPLAYER")
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
            
@@ -162,13 +160,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     var entityManager = EntityManager()
-    
-    // TODO: for testing state machine, player controls, and animations
     var player1: Character?
     var player2: Character?
     var gamePad: GCExtendedGamepad?
-    //    var baikenStateMachine: BaikenStateMachine?
-    //    var enemyStateMachine: BaikenStateMachine?
     var displayLink: CADisplayLink?
     var lastFrameTime: Double = 0.0
     var cameraNode : SCNNode = SCNNode()
@@ -225,26 +219,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             
             // Control everything therough state
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
-                print("Running Right")
-            } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
-                //player?.eulerAngles.y = Float.pi
-                print("Running Left")
-                // print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
                 
-                // if (multipeerConnect.connectedPeers.count == 0) {
-                //     print("!!!!without connected devices:")
-                // }
-                // if (multipeerConnect.connectedPeers.count > 0) {
-                //     print("!!!!with connected devices:")
-                //     multipeerConnect.send(player: CodableCharacter(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
-                // }
+                player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
+                
+            } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
+                
+                player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
                 
             } else if ( abs(xValue)<deadZone) {
-                // runRight = false
-                // runLeft = false
+                
                 player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
+                
             }
     }
 
@@ -295,23 +280,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
         }
 
-
-
-       // let player = playerSpawn!
-        
-        // if(runRight){
-        //     player.position.z += runSpeed
-        // }
-        // if(runLeft){
-        //     player.position.z -= runSpeed
-        // }
-
         lastFrameTime = time
         
         
         multipeerConnect.receivedDataHandler = { [weak self] receivedData in
-            // Handle received data here
-            // For example, update game state with received data
             self?.handleReceivedData(receivedData)
         }
         
@@ -321,15 +293,25 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func handleReceivedData(_ receivedData: PlayerData) {
         var enemyState = receivedData.player.characterState
         
+        //refactor this later
         if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
+            
             player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
+            
         } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
+            
             player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+            
         } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
+            
             player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+            
         }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
+    
             player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
+            
         }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
+            
             player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
         }
     }
