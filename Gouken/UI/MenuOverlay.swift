@@ -115,7 +115,6 @@ class MenuSceneOverlay: SKScene {
     
     func showSelectGameMode() {
         menuContainer.removeAllChildren()
-        removeMatchmakingText()
         
         // Title
         let label = SKLabelNode(text: "Gouken")
@@ -170,15 +169,7 @@ class MenuSceneOverlay: SKScene {
         matchmakingLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
         menuContainer.addChild(matchmakingLabel)
         
-        // Back button
-        let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        backButton.position = CGPoint(x: buttonSize.width / 2, y: size.height - buttonSize.height / 2)
-        backButton.name = "backToSelectGameModeButton"
-        backButton.strokeColor = .white
-        backButton.lineWidth = 3
-        backButton.fillColor = .black // Set fill color
-        menuContainer.addChild(backButton)
-        addText(to: backButton, text: "Back")
+        
         
         // TODO: Add check if match is found
 //        DispatchQueue.global().async {
@@ -189,14 +180,15 @@ class MenuSceneOverlay: SKScene {
 //            }
 //        }
         
-        // Add a button to cancel matchmaking if needed
-        let cancelButton = SKLabelNode(text: "Cancel")
-        cancelButton.fontName = "Helvetica"
-        cancelButton.fontSize = 18
-        cancelButton.fontColor = .red
-        cancelButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 40)
-        cancelButton.name = "cancelMatchmakingButton"
-        menuContainer.addChild(cancelButton)
+        // Back button
+        let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        backButton.position = CGPoint(x: buttonSize.width / 2, y: size.height - buttonSize.height / 2)
+        backButton.name = "backToSelectGameModeButton"
+        backButton.strokeColor = .white
+        backButton.lineWidth = 3
+        backButton.fillColor = .black // Set fill color
+        menuContainer.addChild(backButton)
+        addText(to: backButton, text: "Back")
     }
     
     
@@ -207,7 +199,7 @@ class MenuSceneOverlay: SKScene {
         matchmaking.fontSize = 24
         matchmaking.fontName = "Robota"
         matchmaking.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 100 - (buttonSize.height + buttonSpacing) * 1)
-        self.addChild(matchmaking)
+        menuContainer.addChild(matchmaking)
 
         let fadeInAction = SKAction.fadeIn(withDuration: 2)
         let fadeOutAction = SKAction.fadeOut(withDuration: 0.5)
@@ -280,11 +272,7 @@ class MenuSceneOverlay: SKScene {
     }
     
     func removeMatchmakingText() {
-        self.childNode(withName: "Loading")?.removeFromParent()
         
-        if let matchmakingNode = self.childNode(withName: "Loading") as? SKLabelNode {
-            matchmakingNode.removeAction(forKey: "blinkAction")
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
