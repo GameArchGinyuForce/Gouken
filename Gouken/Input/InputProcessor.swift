@@ -32,7 +32,7 @@ class InputBuffer {
         for moveSequence in moveSequences {
             var sequenceCtr = moveSequence.0.count - 1
             for i in 0..<moveSequence.1 {
-                var input = buffer[(writeIdx + bufferSize - i) % bufferSize]
+                var input = buffer[(writeIdx + bufferSize - 1 - i) % bufferSize]
                 
                 if input == moveSequence.0[sequenceCtr] {
                     sequenceCtr -= 1
