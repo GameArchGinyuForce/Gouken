@@ -37,7 +37,7 @@ enum CharacterState : String, Codable {
 
 class Character {
     
-    var entity            : GKEntity = GKEntity() // composition over inheritance :^)
+    var entity            : GKEntity = GKEntity() // composition over inheritance :^) - omg so smart
     var characterNode     : SCNNode
     var characterName     : CharacterName
     var characterMesh     : SCNNode
@@ -46,10 +46,12 @@ class Character {
     var animator          : AnimatorComponent
     var stateMachine      : CharacterStateMachine?
     var health            : HealthComponent
-    var hitboxes          : [SCNNode]
+    var hitbox            : HitBoxComponent
     
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
+    var activateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
+    var deactivateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     
     init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
@@ -73,6 +75,11 @@ class Character {
         health = HealthComponent(maxHealth: 100)
         entity.addComponent(health)
         
+        
+        // Add Hitbox Component
+        hitbox = HitBoxComponent(true)
+        entity.addComponent(hitbox)
+        
         for component in components {
             entity.addComponent(component)
         }
@@ -81,34 +88,33 @@ class Character {
         
         withManager.addEntity(entity)
         
-        hitboxes = [SCNNode]()
         
         // Set up callbacks
         toggleHitboxesCallback = { [weak self] param1, param2, param3 in
             self?.togglePlayerHitboxes()
         }
+        activateHitboxesCallback = { [weak self] param1, param2, param3 in
+            self?.activateHitboxes()
+        }
+        deactivateHitboxesCallback = { [weak self] param1, param2, param3 in
+            self?.deactivateHitboxes()
+        }
     }
     
     func togglePlayerHitboxes() {
         print("Toggling hitboxes")
-        for _hitbox in hitboxes {
+        for _hitbox in hitbox.hitboxes {
             _hitbox.isHidden = !_hitbox.isHidden
         }
+        print("Completed Toggling hitboxes")
     }
     
     func activateHitboxes() {
-        print("Activating hitboxes")
-        for _hitbox in hitboxes {
-            _hitbox.isHidden = true
-        }
+        hitbox.activateHitboxes()
     }
     
     func deactivateHitboxes() {
-        print("Deactivating hitboxes")
-        for _hitbox in hitboxes {
-            _hitbox.isHidden = false
-        }
-    }
+        hitbox.deactivateHitboxes()    }
     
     func update(deltaTime seconds : TimeInterval) {
         entity.update(deltaTime: seconds)

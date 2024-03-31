@@ -191,6 +191,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var runRight = false
     var runLeft = false
     
+    // hitbox debugging
+    var toggleHitboxesOn = false
+    var toggleHitboxesOff = false
+    var isHitboxesOn = true
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -268,28 +273,37 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func setUpHitboxes(player: Character?) {
-//        var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
         var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
         var _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
-        player1?.hitboxes.append(_hitbox)
+//        _hitbox.isHidden = true
+        player1?.hitbox.hitboxes.append(_hitbox)
         
         modelSCNNode = player1?.characterNode.childNode(withName: "Hand_L", recursively: true)
         _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
-        player1?.hitboxes.append(_hitbox)
-        hitbox = _hitbox
+        player1?.hitbox.hitboxes.append(_hitbox)
+//        _hitbox.isHidden = true
+//        hitbox = _hitbox
     }
 
     // TODO: for testing player controls and animations
     func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if (!hasBeenPressed) { return }
-        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
+//        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
         
         
 //        for _hitbox in player1!.hitboxes {
 //            _hitbox.isHidden = !_hitbox.isHidden
 //        }
+        
+        if isHitboxesOn {
+            toggleHitboxesOff = true
+        } else {
+            toggleHitboxesOn = true
+        }
+        isHitboxesOn = !isHitboxesOn
+        
 //        player1?.togglePlayerHitboxes()
-        player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.toggleHitboxesCallback)!)
+//        player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.toggleHitboxesCallback)!)
     }
     
     // test collison between node a and node b
@@ -303,40 +317,20 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         return collision != nil && !collision!.isEmpty
     }
     
-    func togglePlayerHitboxes () {
-        
-    }
-    
     // TODO: Store array of each character's hitboxes in Character obj
     // On attack, check that character's Hitboxes and check collisions
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
-            // Check if enemySpawn is colliding with hitboxNode
-//            testCollisionBetween(hitbox, hurtbox)
-            
-            
-            for _hitbox in player1!.hitboxes {
-                if ((_hitbox.physicsBody) == nil) {
-                    continue
-                }
-                let collision = scnView.scene?.physicsWorld.contactTest(with: _hitbox.physicsBody!, options: nil)
-                if (collision != nil && !collision!.isEmpty) {
-                    print(collision)
-                }
-            }
-            
-//            let collision = scnView.scene?.physicsWorld.contactTest(with: hitbox.physicsBody!, options: nil)
-//            print(collision)
-
-//            if let hitboxNode = playerSpawn?.childNode(withName: "hitboxNode", recursively: true),
-//               let enemySpawn = enemySpawn,
-//               testCollisionBetween(hitboxNode, enemySpawn) {
-//                print("COLLISION OCCURED!")
-//                player2?.health.damage(10)
-//            }
-//            
             player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
-            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.toggleHitboxesCallback)!)
+            
+            // Hardcoded adding of events for hitbox toggling
+            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.2, callback: (player1?.deactivateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.4, callback: (player1?.deactivateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.6, callback: (player1?.deactivateHitboxesCallback)!)
+            
         }
     }
         
@@ -400,6 +394,24 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 //component.move()
                 
             }
+            
+            // Check hitbox collisions
+            if let component: HitBoxComponent = entity.component(ofType: HitBoxComponent.self) {
+                component.checkCollisions(scene: scnView.scene)
+            }
+        }
+        
+        // Hitboxes debug
+        if toggleHitboxesOn {
+            print("toggleHitboxesOn")
+            toggleHitboxesOn = false
+            player1?.hitbox.activateHitboxes()
+            
+        }
+        if toggleHitboxesOff {
+            print("toggleHitboxesOff")
+            toggleHitboxesOff = false
+            player1?.hitbox.deactivateHitboxes()
         }
         
         let player = playerSpawn!
