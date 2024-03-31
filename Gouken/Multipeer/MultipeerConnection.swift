@@ -36,7 +36,6 @@ class MultipeerConnection: NSObject, ObservableObject {
     private var numberOfMovesSent = 0;
     private var cumulativeTime: TimeInterval = 0.0
     public var isConnected = false
-    public var opponentIsReady = false
         
     
     @Published var currentMove: String? = nil
@@ -172,12 +171,6 @@ extension MultipeerConnection: MCSessionDelegate {
         
             do {
                 let decoder = JSONDecoder()
-                
-                let receivedString = String(data: data, encoding: .utf8) ?? ""
-                if receivedString == "isReady" {
-                    opponentIsReady = true
-                }
-                
                 
                 let receivedData = try decoder.decode(PlayerData.self, from: data)
 

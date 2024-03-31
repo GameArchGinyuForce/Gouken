@@ -16,7 +16,6 @@ class MenuSceneOverlay: SKScene {
     var blinkAction: SKAction!
     var matchmakingText: SKLabelNode!
     var readyBtn: SKShapeNode!
-    public var isReady = false
     var multipeerConnect: MultipeerConnection?
     
     func setupMultipeerConnect() {
@@ -70,8 +69,14 @@ class MenuSceneOverlay: SKScene {
                 readyBtn.lineWidth = 3
                 readyBtn.fillColor = .black // Set fill color
                 menuContainer.addChild(readyBtn)
-                addText(to: readyBtn, text: "Ready", name: "readyText")
-                
+                // Adding a delay of 5 seconds
+
+                // Adding a delay of 5 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                }
+                overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
+//                addText(to: readyBtn, text: "Ready", name: "readyText")
+//                node.childNode(withName: "readyText")?.removeFromParent()
             }
         }
 
@@ -295,12 +300,6 @@ class MenuSceneOverlay: SKScene {
                     showMenu()
                 case "backToSelectGameModeButton":
                     showSelectGameMode()
-                case "selectReadyBtn":
-                    node.childNode(withName: "readyText")?.removeFromParent()
-                    addText(to: readyBtn, text: "✓", fontSize: 30)
-                    multipeerConnect?.send(ready: "isReady")
-
-                    overlayDelegate?.playButtonPressed()
                 case "selectPVEButton":
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 case "selectPVPButton":
