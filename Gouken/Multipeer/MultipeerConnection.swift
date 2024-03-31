@@ -171,6 +171,7 @@ extension MultipeerConnection: MCSessionDelegate {
         
             do {
                 let decoder = JSONDecoder()
+
                 
                 let receivedData = try decoder.decode(PlayerData.self, from: data)
 

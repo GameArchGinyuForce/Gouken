@@ -59,22 +59,32 @@ class MenuSceneOverlay: SKScene {
                 // No connected peers
                 connectionStatusLabel?.text = "No connection"
             } else {
-                // At least one peer connected
-                connectionStatusLabel?.text = "Connection established"
-                matchmakingText?.text = "Connection made"
-                readyBtn = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-                readyBtn.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 2 + 80)
-                readyBtn.name = "selectReadyBtn"
-                readyBtn.strokeColor = .white
-                readyBtn.lineWidth = 3
-                readyBtn.fillColor = .black // Set fill color
-                menuContainer.addChild(readyBtn)
-                // Adding a delay of 5 seconds
-
-                // Adding a delay of 5 seconds
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                
+                DispatchQueue.main.async { [self] in
+                    
+                    
+                    // At least one peer connected
+                    connectionStatusLabel?.text = "Connection established"
+                    matchmakingText?.text = "Match Found"
+                    readyBtn = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+                    readyBtn.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 2 + 80)
+                    readyBtn.name = "selectReadyBtn"
+                    readyBtn.strokeColor = .white
+                    readyBtn.lineWidth = 3
+                    readyBtn.fillColor = .black // Set fill color
+                    menuContainer.addChild(readyBtn)
+                    // Adding a delay of 5 seconds
+                    
+                    // Adding a delay of 5 seconds
+                    
+                    menuContainer.childNode(withName: "readyText")?.removeFromParent()
+                    addText(to: readyBtn, text: "✓", fontSize: 30)
+                    
                 }
-                overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [self] in
+                    overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
+
+                }
 //                addText(to: readyBtn, text: "Ready", name: "readyText")
 //                node.childNode(withName: "readyText")?.removeFromParent()
             }
