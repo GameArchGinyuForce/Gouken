@@ -57,6 +57,7 @@ class AnimatorComponent: GKComponent {
         addAnimationEvent(keyTime: 1.0, callback: onAnimationEnd)
     }
     
+    // TODO: useKeytime to do something from 0.0 - 1.0 through the animation
     func addAnimationEvent(keyTime: CGFloat, callback: @escaping (Any, Any?, Bool) -> Void) {
         let event = SCNAnimationEvent(keyTime: keyTime, block: callback)
         if (animPlayer.animation.animationEvents == nil) {
