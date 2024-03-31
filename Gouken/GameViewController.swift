@@ -311,8 +311,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //                                                               position2z: enemySpawn!.position.z,
 //                                                                   health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
 //        }else{
-            multipeerConnect.sendState(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
-                                                               position2z: enemySpawn!.position.z,
+        multipeerConnect.sendState(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.presentation.worldPosition.z,
+                                                               position2z: enemySpawn!.presentation.worldPosition.z,
                                                               health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
 //        }
         
@@ -333,23 +333,24 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
        // if(receivedData.data.ticks % 1 == 0){
             
-            if(playerSpawn?.name == Optional("p1Spawn") && receivedData.data.ticks % 2 == 0){
-                print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
-                //enemySpawn?.position.z = receivedData.data.position1z
-                playerSpawn?.position.z = receivedData.data.position2z
-                
-                player1!.health.currentHealth = receivedData.data.health1
-                player2!.health.currentHealth = receivedData.data.health2
-            }else if(playerSpawn?.name == Optional("p2Spawn") && receivedData.data.ticks % 2 != 0){
-                
-                print("P2's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
-                
-                //enemySpawn?.position.z = receivedData.data.position1z
-                playerSpawn?.position.z = receivedData.data.position2z
-                
-                player1!.health.currentHealth = receivedData.data.health1
-                player2!.health.currentHealth = receivedData.data.health2
-            }
+        if(playerSpawn?.name == Optional("p1Spawn") && receivedData.data.ticks % 2 == 0){
+            print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
+            enemySpawn?.position.z = receivedData.data.position1z
+            playerSpawn?.position.z = receivedData.data.position2z
+            
+            player1!.health.currentHealth = receivedData.data.health1
+            player2!.health.currentHealth = receivedData.data.health2
+        }
+//            }else if(playerSpawn?.name == Optional("p2Spawn") && receivedData.data.ticks % 2 != 0){
+//                
+//                print("P2's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
+//                
+//                enemySpawn?.position.z = receivedData.data.position1z
+//                playerSpawn?.position.z = receivedData.data.position2z
+//                
+//                player1!.health.currentHealth = receivedData.data.health1
+//                player2!.health.currentHealth = receivedData.data.health2
+//            }
         
         //}
         
