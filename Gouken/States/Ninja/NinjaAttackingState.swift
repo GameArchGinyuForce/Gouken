@@ -12,6 +12,11 @@ class NinjaAttackingState: NinjaBaseState {
         print("enter NinjaAttackingState")
         stateMachine.character.setState(withState: CharacterState.Attacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
+        
+        // Hardcoded retrieval of move
+        let move = NinjaMoveSet[0]
+        
+        move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
     }
     
     // TODO: Turn on hitboxes at certain points
