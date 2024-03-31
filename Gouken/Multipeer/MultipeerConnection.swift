@@ -72,7 +72,6 @@ class MultipeerConnection: NSObject, ObservableObject {
 
     func send(player: SeralizableCharacter) {
         //precondition(Thread.isMainThread)
-        print("sending")
         if !session.connectedPeers.isEmpty {
             let timestamp = Date().timeIntervalSince1970
             let playerData = PlayerData(player: player, timestamp: timestamp)
@@ -132,15 +131,10 @@ extension MultipeerConnection: MCSessionDelegate {
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         
-        
-//        print("received")
             do {
                 let decoder = JSONDecoder()
                 let receivedData = try decoder.decode(PlayerData.self, from: data)
 
-                log.info("didReceive move \(receivedData.player.characterState.rawValue)")
-                
-                log.info("Player is moving \(receivedData.player.characterState == CharacterState.RunningRight ? "right" : "left")")
 
                 let currentTimestamp = Date().timeIntervalSince1970
                 let roundTripLatency = (currentTimestamp - receivedData.timestamp)
