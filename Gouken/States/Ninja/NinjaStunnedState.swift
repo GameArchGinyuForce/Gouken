@@ -2,34 +2,25 @@ import Foundation
 import GameplayKit
 
 class NinjaStunnedState: NinjaBaseState {
-    var stateMachine: NinjaStateMachine
-    var animDuration: TimeInterval!
-    var animTimer: TimeInterval!
-    var animPlayer: SCNAnimationPlayer?
+    var stateMachine: NinjaStateMachine!
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
-        
-        animDuration = 0
-        animTimer = 0
     }
     
     func enter() {
         print("enter NinjaStunnedState")
-        animPlayer = playAnimation(onNode: stateMachine.character!, withSCNFile: characterAnimations[CharacterName.Ninja]![CharacterState.Stunned]!)
-        animDuration = animPlayer?.animation.duration
+        stateMachine.character.setState(withState: CharacterState.Stunned)
+        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Stunned]!, loop: false)
     }
     
     func tick(_ deltaTime: TimeInterval) {
-        animTimer? += deltaTime
-
-        if (animTimer >= animDuration) {
+        if (stateMachine.character.animator.currentTimeNormalized >= 1.0) {
             stateMachine.switchState(NinjaIdleState(stateMachine))
         }
     }
     
     func exit() {
         print("exit NinjaStunnedState")
-        StopAnimation(onNode: stateMachine.character!)
     }
 }

@@ -1,5 +1,6 @@
 import SpriteKit
 import AVFoundation
+import Combine
 
 
 // Allows us to call functions outside the overlay
@@ -11,10 +12,60 @@ protocol SKOverlayDelegate: AnyObject {
 class MenuSceneOverlay: SKScene {
     weak var overlayDelegate: SKOverlayDelegate?
     var backgroundMusicPlayer: AVAudioPlayer?
+    var menuContainer: SKNode = SKNode()
+    
+    var multipeerConnect: MultipeerConnection?
+    
+    func setupMultipeerConnect() {
+        guard let multipeerConnect = multipeerConnect else {
+            return
+        }
+        print("connection changed1")
+        handleConnectionChange()
+        cancellable = multipeerConnect.objectWillChange.sink { [weak self] _ in
+            self?.handleConnectionChange()
+        }
+    }
+    
+    init(size: CGSize, multipeerConnect: MultipeerConnection) {
+        self.multipeerConnect = multipeerConnect
+        print("test")
+        print(multipeerConnect)
+        super.init(size: size)
+        self.setupMultipeerConnect()
+     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // Add other buttons
+    let buttonSize = CGSize(width: 150, height: 50)
+    let offsetFromMiddle = CGPoint(x: 0, y: -20)
+    let buttonSpacing: CGFloat = 10
+    
+    var connectionStatusLabel: SKLabelNode?
+    
+    var cancellable: AnyCancellable?
+    
+    func handleConnectionChange() {
+            print("Connection status changed")
+            // Update UI based on the new connection status
+            // For example:
+            if multipeerConnect?.connectedPeers.isEmpty ?? true {
+                // No connected peers
+                connectionStatusLabel?.text = "No connection"
+            } else {
+                // At least one peer connected
+                connectionStatusLabel?.text = "Connection established"
+            }
+        }
+
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         let backgroundImage = SKSpriteNode(imageNamed: "background.jpg")
+        
 
         // Set the position to the center of the scene
         backgroundImage.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -31,63 +82,20 @@ class MenuSceneOverlay: SKScene {
         // Play background music
         playBackgroundMusic()
         
-        setupMenu()
+//        setupMenu()
+        showMenu();
+        addChild(menuContainer)
+        
+        connectionStatusLabel = SKLabelNode(text: "Connecting...")
+        connectionStatusLabel?.fontName = "Helvetica"
+        connectionStatusLabel?.fontSize = 20
+        connectionStatusLabel?.fontColor = .white
+        connectionStatusLabel?.position = CGPoint(x: frame.midX, y: size.height - 50)
+        addChild(connectionStatusLabel!)
+        
+        multipeerConnect?.objectWillChange.send()
     }
-
-    private func setupMenu() {
-        
-        
-        
-        
-        // Add other buttons
-        let buttonSize = CGSize(width: 150, height: 50)
-        let offsetFromMiddle = CGPoint(x: 0, y: -20)
-        let buttonSpacing: CGFloat = 10
-        
-        // Add play button
-        let playButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        playButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y)
-        playButton.name = "playButton"
-        playButton.strokeColor = .white
-        playButton.lineWidth = 3
-        playButton.fillColor = .black // Set fill color
-        addChild(playButton)
-        addText(to: playButton, text: "Play")
-        
-        
-        
-        let label = SKLabelNode(text: "Gouken")
-        label.fontName = "Helvetica"
-        label.fontSize = 96
-        label.fontColor = .white
-        
-        // Calculate the position of the label to ensure it's centered on the button
-        label.position = CGPoint(x: 0, y: 100)
-//
-//        label.verticalAlignmentMode = .center
-//        label.horizontalAlignmentMode = .center
-        playButton.addChild(label)
-        
-        // Add settings button
-        let settingsButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        settingsButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing))
-        settingsButton.name = "settingsButton"
-        settingsButton.strokeColor = .white
-        settingsButton.lineWidth = 3
-        settingsButton.fillColor = .black // Set fill color
-        addChild(settingsButton)
-        addText(to: settingsButton, text: "Settings")
-        
-        // Add quit button
-        let quitButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        quitButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 2) // 2 buttons down from first
-        quitButton.name = "quitButton"
-        quitButton.strokeColor = .white
-        quitButton.lineWidth = 3
-        quitButton.fillColor = .black // Set fill color
-        addChild(quitButton)
-        addText(to: quitButton, text: "Quit")
-    }
+    
     
     private func addText(to node: SKNode, text: String) {
         let label = SKLabelNode(text: text)
@@ -101,6 +109,131 @@ class MenuSceneOverlay: SKScene {
         label.verticalAlignmentMode = .center
         label.horizontalAlignmentMode = .center
         node.addChild(label)
+    }
+    
+    func showSelectGameMode() {
+        menuContainer.removeAllChildren()
+        
+        // Title
+        let label = SKLabelNode(text: "Gouken")
+        label.fontName = "Helvetica"
+        label.fontSize = 96
+        label.fontColor = .white
+        
+        // Calculate the position of the label to ensure it's centered on the button
+        label.position = CGPoint(x: frame.width / 2, y: frame.height / 2 + 40)
+
+        menuContainer.addChild(label)
+        
+        // Back button
+        let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        backButton.position = CGPoint(x: buttonSize.width / 2, y: size.height - buttonSize.height / 2)
+        backButton.name = "backToMenuButton"
+        backButton.strokeColor = .white
+        backButton.lineWidth = 3
+        backButton.fillColor = .black // Set fill color
+        menuContainer.addChild(backButton)
+        addText(to: backButton, text: "Back")
+        
+        // Select PVE button
+        let selectPVEButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        selectPVEButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 1)
+        selectPVEButton.name = "selectPVEButton"
+        selectPVEButton.strokeColor = .white
+        selectPVEButton.lineWidth = 3
+        selectPVEButton.fillColor = .black // Set fill color
+        menuContainer.addChild(selectPVEButton)
+        addText(to: selectPVEButton, text: "PVE")
+        
+        // Select PVP button
+        let selectPVPButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        selectPVPButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 2)
+        selectPVPButton.name = "selectPVPButton"
+        selectPVPButton.strokeColor = .white
+        selectPVPButton.lineWidth = 3
+        selectPVPButton.fillColor = .black // Set fill color
+        menuContainer.addChild(selectPVPButton)
+        addText(to: selectPVPButton, text: "PVP")
+    }
+    
+    func startMatchmaking() {
+        menuContainer.removeAllChildren()
+        
+        // Players found Nearby
+        let label = SKLabelNode(text: "Matchmaking...")
+        label.fontName = "Helvetica"
+        label.fontSize = 48
+        label.fontColor = .white
+        // Calculate the position of the label to ensure it's centered on the button
+        label.position = CGPoint(x: frame.width / 2, y: frame.height - 100)
+        menuContainer.addChild(label)
+        
+        // Back button
+        let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        backButton.position = CGPoint(x: buttonSize.width / 2, y: size.height - buttonSize.height / 2)
+        backButton.name = "backToSelectGameModeButton"
+        backButton.strokeColor = .white
+        backButton.lineWidth = 3
+        backButton.fillColor = .black // Set fill color
+        menuContainer.addChild(backButton)
+        addText(to: backButton, text: "Back")
+        
+        
+        // Player 1 Placeholder
+        var selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 80 - (buttonSize.height + buttonSpacing) * 1)
+        selectPlayer1.name = "selectPlayerButton"
+        selectPlayer1.strokeColor = .white
+        selectPlayer1.lineWidth = 3
+        selectPlayer1.fillColor = .black // Set fill color
+        menuContainer.addChild(selectPlayer1)
+        addText(to: selectPlayer1, text: "Player 1")
+    }
+    
+    func showMenu() {
+        menuContainer.removeAllChildren()
+
+        // Add play button
+        let playButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        playButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y)
+        playButton.name = "playButton"
+        playButton.strokeColor = .white
+        playButton.lineWidth = 3
+        playButton.fillColor = .black // Set fill color
+        menuContainer.addChild(playButton)
+        addText(to: playButton, text: "Play")
+        
+        
+        // Title
+        let label = SKLabelNode(text: "Gouken")
+        label.fontName = "Helvetica"
+        label.fontSize = 96
+        label.fontColor = .white
+        
+        // Calculate the position of the label to ensure it's centered on the button
+        label.position = CGPoint(x: frame.width / 2, y: frame.height / 2 + 40)
+
+        menuContainer.addChild(label)
+        
+        // Add settings button
+        let settingsButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        settingsButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing))
+        settingsButton.name = "settingsButton"
+        settingsButton.strokeColor = .white
+        settingsButton.lineWidth = 3
+        settingsButton.fillColor = .black // Set fill color
+        menuContainer.addChild(settingsButton)
+        addText(to: settingsButton, text: "Settings")
+        
+        // Add quit button
+        let quitButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+        quitButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 2) // 2 buttons down from first
+        quitButton.name = "quitButton"
+        quitButton.strokeColor = .white
+        quitButton.lineWidth = 3
+        quitButton.fillColor = .black // Set fill color
+        menuContainer.addChild(quitButton)
+        addText(to: quitButton, text: "Quit")
     }
     
     func playBackgroundMusic() {
@@ -118,7 +251,7 @@ class MenuSceneOverlay: SKScene {
             print("Could not create audio player: \(error)")
         }
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -127,8 +260,20 @@ class MenuSceneOverlay: SKScene {
             if let name = node.name {
                 switch name {
                 case "playButton":
-                    overlayDelegate?.playButtonPressed()
-                // Add cases for other buttons if needed
+//                    overlayDelegate?.playButtonPressed()
+                    showSelectGameMode()
+                case "backToMenuButton":
+                    showMenu()
+                case "backToSelectGameModeButton":
+                    showSelectGameMode()
+                case "selectPVEButton":
+                    overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
+                case "selectPVPButton":
+                    startMatchmaking()
+                case "selectPlayerButton":
+                    // TODO: if dynamically changing buttons, each button must represent a different player. Find a way to differentiate between button presses
+
+                    overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 default:
                     break
                 }

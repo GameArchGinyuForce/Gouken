@@ -25,17 +25,17 @@ extension SCNTransaction {
     }
 }
 
-extension SCNPhysicsContact {
-    func match(_ category: Int, block: (_ matching: SCNNode, _ other: SCNNode) -> Void) {
-        if self.nodeA.physicsBody!.categoryBitMask == category {
-            block(self.nodeA, self.nodeB)
-        }
-  
-        if self.nodeB.physicsBody!.categoryBitMask == category {
-            block(self.nodeB, self.nodeA)
-        }
-    }
-}
+//extension SCNPhysicsContact {
+//    func match(_ category: Int, block: (_ matching: SCNNode, _ other: SCNNode) -> Void) {
+//        if self.nodeA.physicsBody!.categoryBitMask == category {
+//            block(self.nodeA, self.nodeB)
+//        }
+//  
+//        if self.nodeB.physicsBody!.categoryBitMask == category {
+//            block(self.nodeB, self.nodeA)
+//        }
+//    }
+//}
 
 extension SCNAudioSource {
     convenience init(name: String, volume: Float = 1.0, positional: Bool = true, loops: Bool = false, shouldStream: Bool = false, shouldLoad: Bool = true) {
