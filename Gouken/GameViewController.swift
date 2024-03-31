@@ -312,7 +312,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         multipeerConnect.receivedDataHandler = { [weak self] receivedData in
             // Handle received data here
             // For example, update game state with received data
-            print("receiving")
             self?.handleReceivedData(receivedData)
         }
         

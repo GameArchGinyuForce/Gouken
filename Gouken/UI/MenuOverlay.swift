@@ -16,7 +16,7 @@ class MenuSceneOverlay: SKScene {
     var blinkAction: SKAction!
     var matchmakingText: SKLabelNode!
     var readyBtn: SKShapeNode!
-
+    public var isReady = false
     var multipeerConnect: MultipeerConnection?
     
     func setupMultipeerConnect() {
@@ -298,7 +298,9 @@ class MenuSceneOverlay: SKScene {
                 case "selectReadyBtn":
                     node.childNode(withName: "readyText")?.removeFromParent()
                     addText(to: readyBtn, text: "✓", fontSize: 30)
-//                    overlayDelegate?.playButtonPressed()
+                    multipeerConnect?.send(ready: "isReady")
+
+                    overlayDelegate?.playButtonPressed()
                 case "selectPVEButton":
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 case "selectPVPButton":

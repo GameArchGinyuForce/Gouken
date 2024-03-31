@@ -25,7 +25,8 @@ class MultipeerConnection: NSObject, ObservableObject {
     private let session: MCSession
     var receivedDataHandler: ((PlayerData) -> Void)?
     private var invitationAccepted = false
-
+    
+    
     
     // TODO: Get the GameCenter Username from the apple device
     public let myPeerId = MCPeerID(displayName: UIDevice.current.name)
@@ -35,7 +36,9 @@ class MultipeerConnection: NSObject, ObservableObject {
     private var numberOfMovesSent = 0;
     private var cumulativeTime: TimeInterval = 0.0
     public var isConnected = false
-
+    public var opponentIsReady = false
+        
+    
     @Published var currentMove: String? = nil
     @Published var latency: TimeInterval = 0.0
     @Published var maxLatency: TimeInterval = 0.0
@@ -70,6 +73,21 @@ class MultipeerConnection: NSObject, ObservableObject {
     deinit {
         self.serviceAdvertiser.stopAdvertisingPeer()
         self.serviceBrowser.stopBrowsingForPeers()
+    }
+    
+    func send(ready: String) {
+        //precondition(Thread.isMainThread)
+        if !session.connectedPeers.isEmpty {
+            let timestamp = Date().timeIntervalSince1970
+            let playerData = ready
+            do {
+                let encoder = JSONEncoder()
+                let data = try encoder.encode(playerData)
+                try session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            } catch {
+                log.error("Error for sending move: \(error)")
+            }
+        }
     }
 
     func send(player: SerializableCharacter) {
@@ -154,6 +172,13 @@ extension MultipeerConnection: MCSessionDelegate {
         
             do {
                 let decoder = JSONDecoder()
+                
+                let receivedString = String(data: data, encoding: .utf8) ?? ""
+                if receivedString == "isReady" {
+                    opponentIsReady = true
+                }
+                
+                
                 let receivedData = try decoder.decode(PlayerData.self, from: data)
 
                 log.info("didReceive move \(receivedData.player.characterState.rawValue)")
