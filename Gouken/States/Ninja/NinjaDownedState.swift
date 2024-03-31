@@ -2,22 +2,16 @@ import Foundation
 import GameplayKit
 
 class NinjaDownedState: NinjaBaseState {
-    var stateMachine: NinjaStateMachine
-    var animDuration: TimeInterval!
-    var animTimer: TimeInterval!
-    var animPlayer: SCNAnimationPlayer?
+    var stateMachine: NinjaStateMachine!
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
-        
-        animDuration = 0
-        animTimer = 0
     }
     
     func enter() {
         print("enter NinjaDownedState")
-        animPlayer = playAnimation(onNode: stateMachine.character!, withSCNFile: characterAnimations[CharacterName.Ninja]![CharacterState.Downed]!)
-        animDuration = animPlayer?.animation.duration
+        stateMachine.character.setState(withState: CharacterState.Downed)
+        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Downed]!, loop: true)
     }
     
     func tick(_ deltaTime: TimeInterval) {
@@ -25,6 +19,5 @@ class NinjaDownedState: NinjaBaseState {
     
     func exit() {
         print("exit NinjaDownedState")
-        StopAnimation(onNode: stateMachine.character!)
     }
 }

@@ -14,13 +14,8 @@ class PerpetualEnvironmentComponent : GKComponent {
     var environment : SCNNode = SCNNode()
     
     init(withActions: [SCNAction], onNode: SCNNode) {
-        
-        actions = withActions
-        environment = onNode
-        
         super.init()
         
-        environment.runAction(SCNAction.repeatForever(SCNAction.sequence(actions)))
     }
     
     required init?(coder: NSCoder) {
