@@ -13,6 +13,7 @@ let moveSequences : [([ButtonType], Int)] = [([ButtonType.Down, ButtonType.Right
 
 /** A thread safe input buffer. */
 class InputBuffer {
+    var isPressedDown = ManagedAtomic<Bool>(false)
     var lastInput = ManagedAtomic<Int>(ButtonType.Neutral.rawValue)
     var buffer : [ButtonType] = Array(repeating: ButtonType.Neutral, count: bufferSize)
     var writeIdx : Int = 0
@@ -21,30 +22,21 @@ class InputBuffer {
         lastInput.store(withPress.rawValue, ordering: AtomicStoreOrdering.relaxed)
     }
     
+    func buttonPressedDown(orNot: Bool) {
+        isPressedDown.store(orNot, ordering: AtomicStoreOrdering.relaxed)
+    }
+    
     func updateInput() {
         buffer[writeIdx] = ButtonType(rawValue: lastInput.load(ordering: AtomicLoadOrdering.relaxed))!
         writeIdx = (writeIdx + 1) % bufferSize
-        lastInput.store(ButtonType.Neutral.rawValue, ordering: AtomicStoreOrdering.relaxed)
-    }
-    
-    func processInput() {
-        updateInput()
-        for moveSequence in moveSequences {
-            var sequenceCtr = moveSequence.0.count - 1
-            for i in 0..<moveSequence.1 {
-                var input = buffer[(writeIdx + bufferSize - 1 - i) % bufferSize]
-                
-                if input == moveSequence.0[sequenceCtr] {
-                    sequenceCtr -= 1
-                }
-                
-                if sequenceCtr == -1 {
-                    print("WE HAVE A HADOUKEN")
-                    break
-                }
-            }
+
+        if (!isPressedDown.load(ordering: AtomicLoadOrdering.relaxed)) {
+            lastInput.store(ButtonType.Neutral.rawValue, ordering: AtomicStoreOrdering.relaxed)
         }
     }
 }
 
-
+// Read an Input Buffer belonging to a specific character and update them.
+func processBuffer(fromBuffer buffer: InputBuffer, onCharacter: Character) {
+    buffer.updateInput()
+}

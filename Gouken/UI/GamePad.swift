@@ -49,7 +49,6 @@ class GamePadButton : SKShapeNode {
         inputBuffer = buffer
         super.init()
         addChild(buttonShape)
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,14 +57,27 @@ class GamePadButton : SKShapeNode {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("touched")
-        Task {
-            await buttonCallback(inputBuffer, type)
-        }
+        buttonShape.fillColor = pressedColour
+        inputBuffer.buttonPressedDown(orNot: true)
+        buttonCallback(inputBuffer, type)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("let go")
+        buttonShape.fillColor = unpressedColour
+        inputBuffer.buttonPressedDown(orNot: false)
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("let go")
+        buttonShape.fillColor = unpressedColour
+        inputBuffer.buttonPressedDown(orNot: false)
     }
 }
 
 func ProcessInput(buffer: InputBuffer, buttonType : ButtonType) {
     buffer.insertInput(withPress: buttonType)
+    
     switch buttonType {
     case .Up:
 //        print("Up pressed!")
