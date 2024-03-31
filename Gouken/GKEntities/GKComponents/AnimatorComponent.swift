@@ -54,7 +54,12 @@ class AnimatorComponent: GKComponent {
         let onAnimationEnd: (Any, Any?, Bool) -> Void = { animation, animatedObject, playingBackward in
             self._currentTime = 0
         }
-        addAnimationEvent(keyTime: 1.0, callback: onAnimationEnd)
+        
+        // only add the event if the animation is looping, otherwise race condition with update loop occurs
+        // on non-looping animations, causing them to T-POSE for + animation.duration length. - jas
+        if (loop) {
+            addAnimationEvent(keyTime: 1.0, callback: onAnimationEnd)
+        }
     }
     
     // TODO: useKeytime to do something from 0.0 - 1.0 through the animation
