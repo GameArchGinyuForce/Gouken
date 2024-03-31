@@ -307,7 +307,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     // On attack, check that character's Hitboxes and check collisions
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
-            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
+            player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
             
             // Hardcoded adding of events for hitbox toggling
 //            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
@@ -343,11 +343,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 
                 print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
-                player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
+                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
                 
             } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 
-                player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
+                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
                 
 //                if (multipeerConnect.connectedPeers.count == 0) {
 //                    print("!!!!without connected devices:")
@@ -359,7 +359,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //                
             } else if ( abs(xValue)<deadZone) {
                 
-                player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
+                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
                 
             }
     }
@@ -450,23 +450,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         //refactor this later
         if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
             
-            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
             
         } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
             
-            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
             
         } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
             
-            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
             
         }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
     
-            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Stunned]!)
             
         }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
             
-            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
         }
     }
     

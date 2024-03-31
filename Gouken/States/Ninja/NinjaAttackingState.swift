@@ -17,7 +17,7 @@ class NinjaAttackingState: NinjaBaseState {
     // TODO: Turn on hitboxes at certain points
     func tick(_ deltaTime: TimeInterval) {
         if (stateMachine.character.animator.currentTimeNormalized >= 1.0) {
-            stateMachine.switchState(NinjaIdleState(stateMachine))
+            stateMachine.switchState(stateMachine.stateInstances[CharacterState.Idle]!)
         }
     }
     

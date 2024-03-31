@@ -61,11 +61,11 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
     let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight
     
     if (input == ButtonType.Right && isCharIdle) {
-        player.stateMachine?.switchState(NinjaRunningRightState((player.stateMachine! as! NinjaStateMachine)))
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
     } else if (input == ButtonType.Left && isCharIdle) {
-        player.stateMachine?.switchState(NinjaRunningLeftState((player.stateMachine! as! NinjaStateMachine)))
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
     } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
-        player.stateMachine?.switchState(NinjaAttackingState((player.stateMachine! as! NinjaStateMachine)))
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
         
         // Hardcoded adding of events for hitbox toggling
 //            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
@@ -88,6 +88,6 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
         player.animator.addAnimationEvent(keyTime: 0.6, callback: (player.deactivateHitboxesCallback)!)
 
     } else if (canEnterNeutral && input == ButtonType.Neutral) {
-        player.stateMachine?.switchState(NinjaIdleState((player.stateMachine! as! NinjaStateMachine)))
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
     }
 }
