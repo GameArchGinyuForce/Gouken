@@ -272,6 +272,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
+        processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
+        
         multipeerConnect.send(player: SeralizableCharacter(characterState: player1!.state))
 
         if (player1?.state == CharacterState.RunningLeft) {

@@ -37,6 +37,19 @@ class InputBuffer {
 }
 
 // Read an Input Buffer belonging to a specific character and update them.
-func processBuffer(fromBuffer buffer: InputBuffer, onCharacter: Character) {
+func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character) {
     buffer.updateInput()
+    
+    // below dinky shit bc swift does not have negative modulus
+    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize
+    let input = buffer.buffer[readIdx]
+    let isCharIdle = player.state == CharacterState.Idle
+    
+    if (input == ButtonType.Right && isCharIdle) {
+        player.stateMachine?.switchState(NinjaRunningRightState((player.stateMachine! as! NinjaStateMachine)))
+    } else if (input == ButtonType.Left && isCharIdle) {
+        player.stateMachine?.switchState(NinjaRunningLeftState((player.stateMachine! as! NinjaStateMachine)))
+    } else if (input == ButtonType.Neutral) {
+        player.stateMachine?.switchState(NinjaIdleState((player.stateMachine! as! NinjaStateMachine)))
+    }
 }
