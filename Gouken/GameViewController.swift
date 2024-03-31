@@ -274,7 +274,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
-        multipeerConnect.send(player: SeralizableCharacter(characterState: player1!.state))
+        multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state))
 
         if (player1?.state == CharacterState.RunningLeft) {
             playerSpawn?.position.z -= runSpeed

@@ -2,7 +2,7 @@ import Foundation
 
 
 
-class SeralizableCharacter : Codable {
+class SerializableCharacter : Codable {
     var characterState: CharacterState
 
     init(characterState: CharacterState) {

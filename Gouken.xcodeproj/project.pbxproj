@@ -36,7 +36,7 @@
 		F02176992B82B8DA000993B2 /* GameplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F02176982B82B8D9000993B2 /* GameplayKit.framework */; };
 		F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F021769B2B82B958000993B2 /* MovementComponent.swift */; };
 		F021769E2B82BBAF000993B2 /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F021769D2B82BBAF000993B2 /* EntityManager.swift */; };
-		F02F5D572BB64FB000E0D5CD /* SeralizableCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02F5D562BB64FB000E0D5CD /* SeralizableCharacter.swift */; };
+		F02F5D572BB64FB000E0D5CD /* SerializableCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02F5D562BB64FB000E0D5CD /* SerializableCharacter.swift */; };
 		F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */; };
 		F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F031DA0C2B7609EC00E3F4B5 /* art.scnassets */; };
 		F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */; };
@@ -79,7 +79,7 @@
 		F02176982B82B8D9000993B2 /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
 		F021769B2B82B958000993B2 /* MovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementComponent.swift; sourceTree = "<group>"; };
 		F021769D2B82BBAF000993B2 /* EntityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityManager.swift; sourceTree = "<group>"; };
-		F02F5D562BB64FB000E0D5CD /* SeralizableCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeralizableCharacter.swift; sourceTree = "<group>"; };
+		F02F5D562BB64FB000E0D5CD /* SerializableCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableCharacter.swift; sourceTree = "<group>"; };
 		F031DA072B7609EC00E3F4B5 /* Gouken.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gouken.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F031DA0C2B7609EC00E3F4B5 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 				F02176952B82B814000993B2 /* Character.swift */,
 				A5BA078B2BA7A5F00080B32E /* GameManager.swift */,
 				F021769A2B82B935000993B2 /* GKComponents */,
-				F02F5D562BB64FB000E0D5CD /* SeralizableCharacter.swift */,
+				F02F5D562BB64FB000E0D5CD /* SerializableCharacter.swift */,
 			);
 			path = GKEntities;
 			sourceTree = "<group>";
@@ -349,7 +349,7 @@
 				1C7C931D2B981F1200B59858 /* Stage.swift in Sources */,
 				1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */,
 				954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */,
-				F02F5D572BB64FB000E0D5CD /* SeralizableCharacter.swift in Sources */,
+				F02F5D572BB64FB000E0D5CD /* SerializableCharacter.swift in Sources */,
 				DB035DE02B984FF40014C675 /* NinjaStunnedState.swift in Sources */,
 				1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */,
 				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,

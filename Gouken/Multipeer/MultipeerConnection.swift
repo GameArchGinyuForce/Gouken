@@ -1,4 +1,3 @@
-//
 //  MultiplayerConnect.swift
 //  Gouken
 //
@@ -16,7 +15,7 @@ enum Move: String, CaseIterable, Codable {
 }
 
 struct PlayerData: Codable {
-    let player: SeralizableCharacter
+    let player: SerializableCharacter
     let timestamp: TimeInterval
 }
 
@@ -35,6 +34,7 @@ class MultipeerConnection: NSObject, ObservableObject {
     private let log = Logger()
     private var numberOfMovesSent = 0;
     private var cumulativeTime: TimeInterval = 0.0
+    public var isConnected = false
 
     @Published var currentMove: String? = nil
     @Published var latency: TimeInterval = 0.0
@@ -63,8 +63,8 @@ class MultipeerConnection: NSObject, ObservableObject {
         serviceAdvertiser.delegate = self
         serviceBrowser.delegate = self
 
-        serviceAdvertiser.startAdvertisingPeer()
-        serviceBrowser.startBrowsingForPeers()
+        serviceAdvertiser.stopAdvertisingPeer()
+        serviceBrowser.stopBrowsingForPeers()
     }
 
     deinit {
@@ -72,7 +72,7 @@ class MultipeerConnection: NSObject, ObservableObject {
         self.serviceBrowser.stopBrowsingForPeers()
     }
 
-    func send(player: SeralizableCharacter) {
+    func send(player: SerializableCharacter) {
         //precondition(Thread.isMainThread)
         if !session.connectedPeers.isEmpty {
             let timestamp = Date().timeIntervalSince1970
@@ -88,9 +88,9 @@ class MultipeerConnection: NSObject, ObservableObject {
     }
     
     
-    func disablePlayerSearch() {
-        self.serviceAdvertiser.stopAdvertisingPeer()
-        self.serviceBrowser.stopBrowsingForPeers()
+    func enablePlayerSearch() {
+        serviceAdvertiser.startAdvertisingPeer()
+        serviceBrowser.startBrowsingForPeers()
     }
 }
 
@@ -138,6 +138,7 @@ extension MultipeerConnection: MCNearbyServiceBrowserDelegate {
 extension MultipeerConnection: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         log.info("peer \(peerID) didChangeState: \(state.debugDescription)")
+        isConnected = state.debugDescription == "connected"
         DispatchQueue.main.async {
             if (self.connectedPeers.count == 0) {
                 self.connectedPeers = session.connectedPeers
