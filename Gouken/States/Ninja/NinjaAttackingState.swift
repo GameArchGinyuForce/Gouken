@@ -13,6 +13,9 @@ class NinjaAttackingState: NinjaBaseState {
         stateMachine.character.setState(withState: CharacterState.Attacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
         
+//        // Character State dictates move
+//        var characterState: CharacterState? = CharacterState.Attacking
+        
         // Assume 1 attack for now
         // Hardcoded adding of events for hitbox toggling
 //            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
