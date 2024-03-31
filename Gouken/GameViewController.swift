@@ -261,6 +261,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
      */
     @objc
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
+        multipeerConnect.receivedStateDataHandler = { [weak self] receivedData in
+            self?.handleStateReceivedData(receivedData)
+        }
+        
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
         lastFrameTime = time
         ticksPassed!+=1
@@ -276,19 +281,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //                
 //            }
 //        }
-        
 
-        if(ticksPassed! % 10 == 0){
-            multipeerConnect.sendState(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
-                                                               position2z: enemySpawn!.position.z,
-                                                                   health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
-        }else{
-            multipeerConnect.send(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
-                                                               position2z: enemySpawn!.position.z,
-                                                              health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
-        }
         
-
         if (player1?.state == CharacterState.RunningLeft) {
             playerSpawn?.position.z -= runSpeed
             playerSpawn?.eulerAngles.y = Float.pi
@@ -308,14 +302,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
         }
 
-        lastFrameTime = time
-        
 //        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
 //            self?.handleReceivedData(receivedData)
 //        }
-        multipeerConnect.receivedStateDataHandler = { [weak self] receivedData in
-            self?.handleStateReceivedData(receivedData)
-        }
+        
+//        if(ticksPassed! % 10 == 0){
+//            multipeerConnect.sendState(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
+//                                                               position2z: enemySpawn!.position.z,
+//                                                                   health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
+//        }else{
+            multipeerConnect.sendState(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
+                                                               position2z: enemySpawn!.position.z,
+                                                              health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
+//        }
+        
+        lastFrameTime = time
     }
     
     
@@ -330,18 +331,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func handleStateReceivedData(_ receivedData: StateData) {
         
         
-        if(receivedData.data.ticks % 10 == 0){
+       // if(receivedData.data.ticks % 1 == 0){
             
-            if(playerSpawn?.name == Optional("p1Spawn")){
+            if(playerSpawn?.name == Optional("p1Spawn") && receivedData.data.ticks % 2 == 0){
+                print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
+                //enemySpawn?.position.z = receivedData.data.position1z
+                playerSpawn?.position.z = receivedData.data.position2z
                 
-                enemySpawn?.position.z = receivedData.data.position1z
+                player1!.health.currentHealth = receivedData.data.health1
+                player2!.health.currentHealth = receivedData.data.health2
+            }else if(playerSpawn?.name == Optional("p2Spawn") && receivedData.data.ticks % 2 != 0){
+                
+                print("P2's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
+                
+                //enemySpawn?.position.z = receivedData.data.position1z
                 playerSpawn?.position.z = receivedData.data.position2z
                 
                 player1!.health.currentHealth = receivedData.data.health1
                 player2!.health.currentHealth = receivedData.data.health2
             }
         
-        }
+        //}
         
         var enemyState = receivedData.data.characterState
         
