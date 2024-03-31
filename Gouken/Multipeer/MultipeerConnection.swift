@@ -87,6 +87,10 @@ class MultipeerConnection: NSObject, ObservableObject {
         }
     }
     
+    func disablePlayerSearch() {
+        serviceAdvertiser.stopAdvertisingPeer()
+        serviceBrowser.stopBrowsingForPeers()
+    }
     
     func enablePlayerSearch() {
         serviceAdvertiser.startAdvertisingPeer()

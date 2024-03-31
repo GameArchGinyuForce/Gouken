@@ -15,6 +15,7 @@ class MenuSceneOverlay: SKScene {
     var menuContainer: SKNode = SKNode()
     var blinkAction: SKAction!
     var matchmakingText: SKLabelNode!
+    var readyBtn: SKShapeNode!
 
     var multipeerConnect: MultipeerConnection?
     
@@ -54,8 +55,7 @@ class MenuSceneOverlay: SKScene {
             print("Connection status changed")
             // Update UI based on the new connection status
             // For example:
-        
-        print("isCONNECTED? \(multipeerConnect?.isConnected)")
+
             if multipeerConnect?.connectedPeers.isEmpty ?? true {
                 // No connected peers
                 connectionStatusLabel?.text = "No connection"
@@ -63,6 +63,15 @@ class MenuSceneOverlay: SKScene {
                 // At least one peer connected
                 connectionStatusLabel?.text = "Connection established"
                 matchmakingText?.text = "Connection made"
+                readyBtn = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+                readyBtn.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 2 + 80)
+                readyBtn.name = "selectReadyBtn"
+                readyBtn.strokeColor = .white
+                readyBtn.lineWidth = 3
+                readyBtn.fillColor = .black // Set fill color
+                menuContainer.addChild(readyBtn)
+                addText(to: readyBtn, text: "Ready", name: "readyText")
+                
             }
         }
 
@@ -102,11 +111,15 @@ class MenuSceneOverlay: SKScene {
     }
     
     
-    private func addText(to node: SKNode, text: String) {
+    
+    private func addText(to node: SKNode, text: String, fontSize: CGFloat=20, name: String="") {
         let label = SKLabelNode(text: text)
         label.fontName = "Helvetica"
-        label.fontSize = 20
+        label.fontSize = fontSize
         label.fontColor = .white
+        if name.count > 0 {
+            label.name = name
+        }
         
         // Calculate the position of the label to ensure it's centered on the button
         label.position = CGPoint(x: 0, y: -label.frame.size.height / 2 + 10)
@@ -282,6 +295,10 @@ class MenuSceneOverlay: SKScene {
                     showMenu()
                 case "backToSelectGameModeButton":
                     showSelectGameMode()
+                case "selectReadyBtn":
+                    node.childNode(withName: "readyText")?.removeFromParent()
+                    addText(to: readyBtn, text: "✓", fontSize: 30)
+//                    overlayDelegate?.playButtonPressed()
                 case "selectPVEButton":
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 case "selectPVPButton":
