@@ -58,12 +58,14 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
     let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize
     let input = buffer.buffer[readIdx]
     let isCharIdle = player.state == CharacterState.Idle
-    let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight
+    let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight || player.state == CharacterState.Blocking
     
     if (input == ButtonType.Right && isCharIdle) {
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
     } else if (input == ButtonType.Left && isCharIdle) {
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
+    } else if (input == ButtonType.Down && isCharIdle) {
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Blocking]!)
     } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
         

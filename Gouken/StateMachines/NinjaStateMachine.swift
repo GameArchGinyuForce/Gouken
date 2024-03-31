@@ -13,9 +13,17 @@ class NinjaStateMachine: CharacterStateMachine {
             CharacterState.RunningRight: NinjaRunningRightState(self),
             CharacterState.Attacking: NinjaAttackingState(self),
             CharacterState.Idle: NinjaIdleState(self),
+            CharacterState.Blocking: NinjaBlockingState(self),
             CharacterState.Downed: NinjaDownedState(self)
         ]
         
+        character.health.onHit = { hitter, damage in
+            if (character.state == CharacterState.Blocking) {
+                hitter.stateMachine!.switchState((hitter.stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Stunned]!)
+            } else {
+                character.health.damage(damage)
+            }
+        }
         character.health.onDamage = {
             self.switchState(self.stateInstances[CharacterState.Stunned]!)
         }

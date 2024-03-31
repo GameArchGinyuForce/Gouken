@@ -5,6 +5,7 @@ class HealthComponent : GKComponent {
     var maxHealth: Int!
     var currentHealth: Int!
     
+    var onHit: ((_ hitter: Character, _ damage: Int) -> Void)?
     var onDamage: (() -> Void)?
     var onHeal: (() -> Void)?
     var onDie: (() -> Void)?
