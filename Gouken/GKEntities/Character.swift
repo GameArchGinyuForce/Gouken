@@ -51,6 +51,7 @@ class Character {
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     var activateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
+    var activateHitboxByNameCallback: ((Any, Any?, Bool) -> Void)?
     var deactivateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     
     init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager) {
@@ -96,6 +97,9 @@ class Character {
         activateHitboxesCallback = { [weak self] param1, param2, param3 in
             self?.activateHitboxes()
         }
+        activateHitboxByNameCallback = { [weak self] param1, param2, param3 in
+            self?.activateHitboxByName(name: param1 as! String)
+        }
         deactivateHitboxesCallback = { [weak self] param1, param2, param3 in
             self?.deactivateHitboxes()
         }
@@ -109,8 +113,16 @@ class Character {
         print("Completed Toggling hitboxes")
     }
     
+    func addHitbox(hitboxNode: SCNNode) {
+        hitbox.addHitbox(hitbox: hitboxNode)
+    }
+    
     func activateHitboxes() {
         hitbox.activateHitboxes()
+    }
+    
+    func activateHitboxByName(name: String) {
+        hitbox.activateHitboxByName(name: name)
     }
     
     func deactivateHitboxes() {

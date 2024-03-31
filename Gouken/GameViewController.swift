@@ -274,15 +274,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
     func setUpHitboxes(player: Character?) {
         var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
-        var _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
-//        _hitbox.isHidden = true
-        player1?.hitbox.hitboxes.append(_hitbox)
+        var _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide, name: "Hand_R")
+        player1?.addHitbox(hitboxNode: _hitbox)
         
         modelSCNNode = player1?.characterNode.childNode(withName: "Hand_L", recursively: true)
-        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
-        player1?.hitbox.hitboxes.append(_hitbox)
-//        _hitbox.isHidden = true
-//        hitbox = _hitbox
+        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide, name: "Hand_L")
+        player1?.addHitbox(hitboxNode: _hitbox)
     }
 
     // TODO: for testing player controls and animations
@@ -290,11 +287,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         if (!hasBeenPressed) { return }
 //        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
         
-        
-//        for _hitbox in player1!.hitboxes {
-//            _hitbox.isHidden = !_hitbox.isHidden
-//        }
-        
+        // Bugfixing functionality
         if isHitboxesOn {
             toggleHitboxesOff = true
         } else {
@@ -302,8 +295,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         isHitboxesOn = !isHitboxesOn
         
-//        player1?.togglePlayerHitboxes()
-//        player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.toggleHitboxesCallback)!)
     }
     
     // test collison between node a and node b
@@ -324,11 +315,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
             
             // Hardcoded adding of events for hitbox toggling
-            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
+//            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
+                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+            }
+            
             player1?.animator.addAnimationEvent(keyTime: 0.2, callback: (player1?.deactivateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
+//            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
+                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+            }
+            
             player1?.animator.addAnimationEvent(keyTime: 0.4, callback: (player1?.deactivateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
+//            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
+            player1?.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
+                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+            }
+            
             player1?.animator.addAnimationEvent(keyTime: 0.6, callback: (player1?.deactivateHitboxesCallback)!)
             
         }
@@ -401,12 +404,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
-        // Hitboxes debug
+        // Hitboxes bugfixing
         if toggleHitboxesOn {
             print("toggleHitboxesOn")
             toggleHitboxesOn = false
             player1?.hitbox.activateHitboxes()
-            
         }
         if toggleHitboxesOff {
             print("toggleHitboxesOff")

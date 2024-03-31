@@ -11,7 +11,8 @@ import GameplayKit
 class HitBoxComponent : GKComponent {
 //    var activateHitboxes: (() -> Void)?
 //    var deactivateHitboxes: (() -> Void)?
-    var hitboxes: [SCNNode] = [SCNNode]() // Changed to optional array of SCNNode
+    var hitboxes: [SCNNode] = [SCNNode]()
+    var hitboxesDict: Dictionary = [String: SCNNode]()  // Dictionary to activate specific hitboxes
     
     init(_ smt: Bool) {
         super.init()
@@ -22,6 +23,11 @@ class HitBoxComponent : GKComponent {
     }
     
     override func update(deltaTime seconds: TimeInterval) {
+    }
+    
+    func addHitbox(hitbox: SCNNode) {
+        hitboxes.append(hitbox)
+        hitboxesDict[hitbox.name ?? ""] = hitbox
     }
     
     func checkCollisions (scene: SCNScene?) -> Bool{
@@ -62,6 +68,29 @@ class HitBoxComponent : GKComponent {
             _hitbox.isHidden = false
         }
         print("Completed Activating hitboxes")
+    }
+    
+    /**
+     Activate a player's hitbox by its name
+     
+     The name of a hitbox is the same as the SCNNode's name it is
+     a child of on the character model
+     */
+    func activateHitboxByName(name: String) {
+        let hitbox: SCNNode? = hitboxesDict[name]
+        print(hitbox)
+        
+        if (hitbox == nil) {
+            print("Not hitbox found with name: ", name)
+            return
+        }
+        
+        // Remove & Add physics body
+        let originalPhysicsBody = hitbox!.physicsBody
+        hitbox!.physicsBody = nil
+        hitbox!.physicsBody = originalPhysicsBody
+        
+        hitbox!.isHidden = false
     }
     
     /**
