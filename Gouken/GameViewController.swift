@@ -307,28 +307,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     // On attack, check that character's Hitboxes and check collisions
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
-            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
-            
-            // Hardcoded adding of events for hitbox toggling
-//            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.2, callback: (player1?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.4, callback: (player1?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.6, callback: (player1?.deactivateHitboxesCallback)!)
-            
+            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))            
         }
     }
         
