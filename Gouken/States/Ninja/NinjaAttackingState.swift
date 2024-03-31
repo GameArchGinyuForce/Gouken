@@ -13,29 +13,10 @@ class NinjaAttackingState: NinjaBaseState {
         stateMachine.character.setState(withState: CharacterState.Attacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
         
-//        // Character State dictates move
-//        var characterState: CharacterState? = CharacterState.Attacking
+        // Hardcoded retrieval of move
+        let move = NinjaMoveSet[0]
         
-        // Assume 1 attack for now
-        // Hardcoded adding of events for hitbox toggling
-//            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
-        stateMachine.character.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
-            self.stateMachine.character.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        stateMachine.character.animator.addAnimationEvent(keyTime: 0.2, callback: (stateMachine.character?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
-        stateMachine.character.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
-            self.stateMachine.character.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        stateMachine.character.animator.addAnimationEvent(keyTime: 0.4, callback: (stateMachine.character?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
-        stateMachine.character.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
-            self.stateMachine.character.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        stateMachine.character.animator.addAnimationEvent(keyTime: 0.6, callback: (stateMachine.character?.deactivateHitboxesCallback)!)
+        move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
     }
     
     // TODO: Turn on hitboxes at certain points
