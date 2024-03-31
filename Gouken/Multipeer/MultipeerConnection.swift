@@ -16,7 +16,12 @@ enum Move: String, CaseIterable, Codable {
 }
 
 struct PlayerData: Codable {
-    let player: SeralizableCharacter
+    let data: SeralizableCharacter
+    let timestamp: TimeInterval
+}
+
+struct StateData: Codable {
+    let data: SerializableGameState
     let timestamp: TimeInterval
 }
 
@@ -25,6 +30,7 @@ class MultipeerConnection: NSObject, ObservableObject {
     private let serviceType = "GoukenMP1"
     private let session: MCSession
     var receivedDataHandler: ((PlayerData) -> Void)?
+    var receivedStateDataHandler: ((StateData) -> Void)?
     
     // TODO: Get the GameCenter Username from the apple device
     public let myPeerId = MCPeerID(displayName: UIDevice.current.name)
@@ -70,15 +76,29 @@ class MultipeerConnection: NSObject, ObservableObject {
         self.serviceBrowser.stopBrowsingForPeers()
     }
 
-    func send(player: SeralizableCharacter) {
+    func send(data: SerializableGameState) {
         //precondition(Thread.isMainThread)
-        print("sending")
         if !session.connectedPeers.isEmpty {
             let timestamp = Date().timeIntervalSince1970
-            let playerData = PlayerData(player: player, timestamp: timestamp)
+            let sendData = StateData(data: data, timestamp: timestamp)
             do {
                 let encoder = JSONEncoder()
-                let data = try encoder.encode(playerData)
+                let data = try encoder.encode(sendData)
+                try session.send(data, toPeers: session.connectedPeers, with: .unreliable)
+            } catch {
+                log.error("Error for sending move: \(error)")
+            }
+        }
+    }
+    
+    func sendState(data: SerializableGameState) {
+        //precondition(Thread.isMainThread)
+        if !session.connectedPeers.isEmpty {
+            let timestamp = Date().timeIntervalSince1970
+            let sendData = StateData(data: data, timestamp: timestamp)
+            do {
+                let encoder = JSONEncoder()
+                let data = try encoder.encode(sendData)
                 try session.send(data, toPeers: session.connectedPeers, with: .reliable)
             } catch {
                 log.error("Error for sending move: \(error)")
@@ -120,7 +140,6 @@ extension MultipeerConnection: MCNearbyServiceBrowserDelegate {
         log.info("ServiceBrowser lost peer: \(peerID)")
     }
 }
-
 //
 extension MultipeerConnection: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
@@ -131,33 +150,63 @@ extension MultipeerConnection: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        
-        
-        print("received")
-            do {
-                let decoder = JSONDecoder()
-                let receivedData = try decoder.decode(PlayerData.self, from: data)
-
-                log.info("didReceive move \(receivedData.player.characterState.rawValue)")
+        do {
+            let decoder = JSONDecoder()
+            
+//            // Attempt to decode the data as SeralizableCharacter
+//            if let receivedCharacter = try? decoder.decode(PlayerData.self, from: data) {
+//                if receivedCharacter.data.data == 0 {
+//                    // Handle SeralizableCharacter with data = 0
+//                    handleReceivedPlayerData(receivedCharacter)
+//                }
+//            }
+            
+            // Attempt to decode the data as SerializableGameState
+            if let receivedGameState = try? decoder.decode(StateData.self, from: data) {
                 
-                log.info("Player is moving \(receivedData.player.characterState == CharacterState.RunningRight ? "right" : "left")")
-
-                let currentTimestamp = Date().timeIntervalSince1970
-                let roundTripLatency = (currentTimestamp - receivedData.timestamp)
-                DispatchQueue.main.async {
-                    self.numberOfMovesSent += 1
-                    self.cumulativeTime+=roundTripLatency
-                    self.currentMove = receivedData.player.characterState.rawValue
-                    self.latency = roundTripLatency
-                    self.maxLatency = (roundTripLatency > self.maxLatency) ? roundTripLatency : self.maxLatency
-                    self.avgLatency = Double(self.cumulativeTime) / Double(self.numberOfMovesSent)
-
-                }
-                receivedDataHandler?(receivedData)
-            } catch {
-                log.error("Error decoding move data: \(error)")
+                handleReceivedStateData(receivedGameState)
+                return
+                
             }
+
+            
+        } catch {
+            print("Error decoding data: \(error)")
         }
+    }
+
+
+    // Handler method for received PlayerData
+    func handleReceivedPlayerData(_ receivedData: PlayerData) {
+        DispatchQueue.main.async {
+            let currentTimestamp = Date().timeIntervalSince1970
+            let roundTripLatency = (currentTimestamp - receivedData.timestamp)
+            self.numberOfMovesSent += 1
+            self.cumulativeTime += roundTripLatency
+            self.currentMove = receivedData.data.characterState.rawValue
+            self.latency = roundTripLatency
+            self.maxLatency = max(roundTripLatency, self.maxLatency)
+            self.avgLatency = Double(self.cumulativeTime) / Double(self.numberOfMovesSent)
+        }
+        receivedDataHandler?(receivedData)
+    }
+
+    // Handler method for received StateData
+    func handleReceivedStateData(_ receivedData: StateData) {
+        DispatchQueue.main.async {
+            let currentTimestamp = Date().timeIntervalSince1970
+            let roundTripLatency = (currentTimestamp - receivedData.timestamp)
+            self.numberOfMovesSent += 1
+            self.cumulativeTime += roundTripLatency
+            self.currentMove = receivedData.data.characterState.rawValue
+            self.latency = roundTripLatency
+            self.maxLatency = max(roundTripLatency, self.maxLatency)
+            self.avgLatency = Double(self.cumulativeTime) / Double(self.numberOfMovesSent)
+        }
+        receivedStateDataHandler?(receivedData)
+    }
+
+
 
     public func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
         log.error("Receiving streams is not supported")

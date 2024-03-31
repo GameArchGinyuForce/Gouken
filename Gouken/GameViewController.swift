@@ -17,6 +17,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
     
+    
     func playButtonPressed() {
         removeMenuOverlay()
         loadGame()
@@ -158,6 +159,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?
         
+        ticksPassed = 0
         
     }
     
@@ -176,10 +178,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var enemySpawn : SCNNode?
     var runSpeed = Float(0.1)
     
-    
     //added
     var runRight = false
     var runLeft = false
+    
+    var ticksPassed: Int?
     
     
     override func viewDidLoad() {
@@ -226,11 +229,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             // Control everything therough state
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
-                print("Running Right")
+    
             } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
                 //player?.eulerAngles.y = Float.pi
-                print("Running Left")
+           
                 // print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
                 
                 // if (multipeerConnect.connectedPeers.count == 0) {
@@ -260,21 +263,31 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
         lastFrameTime = time
+        ticksPassed!+=1
         // Update loop for any calls (our game loop)
-        entityManager.entities.forEach { entity in
-            
-            entity.update(deltaTime: deltaTime)
-            
-            if let component = entity.component(ofType: MovementComponent.self) {
-                // Update entity based on movement component
-                //component.move()
-                
-            }
+        
+//        entityManager.entities.forEach { entity in
+//            
+//            entity.update(deltaTime: deltaTime)
+//            
+//            if let component = entity.component(ofType: MovementComponent.self) {
+//                // Update entity based on movement component
+//                //component.move()
+//                
+//            }
+//        }
+        
+
+        if(ticksPassed! % 10 == 0){
+            multipeerConnect.sendState(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
+                                                               position2z: enemySpawn!.position.z,
+                                                                   health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
+        }else{
+            multipeerConnect.send(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
+                                                               position2z: enemySpawn!.position.z,
+                                                              health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
         }
         
-        multipeerConnect.send(player: SeralizableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
-                                                           position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
-                                                           health1:player1!.health.currentHealth,health2:player2!.health.currentHealth))
 
         if (player1?.state == CharacterState.RunningLeft) {
             playerSpawn?.position.z -= runSpeed
@@ -295,48 +308,68 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
         }
 
-
-
-       // let player = playerSpawn!
-        
-        // if(runRight){
-        //     player.position.z += runSpeed
-        // }
-        // if(runLeft){
-        //     player.position.z -= runSpeed
-        // }
-
         lastFrameTime = time
         
-        
-        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
-            // Handle received data here
-            // For example, update game state with received data
-            print("receiving")
-            self?.handleReceivedData(receivedData)
+//        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
+//            self?.handleReceivedData(receivedData)
+//        }
+        multipeerConnect.receivedStateDataHandler = { [weak self] receivedData in
+            self?.handleStateReceivedData(receivedData)
         }
-        
     }
     
     
     func handleReceivedData(_ receivedData: PlayerData) {
-        print("Received data: \(receivedData)")
-        var enemyState = receivedData.player.characterState
+   
+        var enemyState = receivedData.data.characterState
+        
+        convertEnemyDataToClient(enemyState: enemyState)
+    }
+
+    // Modify the handleReceivedData function to call the appropriate handler function
+    func handleStateReceivedData(_ receivedData: StateData) {
+        
+        
+        if(receivedData.data.ticks % 10 == 0){
+            
+            if(playerSpawn?.name == Optional("p1Spawn")){
+                
+                enemySpawn?.position.z = receivedData.data.position1z
+                playerSpawn?.position.z = receivedData.data.position2z
+                
+                player1!.health.currentHealth = receivedData.data.health1
+                player2!.health.currentHealth = receivedData.data.health2
+            }
+        
+        }
+        
+        var enemyState = receivedData.data.characterState
+        
+        convertEnemyDataToClient(enemyState: enemyState)
+        
+//        multipeerConnect.sendState(data: SerializableGameState(characterState: player1!.state, position1z: playerSpawn!.position.z,
+//                                                           position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
+//                                                           health1:player1!.health.currentHealth,health2:player2!.health.currentHealth, timestamp:Date().timeIntervalSince1970))
+    
+        
+    }
+
+    func convertEnemyDataToClient(enemyState: CharacterState){
         
         if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
-            print("enemy running right")
+    
             player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
         } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
-            print("enemy running left")
+   
             player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
         } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
-            print("enemy idle")
+
             player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
         }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
-            print("enemy stunned")
+
             player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
         }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
-            print("enemy attacking")
+
             player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
         }
     }

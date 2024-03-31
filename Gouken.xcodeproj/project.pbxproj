@@ -17,6 +17,7 @@
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* Hitboxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* Hitboxes.swift */; };
 		954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765E2B9D6EF300CB7767 /* Colliders.swift */; };
+		95DBEA642BB8E4A4001F04A7 /* SerializableGameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBEA632BB8E4A4001F04A7 /* SerializableGameState.swift */; };
 		A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BA078B2BA7A5F00080B32E /* GameManager.swift */; };
 		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
 		DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB035DD52B984DAD0014C675 /* HealthComponent.swift */; };
@@ -59,6 +60,7 @@
 		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		954F765C2B9D6ED700CB7767 /* Hitboxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitboxes.swift; sourceTree = "<group>"; };
 		954F765E2B9D6EF300CB7767 /* Colliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colliders.swift; sourceTree = "<group>"; };
+		95DBEA632BB8E4A4001F04A7 /* SerializableGameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableGameState.swift; sourceTree = "<group>"; };
 		A5BA078B2BA7A5F00080B32E /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
 		DB035DD52B984DAD0014C675 /* HealthComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthComponent.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				A5BA078B2BA7A5F00080B32E /* GameManager.swift */,
 				F021769A2B82B935000993B2 /* GKComponents */,
 				F02F5D562BB64FB000E0D5CD /* SeralizableCharacter.swift */,
+				95DBEA632BB8E4A4001F04A7 /* SerializableGameState.swift */,
 			);
 			path = GKEntities;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 				F02176962B82B814000993B2 /* Character.swift in Sources */,
 				0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
+				95DBEA642BB8E4A4001F04A7 /* SerializableGameState.swift in Sources */,
 				DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */,
 				F05BD1112BB7616800C4BEB8 /* NinjaRunningRightState.swift in Sources */,
 				A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */,
