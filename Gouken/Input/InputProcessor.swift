@@ -11,13 +11,20 @@ let P1Buffer = InputBuffer()
 let P2Buffer = InputBuffer()
 let moveSequences : [([ButtonType], Int)] = [([ButtonType.Down, ButtonType.Right, ButtonType.LP], 26)]
 
-/** A thread safe input buffer. */
+/** An input buffer with thread-safe insertions. If the caller uses it correctly, no race conditions should occur.
+  * Whatever we take input from - a virtual controller or network socket, doesn't matter - should store input updates
+  * via the insertInput function. If a button is held down or released, buttonPressedDown should be called as well.
+   
+  * Finally, the update loop should call "updateInput" before reading the buffer array underlying the actual buffer itself.
+  * This will "flush" the last input received into the buffer.
+ */
 class InputBuffer {
-    var isPressedDown = ManagedAtomic<Bool>(false)
-    var lastInput = ManagedAtomic<Int>(ButtonType.Neutral.rawValue)
-    var buffer : [ButtonType] = Array(repeating: ButtonType.Neutral, count: bufferSize)
+    private var isPressedDown = ManagedAtomic<Bool>(false) // atomic value to signal a button being held down
+    private var lastInput = ManagedAtomic<Int>(ButtonType.Neutral.rawValue) // the last input the user made
+    var buffer : [ButtonType] = Array(repeating: ButtonType.Neutral, count: bufferSize) // the buffer itself, only to be accessed through the update loop
     var writeIdx : Int = 0
     
+    // This function is to be used for anything that is to input into the buffer.
     func insertInput(withPress: ButtonType) {
         lastInput.store(withPress.rawValue, ordering: AtomicStoreOrdering.relaxed)
     }
@@ -26,6 +33,7 @@ class InputBuffer {
         isPressedDown.store(orNot, ordering: AtomicStoreOrdering.relaxed)
     }
     
+    // takes the last input stored, adds it to the buffer and clears it if the user isn't holding down.
     func updateInput() {
         buffer[writeIdx] = ButtonType(rawValue: lastInput.load(ordering: AtomicLoadOrdering.relaxed))!
         writeIdx = (writeIdx + 1) % bufferSize
@@ -36,7 +44,13 @@ class InputBuffer {
     }
 }
 
-// Read an Input Buffer belonging to a specific character and update them.
+/**
+ Read an Input Buffer belonging to a specific character and update them.
+ONLY USE THIS FUNCTION INSIDE OF THE RENDERER DELEGATE OF SCENEKIT.
+THIS IS BECAUSE THE ACTUAL INPUT BUFFER ITSELF ISN'T THREAD SAFE, ONLY ONE FLOW OF CONTR0L SHOULD
+TOUCH IT OTHERWISE BU HA0
+*/
+//TODO: Clean up input handling and add sequence reading for Hadouken. Earlier commit hash has the sequence reading algo.
 func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character) {
     buffer.updateInput()
     

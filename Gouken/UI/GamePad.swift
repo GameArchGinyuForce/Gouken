@@ -24,10 +24,12 @@ enum ButtonType : Int {
     case Neutral
 }
 
+
+/** This class handles gamepad buttons.
+ */
 class GamePadButton : SKShapeNode {
     
     var type : ButtonType
-    var buttonCallback : (InputBuffer, ButtonType) -> Void
     var buttonShape : SKShapeNode
     var inputBuffer : InputBuffer
     
@@ -41,10 +43,8 @@ class GamePadButton : SKShapeNode {
         }
     }
     
-    required init(withBuffer buffer: InputBuffer, ofShape button: SKShapeNode, andButtonType : ButtonType, uponPressed : @escaping (InputBuffer, ButtonType) -> Void) {
+    required init(withBuffer buffer: InputBuffer, ofShape button: SKShapeNode, andButtonType : ButtonType) {
         type = andButtonType
-        buttonCallback = uponPressed
-        print("making dpad")
         buttonShape = button
         inputBuffer = buffer
         super.init()
@@ -56,51 +56,25 @@ class GamePadButton : SKShapeNode {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touched")
         buttonShape.fillColor = pressedColour
         inputBuffer.buttonPressedDown(orNot: true)
-        buttonCallback(inputBuffer, type)
+        inputBuffer.insertInput(withPress: type)
+    }
+    
+    func buttonReleased() {
+        buttonShape.fillColor = unpressedColour
+        inputBuffer.buttonPressedDown(orNot: false)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("let go")
-        buttonShape.fillColor = unpressedColour
-        inputBuffer.buttonPressedDown(orNot: false)
+        buttonReleased()
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("let go")
-        buttonShape.fillColor = unpressedColour
-        inputBuffer.buttonPressedDown(orNot: false)
+        buttonReleased()
     }
 }
 
-func ProcessInput(buffer: InputBuffer, buttonType : ButtonType) {
-    buffer.insertInput(withPress: buttonType)
-    
-    switch buttonType {
-    case .Up:
-//        print("Up pressed!")
-        break
-    case .Down:
-//        print("Down pressed!")
-        break
-    case .Right:
-//        print("Right pressed!")
-        break
-    case .Left:
-//        print("Left pressed!")
-        break
-    case .LP:
-//        print("Light punch pressed!")
-        break
-    case .HP:
-//        print("Heavy punch pressed!")
-        break
-    default:
-        break
-    }
-}
 
 func createDpadBtn(onBuffer buffer: InputBuffer, ofSize size: CGSize, andRoundedEdges roundedEdge: CGFloat, andType: ButtonType) -> SKShapeNode {
     
@@ -108,13 +82,13 @@ func createDpadBtn(onBuffer buffer: InputBuffer, ofSize size: CGSize, andRounded
     button.fillColor = unpressedColour
     button.strokeColor = UIColor.black
     
-    return GamePadButton(withBuffer: buffer, ofShape: button, andButtonType: andType, uponPressed: ProcessInput)
+    return GamePadButton(withBuffer: buffer, ofShape: button, andButtonType: andType)
 }
 
 func createPunchBtn(onBuffer buffer: InputBuffer, withRadius radius: CGFloat, andType type: ButtonType) -> SKShapeNode {
     let button = SKShapeNode(circleOfRadius: radius)
     button.fillColor = unpressedColour	
-    return GamePadButton(withBuffer: buffer, ofShape: button, andButtonType: type, uponPressed: ProcessInput)
+    return GamePadButton(withBuffer: buffer, ofShape: button, andButtonType: type)
 }
 
 func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -> SKScene {
