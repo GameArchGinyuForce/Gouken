@@ -24,12 +24,12 @@ import SceneKit
 // IMPORTANT NOTE: FUCK YOU APPLE, 64 IS MAXIMUM SIZE FOR BIT MASKS.
 let floorBitMask = 1 << 1       // Binary: 00000010
 let p1MeshBitMask = 1 << 3      // Binary: 00001000
-let p2MeshBitMask = 1 << 5      // Binary: 00100000
+let p2MeshBitMask = 1 << 6      // Binary: 01000000
 
 
 // Hitboxes and Hurtboxes bitmasks.
 let p1HitBox = 1 << 0           // Binary: 00000001
-let p2HitBox = 1 << 6           // Binary: 01000000
+let p2HitBox = 1 << 5      // Binary: 00100000
 let p1HurtBox = 1 << 4          // Binary: 00010000
 let p2HurtBox = 1 << 2          // Binary: 00000100
 
