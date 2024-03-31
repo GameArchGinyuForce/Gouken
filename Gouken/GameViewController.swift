@@ -435,6 +435,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
     }
     
+    func loadAnimatorWithFrameData (characterState: CharacterState) {
+//        var frameDataArr: [AttackKeyFrame] = NinjaMoveSet[characterState]
+    }
     
     func handleReceivedData(_ receivedData: PlayerData) {
         // Handle received data here
