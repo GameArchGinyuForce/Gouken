@@ -3,7 +3,7 @@ import SceneKit
 
 
 
-class SeralizableCharacter : Codable {
+class SerializableCharacter : Codable {
     var characterState: CharacterState
     
     var position1z: Float

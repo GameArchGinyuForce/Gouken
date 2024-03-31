@@ -13,13 +13,16 @@ class MenuSceneOverlay: SKScene {
     weak var overlayDelegate: SKOverlayDelegate?
     var backgroundMusicPlayer: AVAudioPlayer?
     var menuContainer: SKNode = SKNode()
-    
+    var blinkAction: SKAction!
+    var matchmakingText: SKLabelNode!
+    var readyBtn: SKShapeNode!
     var multipeerConnect: MultipeerConnection?
     
     func setupMultipeerConnect() {
         guard let multipeerConnect = multipeerConnect else {
             return
         }
+        multipeerConnect.enablePlayerSearch()
         print("connection changed1")
         handleConnectionChange()
         cancellable = multipeerConnect.objectWillChange.sink { [weak self] _ in
@@ -32,7 +35,6 @@ class MenuSceneOverlay: SKScene {
         print("test")
         print(multipeerConnect)
         super.init(size: size)
-        self.setupMultipeerConnect()
      }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,12 +54,39 @@ class MenuSceneOverlay: SKScene {
             print("Connection status changed")
             // Update UI based on the new connection status
             // For example:
+
             if multipeerConnect?.connectedPeers.isEmpty ?? true {
                 // No connected peers
                 connectionStatusLabel?.text = "No connection"
             } else {
-                // At least one peer connected
-                connectionStatusLabel?.text = "Connection established"
+                
+                DispatchQueue.main.async { [self] in
+                    
+                    
+                    // At least one peer connected
+                    connectionStatusLabel?.text = "Connection established"
+                    matchmakingText?.text = "Match Found"
+                    readyBtn = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
+                    readyBtn.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing) * 2 + 80)
+                    readyBtn.name = "selectReadyBtn"
+                    readyBtn.strokeColor = .white
+                    readyBtn.lineWidth = 3
+                    readyBtn.fillColor = .black // Set fill color
+                    menuContainer.addChild(readyBtn)
+                    // Adding a delay of 5 seconds
+                    
+                    // Adding a delay of 5 seconds
+                    
+                    menuContainer.childNode(withName: "readyText")?.removeFromParent()
+                    addText(to: readyBtn, text: "✓", fontSize: 30)
+                    
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [self] in
+                    overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
+
+                }
+//                addText(to: readyBtn, text: "Ready", name: "readyText")
+//                node.childNode(withName: "readyText")?.removeFromParent()
             }
         }
 
@@ -97,11 +126,15 @@ class MenuSceneOverlay: SKScene {
     }
     
     
-    private func addText(to node: SKNode, text: String) {
+    
+    private func addText(to node: SKNode, text: String, fontSize: CGFloat=20, name: String="") {
         let label = SKLabelNode(text: text)
         label.fontName = "Helvetica"
-        label.fontSize = 20
+        label.fontSize = fontSize
         label.fontColor = .white
+        if name.count > 0 {
+            label.name = name
+        }
         
         // Calculate the position of the label to ensure it's centered on the button
         label.position = CGPoint(x: 0, y: -label.frame.size.height / 2 + 10)
@@ -159,14 +192,24 @@ class MenuSceneOverlay: SKScene {
     func startMatchmaking() {
         menuContainer.removeAllChildren()
         
-        // Players found Nearby
-        let label = SKLabelNode(text: "Matchmaking...")
-        label.fontName = "Helvetica"
-        label.fontSize = 48
-        label.fontColor = .white
-        // Calculate the position of the label to ensure it's centered on the button
-        label.position = CGPoint(x: frame.width / 2, y: frame.height - 100)
-        menuContainer.addChild(label)
+        // Display label for indicating matchmaking status
+        let matchmakingLabel = SKLabelNode(text: "Finding Nearby Matches...")
+        matchmakingLabel.fontName = "Helvetica"
+        matchmakingLabel.fontSize = 24
+        matchmakingLabel.fontColor = .white
+        matchmakingLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 80)
+        menuContainer.addChild(matchmakingLabel)
+        
+        
+        
+        // TODO: Add check if match is found
+//        DispatchQueue.global().async {
+//            Thread.sleep(forTimeInterval: 2)
+//            
+//            DispatchQueue.main.async {
+//                matchmakingLabel.text = "Matches Found!"
+//            }
+//        }
         
         // Back button
         let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
@@ -177,17 +220,17 @@ class MenuSceneOverlay: SKScene {
         backButton.fillColor = .black // Set fill color
         menuContainer.addChild(backButton)
         addText(to: backButton, text: "Back")
-        
-        
-        // Player 1 Placeholder
-        var selectPlayer1 = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        selectPlayer1.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 80 - (buttonSize.height + buttonSpacing) * 1)
-        selectPlayer1.name = "selectPlayerButton"
-        selectPlayer1.strokeColor = .white
-        selectPlayer1.lineWidth = 3
-        selectPlayer1.fillColor = .black // Set fill color
-        menuContainer.addChild(selectPlayer1)
-        addText(to: selectPlayer1, text: "Player 1")
+    }
+    
+    
+    func addMatchmakingText() {
+        matchmakingText = SKLabelNode(text: "Matchmaking...")
+        matchmakingText.name = "matchmaking"
+        matchmakingText.fontColor = .yellow
+        matchmakingText.fontSize = 24
+        matchmakingText.fontName = "Robota"
+        matchmakingText.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: frame.height - 100 - (buttonSize.height + buttonSpacing) * 1)
+        menuContainer.addChild(matchmakingText)
     }
     
     func showMenu() {
@@ -252,6 +295,7 @@ class MenuSceneOverlay: SKScene {
         }
     }
     
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -270,6 +314,8 @@ class MenuSceneOverlay: SKScene {
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
                 case "selectPVPButton":
                     startMatchmaking()
+                    addMatchmakingText()
+                    self.setupMultipeerConnect()
                 case "selectPlayerButton":
                     // TODO: if dynamically changing buttons, each button must represent a different player. Find a way to differentiate between button presses
 
