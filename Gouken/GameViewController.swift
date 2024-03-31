@@ -22,6 +22,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         loadGame()
     }
     
+
     func removeMenuOverlay() {
         print("Attempting to remove menu overlay...")
         view.subviews.first(where: { $0 is SKView })?.removeFromSuperview()
@@ -159,7 +160,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
 //        gamePad?.buttonA.valueChangedHandler = changeAnimationA
 //        gamePad?.buttonB.valueChangedHandler = changeAnimationB
-        scnViewNew.overlaySKScene = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+//        scnViewNew.overlaySKScene = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        scnViewNew.overlaySKScene = HealthBarScene()
         // Configure the view
         scnViewNew.backgroundColor = UIColor.black
         
@@ -190,10 +192,20 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var toggleHitboxesOff = true
     var isHitboxesOn = true
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadMenu()
+        // Configure the view
+        let skView = SKView(frame: view.frame)
+        skView.showsFPS = true
+        skView.showsNodeCount = true
+        view.addSubview(skView)
+        
+        // Create and present the scene
+        let scene = HealthBarScene(size: view.bounds.size)
+        scene.scaleMode = .aspectFill
+        skView.presentScene(scene)
+//        loadMenu()
     }
     
     func setUpHurtBoxes(player: Character?) {
