@@ -21,7 +21,7 @@ struct PlayerData: Codable {
 
 
 class MultipeerConnection: NSObject, ObservableObject {
-    private let serviceType = "GoukenMP2"
+    private let serviceType = "GoukenMP"
     private let session: MCSession
     var receivedDataHandler: ((PlayerData) -> Void)?
     private var invitationAccepted = false
