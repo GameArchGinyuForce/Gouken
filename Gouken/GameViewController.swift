@@ -102,11 +102,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
         //decide who is player 1 and player 2
         if multipeerConnect.connectedPeers.count > 0 {
-       
-            let myPeerDisplayName = multipeerConnect.myPeerId.displayName
-            let firstConnectedPeerDisplayName = multipeerConnect.connectedPeers.first!.displayName
             
-            if myPeerDisplayName > firstConnectedPeerDisplayName {
+       
+            let myPeerDisplayName = String(multipeerConnect.myPeerId.hash)
+            let firstConnectedPeerDisplayName = String(multipeerConnect.connectedPeers.first!.hash)
+            
+            print("\(myPeerDisplayName) and \(firstConnectedPeerDisplayName)")
+            
+            if (myPeerDisplayName > firstConnectedPeerDisplayName) {
             
                 playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
                 enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
@@ -134,7 +137,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // init floor physics
         initWorld(scene: scene)
-        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
+//        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
 
 //        initHitboxAttack(playerSpawn: playerSpawn)
         setUpHitboxes(player: player1!)
@@ -165,7 +168,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?
         
-        
+        ticksPassed = 0
     }
     
     var entityManager = EntityManager()
@@ -189,6 +192,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var toggleHitboxesOn = false
     var toggleHitboxesOff = true
     var isHitboxesOn = true
+    
+    var ticksPassed : Int?
     
 
     override func viewDidLoad() {
@@ -348,15 +353,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 
                 player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
-                
-//                if (multipeerConnect.connectedPeers.count == 0) {
-//                    print("!!!!without connected devices:")
-//                }
-//                if (multipeerConnect.connectedPeers.count > 0) {
-//                    print("!!!!with connected devices:")
-//                    multipeerConnect.send(player: SeralizableCharacter(characterState: '')(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
-//                }
-//                
+                              
             } else if ( abs(xValue)<deadZone) {
                 
                 player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
@@ -376,6 +373,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         
         
+        //receive data  from the beginning of loop to handle game loop
+        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
+            self?.handleReceivedData(receivedData)
+        }
+        
+        //handle game logic
+        ticksPassed!+=1
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
         lastFrameTime = time
         // Update loop for any calls (our game loop)
@@ -388,7 +392,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 //component.move()
                 
             }
-            
             // Check hitbox collisions
             if let component: HitBoxComponent = entity.component(ofType: HitBoxComponent.self) {
                 component.checkCollisions(scene: scnView.scene)
@@ -409,66 +412,104 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
-        
-        multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
-                                                           position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
-                                                           health1:player1!.health.currentHealth,health2:player2!.health.currentHealth))
 
 
-        if (player1?.state == CharacterState.RunningLeft) {
+        if (player1?.state == CharacterState.RunningLeft && !checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: playerSpawn, player2: enemySpawn)){
+            print("p1left: \(playerSpawn!.position.z - enemySpawn!.position.z)")
             playerSpawn?.position.z -= runSpeed
             playerSpawn?.eulerAngles.y = Float.pi
             
-        } else if (player1?.state == CharacterState.RunningRight) {
+        } else if (player1?.state == CharacterState.RunningRight && !checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: playerSpawn, player2: enemySpawn)){
+            print("p1right: \(playerSpawn!.position.z - enemySpawn!.position.z)")
             playerSpawn?.position.z += runSpeed
             playerSpawn?.eulerAngles.y = 0
         }
         
 
-        if (player2?.state == CharacterState.RunningLeft) {
+        if (player2?.state == CharacterState.RunningLeft && !checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
+            print("p2left: \(enemySpawn!.position.z - playerSpawn!.position.z)")
             enemySpawn?.position.z -= runSpeed
             enemySpawn?.eulerAngles.y = Float.pi
-        } else if (player2?.state == CharacterState.RunningRight) {
+        } else if (player2?.state == CharacterState.RunningRight && !checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
+            print("p2right: \(enemySpawn!.position.z - playerSpawn!.position.z)")
             enemySpawn?.position.z += runSpeed
             enemySpawn?.eulerAngles.y = 0
 
         }
+        
+        //send data at the end of the game loop
+        multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
+                                                           position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
+                                                           health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
 
         lastFrameTime = time
-        
-        
-        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
-            self?.handleReceivedData(receivedData)
-        }
-        
+    
+    }
+    
+    func checkMovementAgainstPlayerBounds(runningDirection: Float, player1: SCNNode?, player2: SCNNode?) -> Bool{
+        let boundSize: Float = 0.9
+            let newPlayerPositionZ = player1!.position.z + runningDirection
+
+             //check if the new player position is within the boundary
+            if newPlayerPositionZ < (player2!.position.z + boundSize) && newPlayerPositionZ > (player2!.position.z - boundSize) {
+                 //player is within bounds
+                 return true
+             } else {
+                 //player is outside bounds
+                 return false
+             }
     }
     
     
     func handleReceivedData(_ receivedData: PlayerData) {
-        var enemyState = receivedData.player.characterState
         
-        //refactor this later
-        if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
-            
-            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
-            
-            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
-            
-            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
-    
-            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
-            
-            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+        
+        if(receivedData.player.ticks % 1 == 0){
+            if(playerSpawn?.name == Optional("p1Spawn") ){
+                
+                //print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
+                
+                enemySpawn?.position.z = receivedData.player.position1z
+                playerSpawn?.position.z = receivedData.player.position2z
+                
+                player1!.health.currentHealth = receivedData.player.health1
+                player2!.health.currentHealth = receivedData.player.health2
+            }
+//            else if(playerSpawn?.name == Optional("p2Spawn") ){
+//                
+//                //print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
+//                
+//                enemySpawn?.position.z = enemySpawn!.presenter.worldPosition.z
+//                playerSpawn?.position.z = playerSpawn!.presenter.worldPosition.z
+//                
+//            }
         }
+        
+                     
+        var enemyState = receivedData.player.characterState
+        convertEnemyDataToClient(enemyState: enemyState)
+                     
     }
+    
+    func convertEnemyDataToClient(enemyState: CharacterState){
+            
+            if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
+        
+                player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
+            } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
+       
+                player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+            } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
+
+                player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+            }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
+
+                player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
+            }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
+
+                player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+            }
+        }
     
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
