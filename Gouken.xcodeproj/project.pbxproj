@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AC469752BBA1B6800FC3866 /* NinjaBlockingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */; };
 		0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */; };
 		0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */; };
 		1C2B21F42BA77C87006928F5 /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2B21F32BA77C87006928F5 /* GamePad.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaBlockingState.swift; sourceTree = "<group>"; };
 		0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorComponent.swift; sourceTree = "<group>"; };
 		0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineComponent.swift; sourceTree = "<group>"; };
 		1C2B21F32BA77C87006928F5 /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				DB035DE32B9861CA0014C675 /* NinjaAttackingState.swift */,
 				F05BD1102BB7616800C4BEB8 /* NinjaRunningRightState.swift */,
 				F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */,
+				0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */,
 			);
 			path = Ninja;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				DB035DD62B984DAD0014C675 /* HealthComponent.swift in Sources */,
 				DB035DE42B9861CA0014C675 /* NinjaAttackingState.swift in Sources */,
 				A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */,
+				0AC469752BBA1B6800FC3866 /* NinjaBlockingState.swift in Sources */,
 				A5F20B4E2BB8CD0D00B6B56B /* HitBoxComponent.swift in Sources */,
 				A5F20B512BB8E50700B6B56B /* NinjaMoveData.swift in Sources */,
 				DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */,

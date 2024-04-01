@@ -9,13 +9,13 @@ import Foundation
 import GameplayKit
 
 class HitBoxComponent : GKComponent {
-//    var activateHitboxes: (() -> Void)?
-//    var deactivateHitboxes: (() -> Void)?
     var hitboxes: [SCNNode] = [SCNNode]()
     var hitboxesDict: Dictionary = [String: SCNNode]()  // Dictionary to activate specific hitboxes
+    var scene: SCNScene!
     
-    init(_ smt: Bool) {
+    init(scene: SCNScene) {
         super.init()
+        self.scene = scene
     }
     
     required init?(coder: NSCoder) {
@@ -23,6 +23,18 @@ class HitBoxComponent : GKComponent {
     }
     
     override func update(deltaTime seconds: TimeInterval) {
+        // Check hitbox collisions
+        let attackerBitMask = checkCollisions(scene: self.scene)
+        if attackerBitMask == -1 {
+            return
+        }
+        
+        // Check which player hit which && whether enemy is not stunned
+        if (attackerBitMask == p1HitBox && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
+            GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, 10)
+        } else if (attackerBitMask == p2HitBox && GameManager.Instance().p1Character?.state != CharacterState.Stunned) {
+            GameManager.Instance().p1Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p2Character!, 10)
+        }
     }
     
     func addHitbox(hitbox: SCNNode) {
@@ -30,10 +42,14 @@ class HitBoxComponent : GKComponent {
         hitboxesDict[hitbox.name ?? ""] = hitbox
     }
     
-    func checkCollisions (scene: SCNScene?) -> Bool{
-        
+    /**
+     Returns the bitmask of the hitbox that collided with a hurtbox
+     
+     Returns -1 if no collision occured
+     */
+    func checkCollisions (scene: SCNScene?) -> Int? {
         if scene == nil {
-            return false
+            return -1
         }
         
         for _hitbox in hitboxes {
@@ -43,10 +59,11 @@ class HitBoxComponent : GKComponent {
             let collision = scene?.physicsWorld.contactTest(with: _hitbox.physicsBody!, options: nil)
             if (collision != nil && !collision!.isEmpty) {
                 print("First detected collision:", collision?[0])
-                return true
+                return collision?[0].nodeA.categoryBitMask
+                
             }
         }
-        return false
+        return -1
     }
     
     /**
@@ -58,7 +75,6 @@ class HitBoxComponent : GKComponent {
      the node to ensure that collisions behave consistently
      */
     func activateHitboxes() {
-        print("Activating hitboxes")
         for _hitbox in hitboxes {
             // Remove & Add physics body
             let originalPhysicsBody = _hitbox.physicsBody
@@ -67,7 +83,6 @@ class HitBoxComponent : GKComponent {
             
             _hitbox.isHidden = false
         }
-        print("Completed Activating hitboxes")
     }
     
     /**
@@ -99,7 +114,6 @@ class HitBoxComponent : GKComponent {
      See activateHitboxes() docs for more info
      */
     func deactivateHitboxes() {
-        print("Deactivating hitboxes")
         for _hitbox in hitboxes {
             // Remove & Add physics body
             let originalPhysicsBody = _hitbox.physicsBody
@@ -108,6 +122,5 @@ class HitBoxComponent : GKComponent {
             
             _hitbox.isHidden = true
         }
-        print("Completed Deactivating hitboxes")
     }
 }

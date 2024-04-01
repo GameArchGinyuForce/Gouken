@@ -48,6 +48,7 @@ class Character {
     var stateMachine      : CharacterStateMachine?
     var health            : HealthComponent
     var hitbox            : HitBoxComponent
+    var scene             : SCNScene    // Scene reference to handle collision
     
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
@@ -55,11 +56,12 @@ class Character {
     var activateHitboxByNameCallback: ((Any, Any?, Bool) -> Void)?
     var deactivateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     
-    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager) {
+    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
            playerSide = side
         characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
         playerSide = side
+        self.scene = scene
         
         parentNode.addChildNode(characterMesh)
         characterNode = parentNode.childNodes[parentNode.childNodes.count - 1]
@@ -79,7 +81,7 @@ class Character {
         
         
         // Add Hitbox Component
-        hitbox = HitBoxComponent(true)
+        hitbox = HitBoxComponent(scene: scene)
         entity.addComponent(hitbox)
         
         for component in components {
@@ -90,6 +92,9 @@ class Character {
         
         withManager.addEntity(entity)
         
+        // Bug when seting up boxes in Character
+//        setUpHurtBoxes()
+//        setUpHitboxes()
         
         // Set up callbacks
         toggleHitboxesCallback = { [weak self] param1, param2, param3 in
@@ -142,6 +147,54 @@ class Character {
             stateMachine = withStateMachine
             entity.addComponent(stateMachine!)
         }
+    }
+    
+    func setUpHurtBoxes() {
+        var modelSCNNode = characterNode.childNode(withName: "head", recursively: true)
+        var hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.3, position: SCNVector3(0, 0, -10), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "UpperArm_R", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "lowerarm_r", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "UpperArm_L", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "lowerarm_l", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "Pelvis", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "spine_02", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "Thigh_R", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "calf_r", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "Thigh_L", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
+        
+        modelSCNNode = characterNode.childNode(withName: "calf_l", recursively: true)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: playerSide)
+    }
+    
+    func setUpHitBoxes() {
+        var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
+        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_R")
+        hitbox.isHidden = true
+        addHitbox(hitboxNode: hitbox)
+        
+        modelSCNNode = characterNode.childNode(withName: "Hand_L", recursively: true)
+        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_L")
+        hitbox.isHidden = true
+        addHitbox(hitboxNode: hitbox)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
