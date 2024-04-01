@@ -52,6 +52,7 @@
 		F045520F2BB4FEB600B64ADB /* MultipeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F045520E2BB4FEB600B64ADB /* MultipeerConnection.swift */; };
 		F05BD1112BB7616800C4BEB8 /* NinjaRunningRightState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05BD1102BB7616800C4BEB8 /* NinjaRunningRightState.swift */; };
 		F05BD1132BB7617D00C4BEB8 /* NinjaRunningLeftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */; };
+		F0CE712C2BBA29CE0083ABE5 /* PyramidOfGiza.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CE712B2BBA29CE0083ABE5 /* PyramidOfGiza.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaRunningLeftState.swift; sourceTree = "<group>"; };
 		F07920342BB541D800253960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F087E8C52BB79988000E5261 /* Loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = Loading.gif; path = /Downloads/Loading.gif; sourceTree = "<absolute>"; };
+		F0CE712B2BBA29CE0083ABE5 /* PyramidOfGiza.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PyramidOfGiza.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			children = (
 				1C7C931C2B981F1200B59858 /* Stage.swift */,
 				1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */,
+				F0CE712B2BBA29CE0083ABE5 /* PyramidOfGiza.swift */,
 			);
 			path = Stages;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				8767925A2BB77995009B05ED /* HitBox.swift in Sources */,
 				DB035DDC2B984FBF0014C675 /* NinjaBaseState.swift in Sources */,
 				1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */,
+				F0CE712C2BBA29CE0083ABE5 /* PyramidOfGiza.swift in Sources */,
 				F02176962B82B814000993B2 /* Character.swift in Sources */,
 				0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */,
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,

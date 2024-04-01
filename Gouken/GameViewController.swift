@@ -77,7 +77,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
         // let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
-        var stage : Stage = AmazingBrentwood(withManager: entityManager)
+        var stage : Stage = PyramidOfGiza(withManager: entityManager)
         let scene = stage.scene!
         
         
