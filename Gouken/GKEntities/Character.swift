@@ -77,7 +77,7 @@ class Character {
         entity.addComponent(animator)
         
         // Add Health Component
-        health = HealthComponent(maxHealth: 100)
+        health = HealthComponent(maxHealth: 10000)
         entity.addComponent(health)
         
         
