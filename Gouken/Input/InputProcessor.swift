@@ -54,23 +54,63 @@ TOUCH IT OTHERWISE BU HA0
 func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character) {
     buffer.updateInput()
     
-    let moveSequencesNinja =
-    [
-        ([ButtonType.Down, ButtonType.Right, ButtonType.LP], 1, 55),
-        ([ButtonType.LP], 1, 1),
-        ([ButtonType.Down], 1, 1),
-        ([ButtonType.Right], 1, 1),
-        ([ButtonType.Left], 1, 1),
-        ([ButtonType.Up], 1, 1),
-        ([ButtonType.HP], 1, 1)
-    ]
+    let stateToChangeTo = readSequences(fromList: NinjaMoveSet, andBuffer: buffer).stateChages
+    let isCharIdle = player.state == CharacterState.Idle
+    let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight || player.state == CharacterState.Blocking
+    let playerStateChanger = {(state : CharacterState) in
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[state]!)
+    }
     
-    print(readSequences(fromList: moveSequencesNinja, andBuffer: buffer))    
+    
+    if (player.state == CharacterState.Downed || player.state == CharacterState.Stunned) {
+        return // character is dead or stunned
+    }
+    
+    switch (stateToChangeTo) {
+    case .Stunned:
+        playerStateChanger(.Stunned)
+        break
+    case .Downed:
+        playerStateChanger(.Downed)
+        break
+    case .RunningLeft:
+        if (isCharIdle) {
+            playerStateChanger(.RunningLeft)
+        }
+        break
+    case .RunningRight:
+        if (isCharIdle) {
+            playerStateChanger(.RunningRight)
+        }
+        break
+    case .Attacking:
+        if (isCharIdle) {
+            playerStateChanger(.Attacking)
+        }
+        break
+    case .Idle:
+        if (canEnterNeutral) {
+            playerStateChanger(.Idle)
+        }
+        break
+    case .Jumping:
+        if (isCharIdle) {
+            playerStateChanger(.Jumping)
+        }
+        break
+    case .Blocking:
+        if (isCharIdle) {
+            playerStateChanger(.Blocking)
+        }
+        break
+    }
 }
 
 
-func readSequences(fromList seq: [([ButtonType], Int, Int)], andBuffer buffer: InputBuffer) -> ([ButtonType], Int, Int) {
-    for (moveSequence, movePriority, frameLeniency) in seq {
+func readSequences(fromList seq: [CharacterMove], andBuffer buffer: InputBuffer) -> CharacterMove {
+    for move in seq {
+        let moveSequence = move.sequence
+        let frameLeniency = move.frameLeniency
         var currentBufferFrame = 0
         var sequenceIdx = moveSequence.count - 1
         while (currentBufferFrame < frameLeniency) {
@@ -81,14 +121,14 @@ func readSequences(fromList seq: [([ButtonType], Int, Int)], andBuffer buffer: I
             }
             
             if (sequenceIdx == -1) {
-                return (moveSequence, movePriority, frameLeniency)
+                return move
             }
             
             currentBufferFrame += 1
         }
     }
     
-    return ([ButtonType.Neutral], 0, 0)
+    return CharacterMove(sequence: [ButtonType.Neutral], stateChages: CharacterState.Idle, priority: 1, frameLeniency: 1, attackKeyFrames: [])
     
 //    // below dinky shit bc swift does not have negative modulus
 //    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize

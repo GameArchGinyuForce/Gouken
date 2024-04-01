@@ -14,7 +14,7 @@ class NinjaAttackingState: NinjaBaseState {
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
         
         // Hardcoded retrieval of move
-        let move = NinjaMoveSet[0]
+        let move = NinjaMoveSet[3]
         
         move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
     }
