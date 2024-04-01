@@ -34,6 +34,7 @@ enum CharacterState : String, Codable {
     case Jumping
     case Blocking
     case Downed
+    case Dashing
 }
 
 class Character {
@@ -49,6 +50,7 @@ class Character {
     var health            : HealthComponent
     var hitbox            : HitBoxComponent
     var scene             : SCNScene    // Scene reference to handle collision
+    var parentNode        : SCNNode
     
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
@@ -89,6 +91,8 @@ class Character {
         }
 
         state = CharacterState.Idle
+        
+        self.parentNode = parentNode
         
         withManager.addEntity(entity)
         

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1FEE722BBB6ED4002C000A /* NinjaDashingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FEE712BBB6ED4002C000A /* NinjaDashingState.swift */; };
 		0AC469752BBA1B6800FC3866 /* NinjaBlockingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */; };
 		0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */; };
 		0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */; };
@@ -22,6 +23,7 @@
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* HurtBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* HurtBox.swift */; };
 		954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765E2B9D6EF300CB7767 /* Colliders.swift */; };
+		95DBEA6A2BBA8A36001F04A7 /* NinjaJumpState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBEA692BBA8A36001F04A7 /* NinjaJumpState.swift */; };
 		A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BA078B2BA7A5F00080B32E /* GameManager.swift */; };
 		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
 		A5F20B4E2BB8CD0D00B6B56B /* HitBoxComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F20B4D2BB8CD0D00B6B56B /* HitBoxComponent.swift */; };
@@ -57,6 +59,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A1FEE712BBB6ED4002C000A /* NinjaDashingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaDashingState.swift; sourceTree = "<group>"; };
 		0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaBlockingState.swift; sourceTree = "<group>"; };
 		0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorComponent.swift; sourceTree = "<group>"; };
 		0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineComponent.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		954F765C2B9D6ED700CB7767 /* HurtBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HurtBox.swift; sourceTree = "<group>"; };
 		954F765E2B9D6EF300CB7767 /* Colliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colliders.swift; sourceTree = "<group>"; };
+		95DBEA692BBA8A36001F04A7 /* NinjaJumpState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaJumpState.swift; sourceTree = "<group>"; };
 		A5BA078B2BA7A5F00080B32E /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
 		A5F20B4D2BB8CD0D00B6B56B /* HitBoxComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitBoxComponent.swift; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 				F05BD1102BB7616800C4BEB8 /* NinjaRunningRightState.swift */,
 				F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */,
 				0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */,
+				95DBEA692BBA8A36001F04A7 /* NinjaJumpState.swift */,
+				0A1FEE712BBB6ED4002C000A /* NinjaDashingState.swift */,
 			);
 			path = Ninja;
 			sourceTree = "<group>";
@@ -372,6 +378,7 @@
 				DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */,
 				F021769E2B82BBAF000993B2 /* EntityManager.swift in Sources */,
 				F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */,
+				95DBEA6A2BBA8A36001F04A7 /* NinjaJumpState.swift in Sources */,
 				8767925A2BB77995009B05ED /* HitBox.swift in Sources */,
 				DB035DDC2B984FBF0014C675 /* NinjaBaseState.swift in Sources */,
 				1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */,
@@ -391,6 +398,7 @@
 				A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */,
 				0AC469752BBA1B6800FC3866 /* NinjaBlockingState.swift in Sources */,
 				A5F20B4E2BB8CD0D00B6B56B /* HitBoxComponent.swift in Sources */,
+				0A1FEE722BBB6ED4002C000A /* NinjaDashingState.swift in Sources */,
 				A5F20B512BB8E50700B6B56B /* NinjaMoveData.swift in Sources */,
 				DB035DD92B984F820014C675 /* NinjaStateMachine.swift in Sources */,
 				DB035DE22B98509D0014C675 /* NinjaIdleState.swift in Sources */,
