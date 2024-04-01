@@ -8,7 +8,7 @@
 enum StageSelected {
     case
     AmazingBrentwood,
-    Map_2,
+    PyramidOfGiza,
     Map_3
 }
 
