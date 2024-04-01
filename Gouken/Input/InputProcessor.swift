@@ -54,40 +54,39 @@ TOUCH IT OTHERWISE BU HA0
 func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character) {
     buffer.updateInput()
     
-    // below dinky shit bc swift does not have negative modulus
-    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize
-    let input = buffer.buffer[readIdx]
-    let isCharIdle = player.state == CharacterState.Idle
-    let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight
+    let moveSequencesNinja =
+    [
+        ([ButtonType.Down, ButtonType.Right, ButtonType.LP], 1, 55),
+        ([ButtonType.LP], 1, 1),
+        ([ButtonType.Down], 1, 1),
+        ([ButtonType.Right], 1, 1),
+        ([ButtonType.Left], 1, 1),
+        ([ButtonType.Up], 1, 1),
+        ([ButtonType.HP], 1, 1)
+    ]
     
-    if (input == ButtonType.Right && isCharIdle) {
-        player.stateMachine?.switchState(NinjaRunningRightState((player.stateMachine! as! NinjaStateMachine)))
-    } else if (input == ButtonType.Left && isCharIdle) {
-        player.stateMachine?.switchState(NinjaRunningLeftState((player.stateMachine! as! NinjaStateMachine)))
-    } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
-        player.stateMachine?.switchState(NinjaAttackingState((player.stateMachine! as! NinjaStateMachine)))
-        
-        // Hardcoded adding of events for hitbox toggling
-//            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
-        player.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
-            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        player.animator.addAnimationEvent(keyTime: 0.2, callback: (player.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
-        player.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
-            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        player.animator.addAnimationEvent(keyTime: 0.4, callback: (player.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
-        player.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
-            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        player.animator.addAnimationEvent(keyTime: 0.6, callback: (player.deactivateHitboxesCallback)!)
+    print(readSequences(fromList: moveSequencesNinja, andBuffer: buffer))    
+}
 
-    } else if (canEnterNeutral && input == ButtonType.Neutral) {
-        player.stateMachine?.switchState(NinjaIdleState((player.stateMachine! as! NinjaStateMachine)))
+
+func readSequences(fromList seq: [([ButtonType], Int, Int)], andBuffer buffer: InputBuffer) -> ([ButtonType], Int, Int) {
+    for (moveSequence, movePriority, frameLeniency) in seq {
+        var currentBufferFrame = 0
+        var sequenceIdx = moveSequence.count - 1
+        while (currentBufferFrame < frameLeniency) {
+            let readIdx = (buffer.writeIdx - currentBufferFrame - 1) < 0 ? bufferSize - currentBufferFrame - 1 : (buffer.writeIdx - currentBufferFrame - 1) % bufferSize
+            
+            if (moveSequence[sequenceIdx] == buffer.buffer[readIdx]) {
+                sequenceIdx -= 1
+            }
+            
+            if (sequenceIdx == -1) {
+                return (moveSequence, movePriority, frameLeniency)
+            }
+            
+            currentBufferFrame += 1
+        }
     }
+    
+    return ([ButtonType.Neutral], 0, 0)
 }
