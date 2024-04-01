@@ -404,31 +404,56 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             toggleHitboxesOff = false
             player1?.hitbox.deactivateHitboxes()
         }
-        
+   
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
 
+        
 
-        if (player1?.state == CharacterState.RunningLeft && !checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: playerSpawn, player2: enemySpawn)){
-            print("p1left: \(playerSpawn!.position.z - enemySpawn!.position.z)")
-            playerSpawn?.position.z -= runSpeed
-            playerSpawn?.eulerAngles.y = Float.pi
-            
-        } else if (player1?.state == CharacterState.RunningRight && !checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: playerSpawn, player2: enemySpawn)){
-            print("p1right: \(playerSpawn!.position.z - enemySpawn!.position.z)")
-            playerSpawn?.position.z += runSpeed
-            playerSpawn?.eulerAngles.y = 0
+        if (player1?.state == CharacterState.RunningLeft && !((playerSpawn!.position.z - runSpeed) < -3.0)){
+            if(!checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: playerSpawn, player2: enemySpawn)){
+                
+                playerSpawn?.position.z -= runSpeed
+                playerSpawn?.eulerAngles.y = Float.pi
+            }else{
+                
+                playerSpawn?.position.z -= runSpeed/2
+                enemySpawn?.position.z -= runSpeed/2
+                playerSpawn?.eulerAngles.y = Float.pi
+            }
+        } else if (player1?.state == CharacterState.RunningRight && !((playerSpawn!.position.z + runSpeed) > 2.6)){ if(!checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: playerSpawn, player2: enemySpawn))
+            {
+                
+                playerSpawn?.position.z += runSpeed
+                playerSpawn?.eulerAngles.y = 0
+            }else{
+                
+                playerSpawn?.position.z += runSpeed/2
+                enemySpawn?.position.z += runSpeed/2
+                playerSpawn?.eulerAngles.y = 0
+            }
         }
         
 
-        if (player2?.state == CharacterState.RunningLeft && !checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
-            print("p2left: \(enemySpawn!.position.z - playerSpawn!.position.z)")
-            enemySpawn?.position.z -= runSpeed
-            enemySpawn?.eulerAngles.y = Float.pi
-        } else if (player2?.state == CharacterState.RunningRight && !checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
-            print("p2right: \(enemySpawn!.position.z - playerSpawn!.position.z)")
+        if (player2?.state == CharacterState.RunningLeft && !((enemySpawn!.position.z - runSpeed) < -3.0)){
+            if(!checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
+               
+                enemySpawn?.position.z -= runSpeed
+                enemySpawn?.eulerAngles.y = Float.pi
+            }else{
+                playerSpawn?.position.z -= runSpeed/2
+                enemySpawn?.position.z -= runSpeed/2
+                enemySpawn?.eulerAngles.y = Float.pi
+            }
+        } else if (player2?.state == CharacterState.RunningRight && !((enemySpawn!.position.z + runSpeed) > 2.6)){
+            if(!checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
+              
             enemySpawn?.position.z += runSpeed
             enemySpawn?.eulerAngles.y = 0
-
+        }else{
+            playerSpawn?.position.z += runSpeed/2
+            enemySpawn?.position.z += runSpeed/2
+            enemySpawn?.eulerAngles.y = 0
+        }
         }
         
         //send data at the end of the game loop

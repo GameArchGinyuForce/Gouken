@@ -66,6 +66,8 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
     } else if (input == ButtonType.Down && isCharIdle) {
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Blocking]!)
+    } else if (input == ButtonType.Up && isCharIdle) {
+            player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Jumping]!)
     } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
         
