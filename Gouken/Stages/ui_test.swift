@@ -97,12 +97,12 @@ class HealthBarScene: SKScene {
            }
        }
        
-       // Function to format time as minutes and seconds
-       func formatTime(_ seconds: Int) -> String {
-           let minutes = seconds / 60
-           let seconds = seconds % 60
-           return String(format: "%02d:%02d", minutes, seconds)
-       }
+
+    // Function to format time as seconds
+    func formatTime(_ seconds: Int) -> String {
+        return String(format: "%02d", seconds)
+    }
+
        
        // sample endgame function
        func endGame() {
