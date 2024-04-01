@@ -82,6 +82,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // Retrieve the SCNView
         let scnViewNew = self.view as! SCNView
+        
+
         scnViewNew.scene?.physicsWorld.contactDelegate = self
         
         // Set the scene to the view
@@ -377,6 +379,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             self?.handleReceivedData(receivedData)
         }
         
+        if (player2?.state == CharacterState.Idle) {
+            player2?.stateMachine?.switchState((player2?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
+        }
+        
         //handle game logic
         ticksPassed!+=1
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
@@ -466,7 +472,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func checkMovementAgainstPlayerBounds(runningDirection: Float, player1: SCNNode?, player2: SCNNode?) -> Bool{
-        let boundSize: Float = 0.9
+        let boundSize: Float = 0.5
             let newPlayerPositionZ = player1!.position.z + runningDirection
 
              //check if the new player position is within the boundary

@@ -28,7 +28,7 @@ func initHurtboxAttack(
     hurtBoxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hurtBoxGeometry, options: nil))
     hurtBoxNode.physicsBody?.isAffectedByGravity = false
     
-    if pside == PlayerType.P1 {
+    if pside == PlayerType.P2 {
         hurtBoxNode.physicsBody?.categoryBitMask = p1HurtBox
         hurtBoxNode.physicsBody?.collisionBitMask = p2HitBox
         hurtBoxNode.physicsBody?.contactTestBitMask = p2HitBox
