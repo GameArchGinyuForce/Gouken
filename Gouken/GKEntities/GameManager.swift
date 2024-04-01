@@ -37,10 +37,11 @@ class GameManager {
     
     // Initial Implementation, consider better design
     var stageSelected: StageSelected?
-    var p1Character: CharacterSelected?
-    var p2Character: CharacterSelected?
+    var p1Character: Character?
+    var p2Character: Character?
     var matchType: MatchType?
     var currentScene: CurrentScene?
+    
     
     // TODO: Additional parameters including Settings (Sound level, etc.), playerId?, matchHistory?
     

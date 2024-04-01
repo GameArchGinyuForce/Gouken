@@ -89,4 +89,43 @@ func readSequences(fromList seq: [([ButtonType], Int, Int)], andBuffer buffer: I
     }
     
     return ([ButtonType.Neutral], 0, 0)
+    
+//    // below dinky shit bc swift does not have negative modulus
+//    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize
+//    let input = buffer.buffer[readIdx]
+//    let isCharIdle = player.state == CharacterState.Idle
+//    let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight || player.state == CharacterState.Blocking
+//    
+//    if (input == ButtonType.Right && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
+//    } else if (input == ButtonType.Left && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
+//    } else if (input == ButtonType.Down && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Blocking]!)
+//    } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
+//        
+//        // Hardcoded adding of events for hitbox toggling
+////            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
+//        player.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
+//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+//        }
+//        
+//        player.animator.addAnimationEvent(keyTime: 0.2, callback: (player.deactivateHitboxesCallback)!)
+////            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
+//        player.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
+//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+//        }
+//        
+//        player.animator.addAnimationEvent(keyTime: 0.4, callback: (player.deactivateHitboxesCallback)!)
+////            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
+//        player.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
+//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+//        }
+//        
+//        player.animator.addAnimationEvent(keyTime: 0.6, callback: (player.deactivateHitboxesCallback)!)
+//
+//    } else if (canEnterNeutral && input == ButtonType.Neutral) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
+//    }
 }

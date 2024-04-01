@@ -64,7 +64,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         GameManager.Instance().doSomething();
         
-        
     }
     
     func loadGame() {
@@ -121,13 +120,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
            
         }
 
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, withManager: entityManager)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, withManager: entityManager)
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, withManager: entityManager, scene: scene)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, withManager: entityManager, scene: scene)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
         player1?.characterNode.name = "Ninja1"
         player2?.characterNode.name = "Ninja2"
+        
+        GameManager.Instance().p1Character = player1
+        GameManager.Instance().p2Character = player2
         
         // configure the view
         scnView.backgroundColor = UIColor.black
@@ -269,11 +271,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func setUpHitboxes(player: Character?) {
         var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
         var _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide, name: "Hand_R")
+        _hitbox.isHidden = true
         player1?.addHitbox(hitboxNode: _hitbox)
         
         modelSCNNode = player1?.characterNode.childNode(withName: "Hand_L", recursively: true)
         _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide, name: "Hand_L")
+        _hitbox.isHidden = true
         player1?.addHitbox(hitboxNode: _hitbox)
+        
+//        modelSCNNode = player2?.characterNode.childNode(withName: "Hand_R", recursively: true)
+//        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player2!.playerSide, name: "Hand_R")
+//        _hitbox.isHidden = true
+//        player2?.addHitbox(hitboxNode: _hitbox)
+//        
+//        modelSCNNode = player2?.characterNode.childNode(withName: "Hand_L", recursively: true)
+//        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player2!.playerSide, name: "Hand_L")
+//        _hitbox.isHidden = true
+//        player2?.addHitbox(hitboxNode: _hitbox)
         
     }
 
@@ -307,28 +321,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     // On attack, check that character's Hitboxes and check collisions
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
-            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
-            
-            // Hardcoded adding of events for hitbox toggling
-//            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.2, callback: (player1?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.4, callback: (player1?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.6, callback: (player1?.deactivateHitboxesCallback)!)
-            
+            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))            
         }
     }
         
@@ -343,11 +336,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 
                 print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
-                player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
+                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
                 
             } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
                 
-                player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
+                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
                 
 //                if (multipeerConnect.connectedPeers.count == 0) {
 //                    print("!!!!without connected devices:")
@@ -359,7 +352,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //                
             } else if ( abs(xValue)<deadZone) {
                 
-                player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
+                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
                 
             }
     }
@@ -388,25 +381,19 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 //component.move()
                 
             }
-            
-            // Check hitbox collisions
-            if let component: HitBoxComponent = entity.component(ofType: HitBoxComponent.self) {
-                component.checkCollisions(scene: scnView.scene)
-            }
         }
-        
-
-        // Hitboxes bugfixing
-        if toggleHitboxesOn {
-            print("toggleHitboxesOn")
-            toggleHitboxesOn = false
-            player1?.hitbox.activateHitboxes()
-        }
-        if toggleHitboxesOff {
-            print("toggleHitboxesOff")
-            toggleHitboxesOff = false
-            player1?.hitbox.deactivateHitboxes()
-        }
+//        
+//        // Hitboxes bugfixing
+//        if toggleHitboxesOn {
+//            print("toggleHitboxesOn")
+//            toggleHitboxesOn = false
+//            player1?.hitbox.activateHitboxes()
+//        }
+//        if toggleHitboxesOff {
+//            print("toggleHitboxesOff")
+//            toggleHitboxesOff = false
+//            player1?.hitbox.deactivateHitboxes()
+//        }
         
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
         
@@ -450,23 +437,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         //refactor this later
         if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
             
-            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
             
         } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
             
-            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
             
         } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
             
-            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
             
         }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
     
-            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Stunned]!)
             
         }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
             
-            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+            player2?.stateMachine?.switchState((player2!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
         }
     }
     
