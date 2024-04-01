@@ -532,9 +532,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func convertEnemyDataToClient(enemyState: CharacterState){
-        if (player2?.state == CharacterState.Stunned) {
-            return
-        }
+            if (player2?.state == CharacterState.Stunned) {
+                return
+            }
+        
             if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
                 player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
             } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
