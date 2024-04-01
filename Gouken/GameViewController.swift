@@ -171,8 +171,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
 //        gamePad?.buttonA.valueChangedHandler = changeAnimationA
 //        gamePad?.buttonB.valueChangedHandler = changeAnimationB
-        scnViewNew.overlaySKScene = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
-        // Configure the view
+        
+        
+        let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        
+        // Setup healthbar
+        let healthBarOverlay = setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        
+        gamepadOverlay.addChild(healthBarOverlay)
+        scnViewNew.overlaySKScene = gamepadOverlay
+        
+        
+        
+        
+        
+        
         scnViewNew.backgroundColor = UIColor.black
         
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?
