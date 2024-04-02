@@ -13,6 +13,8 @@ class GameplayStatusOverlay: SKScene {
     var playerHPBar: SKSpriteNode!
     private var opponentHP = 150
     var opponentHPBar: SKSpriteNode!
+    var currentRound = 1 // Initialize current round
+    var skScene: SKScene!
     
     
     override init(size: CGSize) {
@@ -28,7 +30,7 @@ class GameplayStatusOverlay: SKScene {
         
         let sceneSize = CGSize(width: width, height: height)
         print("Screen size of ", width, " by ", height)
-        let skScene = SKScene(size: sceneSize)
+        skScene = SKScene(size: sceneSize)
         skScene.scaleMode = .resizeFill
         
         timerLabel = SKLabelNode(text: "Gouken") //shows the game title before the game starts with the timer
@@ -48,6 +50,19 @@ class GameplayStatusOverlay: SKScene {
         setupPlayer2Stats(skScene: skScene)
         
         return skScene
+    }
+    
+    
+    // TODO: Reset player states & their health here
+    func startNewRound() {
+        currentRound += 1
+        // Reset player and opponent health, update UI
+        playerHealth = 1.0
+        opponentHealth = 1.0
+        updatePlayerHealth(playerHealth)
+        updateOpponentHealth(opponentHealth)
+        totalTime = 10 // Reset timer
+        startTimer()
     }
     
     
@@ -140,6 +155,10 @@ class GameplayStatusOverlay: SKScene {
         skScene.addChild(playerHPLabel)
         
     }
+    
+    func showRoundNumber() {
+        
+    }
 
     func startTimer() {
            countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
@@ -177,8 +196,24 @@ class GameplayStatusOverlay: SKScene {
            
            print("\(winner) wins!")
            
+           
+           let roundNumberLabel = SKLabelNode(text: "Round \(currentRound)")
+           roundNumberLabel.fontSize = 30
+           roundNumberLabel.fontName = "Arial-BoldMT"
+           roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+           roundNumberLabel.fontColor = .white
+           roundNumberLabel.fontSize = 30
+           roundNumberLabel.zPosition = 10
+           skScene.addChild(roundNumberLabel)
+           
            // Stop the timer
            countdownTimer?.invalidate()
+           
+           DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+               roundNumberLabel.removeFromParent()
+               self.startNewRound()
+           }
+
        }
     
     
