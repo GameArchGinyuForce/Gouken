@@ -16,7 +16,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
-    var UIstats: SKScene!
+    var gameplayStatsOverlay: GameplayStatusOverlay!
     
     func playButtonPressed() {
         removeMenuOverlay()
@@ -175,8 +175,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         
         
-        
-        let UIstats = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height)).setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
+        let UIstats = gameplayStatsOverlay.setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
         
         let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
               
@@ -423,8 +423,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
    
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
-
-        
+               
 
         if (player1?.state == CharacterState.RunningLeft && !((playerSpawn!.position.z - runSpeed) < -3.0)){
             if(!checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: playerSpawn, player2: enemySpawn)){
