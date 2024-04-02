@@ -41,7 +41,18 @@ enum CharacterState : String, Codable {
     case DashingRight
 }
 
-class Character {
+let runSpeed = 0.06
+
+class Character: Equatable {
+    
+    static func == (lhs: Character, rhs: Character) -> Bool {
+       
+         return lhs.characterName == rhs.characterName &&
+                lhs.playerSide == rhs.playerSide &&
+                lhs.state == rhs.state &&
+                lhs.entity == rhs.entity
+     }
+    
     
     var entity            : GKEntity = GKEntity() // composition over inheritance :^) - omg so smart
     var characterNode     : SCNNode
@@ -57,13 +68,15 @@ class Character {
     var parentNode        : SCNNode
     var hurtBoxes         : [SCNNode] = []
     
+    
+    
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     var activateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     var activateHitboxByNameCallback: ((Any, Any?, Bool) -> Void)?
     var deactivateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     
-    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene) {
+    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene, statsUI: GameplayStatusOverlay) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
            playerSide = side
         characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
@@ -83,12 +96,12 @@ class Character {
         entity.addComponent(animator)
         
         // Add Health Component
-        health = HealthComponent(maxHealth: 100)
+        health = HealthComponent(maxHealth: 150, statsUI: statsUI)
         entity.addComponent(health)
         
         
         // Add Hitbox Component
-        hitbox = HitBoxComponent(scene: scene)
+        hitbox = HitBoxComponent(scene: scene, statsUI: statsUI)
         entity.addComponent(hitbox)
         
         for component in components {
@@ -206,7 +219,7 @@ class Character {
     
     func setUpHitBoxes() {
         var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
-        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.2, length: 0.2, position: SCNVector3(-30, -60, -10), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/32, y: 0, z: -Float.pi/8))
+        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.3, length: 0.2, position: SCNVector3(-30, -60, -20), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/10, y: 0, z: -Float.pi/7))
         hitbox.isHidden = true
         addHitbox(hitboxNode: hitbox)
         
