@@ -5,6 +5,8 @@
 //  Created by Nathan Dong on 2024-03-17.
 //
 
+import SceneKit
+
 enum StageSelected {
     case
     AmazingBrentwood,
@@ -39,6 +41,7 @@ class GameManager {
     var stageSelected: StageSelected?
     var p1Character: Character?
     var p2Character: Character?
+    var camera: SCNNode?
     var matchType: MatchType?
     var currentScene: CurrentScene?
     

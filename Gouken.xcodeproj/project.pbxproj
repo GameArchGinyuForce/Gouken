@@ -19,6 +19,7 @@
 		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
 		1CDA63062BB6497600B76510 /* InputProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDA63052BB6497600B76510 /* InputProcessor.swift */; };
 		1CDA63092BB663F500B76510 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = 1CDA63082BB663F500B76510 /* Atomics */; };
+		874D58EE2BBC9B2300FE168A /* CameraComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874D58ED2BBC9B2300FE168A /* CameraComponent.swift */; };
 		875B13CF2BBB7EAA00B68AF1 /* NinjaHeavyAttackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875B13CE2BBB7EAA00B68AF1 /* NinjaHeavyAttackingState.swift */; };
 		8767925A2BB77995009B05ED /* HitBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876792592BB77995009B05ED /* HitBox.swift */; };
 		954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */; };
@@ -72,6 +73,7 @@
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
 		1CDA63052BB6497600B76510 /* InputProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputProcessor.swift; sourceTree = "<group>"; };
+		874D58ED2BBC9B2300FE168A /* CameraComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraComponent.swift; sourceTree = "<group>"; };
 		875B13CE2BBB7EAA00B68AF1 /* NinjaHeavyAttackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaHeavyAttackingState.swift; sourceTree = "<group>"; };
 		876792592BB77995009B05ED /* HitBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitBox.swift; sourceTree = "<group>"; };
 		954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				DB035DD52B984DAD0014C675 /* HealthComponent.swift */,
 				A5F20B4D2BB8CD0D00B6B56B /* HitBoxComponent.swift */,
 				0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */,
+				874D58ED2BBC9B2300FE168A /* CameraComponent.swift */,
 			);
 			path = GKComponents;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				F05BD1112BB7616800C4BEB8 /* NinjaRunningRightState.swift in Sources */,
 				A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */,
 				DBC19D392B7BB38F007C7323 /* State.swift in Sources */,
+				874D58EE2BBC9B2300FE168A /* CameraComponent.swift in Sources */,
 				DB035DDE2B984FCB0014C675 /* NinjaDownedState.swift in Sources */,
 				875B13CF2BBB7EAA00B68AF1 /* NinjaHeavyAttackingState.swift in Sources */,
 				DB59F5692B89C71500B2D52D /* AnimationList.swift in Sources */,
