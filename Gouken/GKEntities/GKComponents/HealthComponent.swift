@@ -22,6 +22,7 @@ class HealthComponent : GKComponent {
     }
     
     override func update(deltaTime seconds: TimeInterval) {
+        print("currentHealth: \(currentHealth)")
     }
     
     func damage(_ amount: Int) {

@@ -30,6 +30,7 @@ enum CharacterState : String, Codable {
     case RunningLeft
     case RunningRight
     case Attacking
+    case HeavyAttacking
     case Idle
     case Jumping
     case Blocking
