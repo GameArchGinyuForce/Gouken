@@ -123,9 +123,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
            
         }
+        
+        
+        
+        gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
+        let statsUI = gameplayStatsOverlay.setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        
 
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, withManager: entityManager, scene: scene)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, withManager: entityManager, scene: scene)
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
@@ -174,16 +180,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        gamePad?.buttonB.valueChangedHandler = changeAnimationB
         
         
-        
-        gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
-        let UIstats = gameplayStatsOverlay.setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
-        
+
         let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
               
-        
-        
-        UIstats.addChild(gamepadOverlay)
-        scnViewNew.overlaySKScene = UIstats
+        statsUI.addChild(gamepadOverlay)
+        scnViewNew.overlaySKScene = statsUI
         
         
         

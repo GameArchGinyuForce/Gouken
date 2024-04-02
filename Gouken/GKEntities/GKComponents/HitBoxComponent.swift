@@ -30,10 +30,11 @@ class HitBoxComponent : GKComponent {
         }
         
         // Check which player hit which && whether enemy is not stunned
+        // TODO: Define how the attacks are being controlled
         if (attackerBitMask == p1HitBox && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
-            GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, 10)
+            GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, 25)
         } else if (attackerBitMask == p2HitBox && GameManager.Instance().p1Character?.state != CharacterState.Stunned) {
-            GameManager.Instance().p1Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p2Character!, 10)
+            GameManager.Instance().p1Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p2Character!, 25)
         }
     }
     
