@@ -173,13 +173,19 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        gamePad?.buttonB.valueChangedHandler = changeAnimationB
         
         
+        
+        
+        let healthBarOverlay = HealthBarOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height)).setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        
         let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
         
         // Setup healthbar
-        let healthBarOverlay = setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
         
-        gamepadOverlay.addChild(healthBarOverlay)
-        scnViewNew.overlaySKScene = gamepadOverlay
+        
+        
+        
+        healthBarOverlay.addChild(gamepadOverlay)
+        scnViewNew.overlaySKScene = healthBarOverlay
         
         
         
