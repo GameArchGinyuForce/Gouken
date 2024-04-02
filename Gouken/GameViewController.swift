@@ -66,6 +66,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return // Ensure self.view is actually an SCNView
         }
         
+        AudioManager.Instance().playBackgoundMusicSoundByURL(fileName: "Gouken_Menu_Theme", ext: ".mp3")
         GameManager.Instance().doSomething();
         
     }
@@ -76,6 +77,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return
         }
         
+        AudioManager.Instance().stopAllAudioChannels()
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
