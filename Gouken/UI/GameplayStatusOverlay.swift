@@ -82,13 +82,13 @@ class GameplayStatusOverlay: SKScene {
         skScene.addChild(opponentHPLabel)
     }
     
-    func playerTakenDamage(attackType: ButtonType) {
+    func playerTakenDamage(amount: Int) {
         
         if playerHP == 0 {
             return
         }
         
-        playerHP -= (attackType == ButtonType.LP ? 25 : 35)
+        playerHP -= amount
         
         if playerHP < 0 {
             playerHP = 0
@@ -96,11 +96,11 @@ class GameplayStatusOverlay: SKScene {
         playerHPBar.size.width = CGFloat(playerHP)
     }
     
-    func opponentTakenDamage(attackType: ButtonType) {
+    func opponentTakenDamage(amount: Int) {
         if opponentHP == 0 {
             return
         }
-        opponentHP -= (attackType == ButtonType.LP ? 25 : 35)
+        opponentHP -= amount
         if opponentHP < 0 {
             opponentHP = 0
         }
