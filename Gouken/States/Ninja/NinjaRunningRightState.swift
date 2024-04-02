@@ -9,8 +9,7 @@ class NinjaRunningRightState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaRunningState")
-      
+        
         stateMachine.character.setState(withState: CharacterState.RunningRight)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.RunningRight]!, loop: true)
         
@@ -28,11 +27,8 @@ class NinjaRunningRightState: NinjaBaseState {
     }
     
     func exit() {
-        if(stateMachine.character.parentNode.eulerAngles.y == Float.pi){
-            stateMachine.character.parentNode.eulerAngles.x += 0.25
-        }
+        stateMachine.character.parentNode.eulerAngles.x = 0.0
         stateMachine.character.animator.setSpeed(1)
         
-        print("exit NinjaRunningState")
     }
 }

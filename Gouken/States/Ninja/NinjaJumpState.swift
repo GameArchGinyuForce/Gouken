@@ -19,7 +19,7 @@ class NinjaJumpState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaJumptate")
+        print("enter NinjaJump state")
         self.initialPositionY = stateMachine.character.parentNode.position.y
         stateMachine.character.setState(withState: CharacterState.Jumping)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Jumping]!, loop: false)
