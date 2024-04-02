@@ -78,6 +78,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         AudioManager.Instance().stopAllAudioChannels()
+        AudioManager.Instance().playBackgoundMusicSoundByURL(fileName: "Gouken_Battle_Theme", ext: ".mp3")
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         

@@ -9,6 +9,7 @@ class NinjaAttackingState: NinjaBaseState {
     }
     
     func enter() {
+        AudioManager.Instance().playEffectSoundByURL(fileName: "Ninja_Swing_Effect", ext: ".mp3")
         print("enter NinjaAttackingState")
         stateMachine.character.setState(withState: CharacterState.Attacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
