@@ -9,7 +9,7 @@ import Foundation
 import SceneKit
 
 let worldBoundSize: Float = 15
-let insidePlayerBoundSize: Float = 0.6
+let insidePlayerBoundSize: Float = 0.4
 let pushPlayerBoundSize: Float = 0.8
 var cameraBoundSize: Float = 3
 var pushSpeed: Float = 0.05

@@ -44,8 +44,6 @@ class GameManager {
     var matchType: MatchType?
     var currentScene: CurrentScene?
     var cameraNode: SCNNode?
-    var playerSpawn: SCNNode?
-    var enemySpawn: SCNNode?
     
     // TODO: Additional parameters including Settings (Sound level, etc.), playerId?, matchHistory?
     

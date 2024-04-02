@@ -42,10 +42,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Load initial scene
         let scnScene = SCNScene() // Load your SCNScene for fancy background
         
-        // Present the SceneKit scene
-        // The menu bug present itself because the emulator confuses what orientation determines whats width/height
-        // Introduced a band-aid fix, should review later
-        //        let scnViewNew = SCNView(frame: CGRect(origin: .zero, size: CGSize(width: max(view.frame.size.height, view.frame.size.width), height: min(view.frame.size.height, view.frame.size.width))))
         let scnViewNew = SCNView(frame: view.bounds)    // original
         
         scnViewNew.scene = scnScene
@@ -151,9 +147,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         GameManager.Instance().p1Character = player1
         GameManager.Instance().p2Character = player2
         
-        GameManager.Instance().playerSpawn = playerSpawn
-        GameManager.Instance().enemySpawn = enemySpawn
-        
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
         player1?.characterNode.name = "Ninja1"
@@ -177,22 +170,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
 //        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
 //        scnViewNew.debugOptions = [.showWireframe]
-
-
-        // Add gesture recognizers for testing player controls and animations
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        scnViewNew.addGestureRecognizer(doubleTapGesture)
         
-        // Player Controls Overlay
-//        let overlayScene = GKScene(fileNamed: "Overlay")
-//        let overlayNode = overlayScene?.rootNode as? Overlay
-//        overlayNode?.scaleMode = .aspectFill
-//        scnViewNew.overlaySKScene = overlayNode
-//        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
-//        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
-//        gamePad?.buttonA.valueChangedHandler = changeAnimationA
-//        gamePad?.buttonB.valueChangedHandler = changeAnimationB
         scnViewNew.overlaySKScene = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
         // Configure the view
         scnViewNew.backgroundColor = UIColor.black
@@ -244,7 +222,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
-        print(collision)
         return collision != nil && !collision!.isEmpty
     }
     
@@ -256,33 +233,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
     }
         
-        func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
-            //print("Thumbstick x=\(xValue) y=\(yValue)")
-            
-            //rotate, play running animations, based on thumbstick input
-            let deadZone = Float(0.2)
-            let player = playerSpawn
-            
-            // Control everything therough state
-            if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                
-                print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
-                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
-                
-            } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                
-                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
-                    
-            } else if ( abs(xValue)<deadZone) {
-                
-                player1?.stateMachine?.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
-                
-            }
-    }
-
-    @objc
-    func handleDoubleTap(_ gestureRecognize: UIGestureRecognizer) {
-    }
     
     
     /*
@@ -318,28 +268,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
         lookAtOpponent(player: playerSpawn!, enemy: enemySpawn!)
         
-        //push players who are inside another
-//        if (abs(playerSpawn!.position.z - enemySpawn!.position.z ) < 0.4){
-//            playerSpawn!.position.z = boundCheckPlayer(player1Node: playerSpawn!, player2Node: enemySpawn!, newPos: playerSpawn!.position.z)!
-//        }
-//        if (player1?.state == CharacterState.RunningLeft){
-//                //playerSpawn?.position.z -= runSpeed
-//                playerSpawn?.position.z = boundCheckAll(player1Node: playerSpawn!, player2Node: enemySpawn!, newPos: playerSpawn!.position.z - runSpeed, cameraPos: cameraNode.position.z)
-//          
-//        } else if (player1?.state == CharacterState.RunningRight){
-//        playerSpawn?.position.z = boundCheckAll(player1Node: playerSpawn!, player2Node: enemySpawn!, newPos: playerSpawn!.position.z + runSpeed, cameraPos: cameraNode.position.z)
-//
-//        }
-//        if (player2?.state == CharacterState.RunningLeft){
-//            enemySpawn?.position.z = boundCheckAll(player1Node: enemySpawn!, player2Node: playerSpawn!, newPos: enemySpawn!.position.z - runSpeed, cameraPos: cameraNode.position.z)
-//   
-//        }else if (player2?.state == CharacterState.RunningRight){
-//            enemySpawn?.position.z = boundCheckAll(player1Node: enemySpawn!, player2Node: playerSpawn!, newPos: enemySpawn!.position.z + runSpeed, cameraPos: cameraNode.position.z)
-//     
-//        }
-        
-
-        
         //send data at the end of the game loop
         multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
                                                            position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
@@ -360,21 +288,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
     }
-    
-//    func checkMovementAgainstPlayerBounds(runningDirection: Float, player1: SCNNode?, player2: SCNNode?) -> Bool{
-//        let boundSize: Float = 0.5
-//            let newPlayerPositionZ = player1!.position.z + runningDirection
-//
-//             //check if the new player position is within the boundary
-//            if newPlayerPositionZ < (player2!.position.z + boundSize) && newPlayerPositionZ > (player2!.position.z - boundSize) {
-//                 //player is within bounds
-//                 return true
-//             } else {
-//                 //player is outside bounds
-//                 return false
-//             }
-//    }
-    
+
     
     func handleReceivedData(_ receivedData: PlayerData) {
         
@@ -388,20 +302,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 playerSpawn?.position.z = receivedData.player.position2z
                 playerSpawn?.position.y = receivedData.player.position2y
                 
-//                playerSpawn?.eulerAngles.y = receivedData.player.angleP2
-//                enemySpawn?.eulerAngles.y = receivedData.player.angleP1
-                
                 player1!.health.currentHealth = receivedData.player.health1
                 player2!.health.currentHealth = receivedData.player.health2
             }
-//            else if(playerSpawn?.name == Optional("p2Spawn") ){
-//                
-//                //print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
-//                
-//                enemySpawn?.position.z = enemySpawn!.presenter.worldPosition.z
-//                playerSpawn?.position.z = playerSpawn!.presenter.worldPosition.z
-//                
-//            }
+
         }
         
                      
@@ -410,35 +314,40 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                      
     }
     
-    func convertEnemyDataToClient(enemyState: CharacterState){
-        if (player2?.state == CharacterState.Stunned) {
+    func convertEnemyDataToClient(enemyState: CharacterState) {
+        guard let player2 = player2,
+              let stateMachine = player2.stateMachine,
+              player2.state != enemyState else {
             return
         }
         
-        if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
-            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
-        } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
-            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
-        } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
-            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned){
-            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
-            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.HeavyAttacking && enemyState == CharacterState.HeavyAttacking){
-            player2?.stateMachine?.switchState(NinjaHeavyAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.Jumping && enemyState == CharacterState.Jumping){
-            player2?.stateMachine?.switchState(NinjaJumpState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.Blocking && enemyState == CharacterState.Blocking){
-            player2?.stateMachine?.switchState(NinjaBlockingState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.Downed && enemyState == CharacterState.Downed){
-            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.DashingLeft && enemyState == CharacterState.DashingLeft){
-            player2?.stateMachine?.switchState(NinjaDashingLeftState((player2!.stateMachine! as! NinjaStateMachine)))
-        }else if (player2?.state != CharacterState.DashingRight && enemyState == CharacterState.DashingRight){
-            player2?.stateMachine?.switchState(NinjaDashingRightState((player2!.stateMachine! as! NinjaStateMachine)))
+        switch enemyState {
+        case .Stunned:
+            guard player2.state != .Stunned else { return }
+            stateMachine.switchState(NinjaStunnedState(stateMachine as! NinjaStateMachine))
+        case .RunningRight:
+            stateMachine.switchState(NinjaRunningRightState(stateMachine as! NinjaStateMachine))
+        case .RunningLeft:
+            stateMachine.switchState(NinjaRunningLeftState(stateMachine as! NinjaStateMachine))
+        case .Idle:
+            stateMachine.switchState(NinjaIdleState(stateMachine as! NinjaStateMachine))
+        case .Attacking:
+            stateMachine.switchState(NinjaAttackingState(stateMachine as! NinjaStateMachine))
+        case .HeavyAttacking:
+            stateMachine.switchState(NinjaHeavyAttackingState(stateMachine as! NinjaStateMachine))
+        case .Jumping:
+            stateMachine.switchState(NinjaJumpState(stateMachine as! NinjaStateMachine))
+        case .Blocking:
+            stateMachine.switchState(NinjaBlockingState(stateMachine as! NinjaStateMachine))
+        case .Downed:
+            stateMachine.switchState(NinjaDownedState(stateMachine as! NinjaStateMachine))
+        case .DashingLeft:
+            stateMachine.switchState(NinjaDashingLeftState(stateMachine as! NinjaStateMachine))
+        case .DashingRight:
+            stateMachine.switchState(NinjaDashingRightState(stateMachine as! NinjaStateMachine))
         }
     }
+
 
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
