@@ -28,7 +28,6 @@ class HealthComponent : GKComponent {
     
     func damage(_ amount: Int) {
         currentHealth = currentHealth - amount < 0 ? 0 : currentHealth - amount;
-        statsUI.opponentTakenDamage(amount: amount)
         onDamage?()
         
         if (currentHealth == 0) {

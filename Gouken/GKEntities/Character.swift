@@ -88,7 +88,7 @@ class Character {
         
         
         // Add Hitbox Component
-        hitbox = HitBoxComponent(scene: scene)
+        hitbox = HitBoxComponent(scene: scene, statsUI: statsUI)
         entity.addComponent(hitbox)
         
         for component in components {

@@ -4,7 +4,7 @@ import GameplayKit
 class NinjaAttackingState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
-    let damage: Int = 10
+    let damage: Int = 30
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
