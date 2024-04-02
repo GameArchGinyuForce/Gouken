@@ -16,6 +16,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
+    var UIstats: SKScene!
     
     func playButtonPressed() {
         removeMenuOverlay()
@@ -175,17 +176,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         
         
-        let healthBarOverlay = HealthBarOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height)).setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        let UIstats = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height)).setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
         
         let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
-        
-        // Setup healthbar
-        
+              
         
         
-        
-        healthBarOverlay.addChild(gamepadOverlay)
-        scnViewNew.overlaySKScene = healthBarOverlay
+        UIstats.addChild(gamepadOverlay)
+        scnViewNew.overlaySKScene = UIstats
         
         
         
