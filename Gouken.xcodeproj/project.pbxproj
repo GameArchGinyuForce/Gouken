@@ -59,6 +59,7 @@
 		F05BD1112BB7616800C4BEB8 /* NinjaRunningRightState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05BD1102BB7616800C4BEB8 /* NinjaRunningRightState.swift */; };
 		F05BD1132BB7617D00C4BEB8 /* NinjaRunningLeftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05BD1122BB7617D00C4BEB8 /* NinjaRunningLeftState.swift */; };
 		F0CE712C2BBA29CE0083ABE5 /* PyramidOfGiza.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CE712B2BBA29CE0083ABE5 /* PyramidOfGiza.swift */; };
+		F0FCA3642BBB68A600B50931 /* GameplayStatusOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FCA3632BBB68A600B50931 /* GameplayStatusOverlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -116,6 +117,7 @@
 		F07920342BB541D800253960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F087E8C52BB79988000E5261 /* Loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = Loading.gif; path = /Downloads/Loading.gif; sourceTree = "<absolute>"; };
 		F0CE712B2BBA29CE0083ABE5 /* PyramidOfGiza.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PyramidOfGiza.swift; sourceTree = "<group>"; };
+		F0FCA3632BBB68A600B50931 /* GameplayStatusOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayStatusOverlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 				DBF1C45C2B85A79300B40007 /* Overlay.swift */,
 				A5D2DA652B981C4600A32416 /* MenuOverlay.swift */,
 				1C2B21F32BA77C87006928F5 /* GamePad.swift */,
+				F0FCA3632BBB68A600B50931 /* GameplayStatusOverlay.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 			files = (
 				DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */,
 				F021769E2B82BBAF000993B2 /* EntityManager.swift in Sources */,
+				F0FCA3642BBB68A600B50931 /* GameplayStatusOverlay.swift in Sources */,
 				F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */,
 				95DBEA6A2BBA8A36001F04A7 /* NinjaJumpState.swift in Sources */,
 				8767925A2BB77995009B05ED /* HitBox.swift in Sources */,

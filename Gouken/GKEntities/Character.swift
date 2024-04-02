@@ -75,7 +75,7 @@ class Character: Equatable {
     var activateHitboxByNameCallback: ((Any, Any?, Bool) -> Void)?
     var deactivateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     
-    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene) {
+    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene, statsUI: GameplayStatusOverlay) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
            playerSide = side
         characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
@@ -95,12 +95,12 @@ class Character: Equatable {
         entity.addComponent(animator)
         
         // Add Health Component
-        health = HealthComponent(maxHealth: 100)
+        health = HealthComponent(maxHealth: 150, statsUI: statsUI)
         entity.addComponent(health)
         
         
         // Add Hitbox Component
-        hitbox = HitBoxComponent(scene: scene)
+        hitbox = HitBoxComponent(scene: scene, statsUI: statsUI)
         entity.addComponent(hitbox)
         
         for component in components {

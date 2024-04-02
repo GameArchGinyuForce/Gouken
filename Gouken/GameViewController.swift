@@ -21,6 +21,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
+    var gameplayStatsOverlay: GameplayStatusOverlay!
     
     func playButtonPressed() {
         removeMenuOverlay()
@@ -140,9 +141,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
            
         }
+        
+        
+        
+        gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
+        let statsUI = gameplayStatsOverlay.setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        
 
-        player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene)
-        player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
+        player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
+        player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
         
         GameManager.Instance().p1Character = player1
         GameManager.Instance().p2Character = player2
@@ -171,8 +178,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
 //        scnViewNew.debugOptions = [.showWireframe]
         
-        scnViewNew.overlaySKScene = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
-        // Configure the view
+        // Player Controls Overlay
+//        let overlayScene = GKScene(fileNamed: "Overlay")
+//        let overlayNode = overlayScene?.rootNode as? Overlay
+//        overlayNode?.scaleMode = .aspectFill
+//        scnViewNew.overlaySKScene = overlayNode
+//        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
+//        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
+//        gamePad?.buttonA.valueChangedHandler = changeAnimationA
+//        gamePad?.buttonB.valueChangedHandler = changeAnimationB
+        
+        
+
+        let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+              
+        statsUI.addChild(gamepadOverlay)
+        scnViewNew.overlaySKScene = statsUI
+        
+        
+        
+        
+        
+        
         scnViewNew.backgroundColor = UIColor.black
         
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?

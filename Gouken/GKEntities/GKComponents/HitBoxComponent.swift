@@ -13,10 +13,12 @@ class HitBoxComponent : GKComponent {
     var hitboxesDict: Dictionary = [String: SCNNode]()  // Dictionary to activate specific hitboxes
     var scene: SCNScene!
     var damage: Int = 0
+    var statsUI: GameplayStatusOverlay!
     
-    init(scene: SCNScene) {
+    init(scene: SCNScene, statsUI: GameplayStatusOverlay) {
         super.init()
         self.scene = scene
+        self.statsUI = statsUI
     }
     
     required init?(coder: NSCoder) {
@@ -42,8 +44,14 @@ class HitBoxComponent : GKComponent {
         // Check which player hit which && whether enemy is not stunned
         if (contactBitMask == p2HitBool && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
             GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, GameManager.Instance().p1Character!.hitbox.damage)
+
+            statsUI.playerTakenDamage(amount: GameManager.Instance().p1Character!.hitbox.damage)
+
         } else if (contactBitMask == p1HitBool && GameManager.Instance().p1Character?.state != CharacterState.Stunned) {
+            
             GameManager.Instance().p1Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p2Character!, GameManager.Instance().p2Character!.hitbox.damage)
+            
+            statsUI.opponentTakenDamage(amount: GameManager.Instance().p2Character!.hitbox.damage)
         }
 
 //        if (contactBitMask == (p2HitBox | p1HurtBox) && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
