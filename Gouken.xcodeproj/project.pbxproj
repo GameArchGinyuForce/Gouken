@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A1FEE722BBB6ED4002C000A /* NinjaDashingRightState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FEE712BBB6ED4002C000A /* NinjaDashingRightState.swift */; };
 		0A1FEE742BBB7649002C000A /* NinjaDashingLeftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FEE732BBB7649002C000A /* NinjaDashingLeftState.swift */; };
+		0A5BB2D62BBB9E9400F62E8E /* AIDirectorEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BB2D52BBB9E9400F62E8E /* AIDirectorEntity.swift */; };
 		0AC469752BBA1B6800FC3866 /* NinjaBlockingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */; };
 		0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */; };
 		0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */; };
@@ -63,6 +64,7 @@
 /* Begin PBXFileReference section */
 		0A1FEE712BBB6ED4002C000A /* NinjaDashingRightState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaDashingRightState.swift; sourceTree = "<group>"; };
 		0A1FEE732BBB7649002C000A /* NinjaDashingLeftState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaDashingLeftState.swift; sourceTree = "<group>"; };
+		0A5BB2D52BBB9E9400F62E8E /* AIDirectorEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIDirectorEntity.swift; sourceTree = "<group>"; };
 		0AC469742BBA1B6800FC3866 /* NinjaBlockingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaBlockingState.swift; sourceTree = "<group>"; };
 		0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorComponent.swift; sourceTree = "<group>"; };
 		0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineComponent.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				F021769D2B82BBAF000993B2 /* EntityManager.swift */,
 				F02176952B82B814000993B2 /* Character.swift */,
 				A5BA078B2BA7A5F00080B32E /* GameManager.swift */,
+				0A5BB2D52BBB9E9400F62E8E /* AIDirectorEntity.swift */,
 				F021769A2B82B935000993B2 /* GKComponents */,
 				F02F5D562BB64FB000E0D5CD /* SerializableCharacter.swift */,
 			);
@@ -382,6 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */,
+				0A5BB2D62BBB9E9400F62E8E /* AIDirectorEntity.swift in Sources */,
 				F021769E2B82BBAF000993B2 /* EntityManager.swift in Sources */,
 				F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */,
 				95DBEA6A2BBA8A36001F04A7 /* NinjaJumpState.swift in Sources */,

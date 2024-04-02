@@ -151,6 +151,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         player1?.setUpHurtBoxes()
         player2?.setUpHurtBoxes()
         
+        entityManager.addEntity(AIComponent(player: player1!, ai: player2!))
+        
         // configure the view
         scnView.backgroundColor = UIColor.black
         
