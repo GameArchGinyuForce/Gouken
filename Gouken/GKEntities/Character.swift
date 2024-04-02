@@ -37,6 +37,8 @@ enum CharacterState : String, Codable {
     case Jumping
     case Blocking
     case Downed
+    case DashingLeft
+    case DashingRight
 }
 
 class Character {
