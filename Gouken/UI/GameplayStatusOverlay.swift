@@ -7,7 +7,7 @@ class GameplayStatusOverlay: SKScene {
     var opponentHealth: CGFloat = 1.0 // Full health (1.0 for 100%)
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
-    var totalTime = 120 // 2 minutes
+    var totalTime = 10 // 2 minutes
     private var healthBars: SKScene
     
     
@@ -37,37 +37,17 @@ class GameplayStatusOverlay: SKScene {
         skScene.addChild(timerLabel)
         
         startTimer()
+        // P1 Stats
+        setupPlayer1Stats(skScene: skScene)
         
-        // HP bar for player
-        let playerHPBackground = SKShapeNode(rectOf: CGSize(width: 180, height: 11), cornerRadius: 5)
-        playerHPBackground.position = CGPoint(x: 150, y: 320)
-        playerHPBackground.zPosition = 2
-        playerHPBackground.strokeColor = .black
-        playerHPBackground.fillColor = .black
-        skScene.addChild(playerHPBackground)
+        // P2 Stats
+        setupPlayer2Stats(skScene: skScene)
         
-        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: 150, height: 10), cornerRadius: 5)
-        playerHPContainer.position = CGPoint(x: 160, y: 320)
-        playerHPContainer.zPosition = 4
-        playerHPContainer.strokeColor = .yellow
-        playerHPContainer.lineWidth = 2
-        skScene.addChild(playerHPContainer)
-        
-        let playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: 150, height: 8))
-        playerHPBar.position = CGPoint(x: -playerHPBar.size.width / 2, y: 0)
-        playerHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
-        playerHPBar.zPosition = 3
-        playerHPContainer.addChild(playerHPBar)
-        
-        // Player HP Label
-        let playerHPLabel = SKLabelNode(text: "Deckem Jaskaran: \(Int(playerHealth * 100))%")
-        playerHPLabel.position = CGPoint(x: 150, y: 330)
-        playerHPLabel.fontColor = .white
-        playerHPLabel.fontSize = 12
-        playerHPLabel.zPosition = 5
-        skScene.addChild(playerHPLabel)
-        
-        // HP bar for opponent
+        return skScene
+    }
+    
+    
+    func setupPlayer2Stats(skScene: SKScene) {
         let opponentHPBackground = SKShapeNode(rectOf: CGSize(width: 180, height: 11), cornerRadius: 5)
         opponentHPBackground.position = CGPoint(x: 500, y: 320)
         opponentHPBackground.zPosition = 2
@@ -95,9 +75,40 @@ class GameplayStatusOverlay: SKScene {
         opponentHPLabel.fontSize = 12
         opponentHPLabel.zPosition = 5
         skScene.addChild(opponentHPLabel)
-
+    }
+    
+    
+    func setupPlayer1Stats(skScene: SKScene) {
         
-        return skScene
+        // HP bar for player
+        let playerHPBackground = SKShapeNode(rectOf: CGSize(width: 180, height: 11), cornerRadius: 5)
+        playerHPBackground.position = CGPoint(x: 150, y: 320)
+        playerHPBackground.zPosition = 2
+        playerHPBackground.strokeColor = .black
+        playerHPBackground.fillColor = .black
+        skScene.addChild(playerHPBackground)
+        
+        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: 180, height: 10), cornerRadius: 5)
+        playerHPContainer.position = CGPoint(x: 160, y: 320)
+        playerHPContainer.zPosition = 4
+        playerHPContainer.strokeColor = .yellow
+        playerHPContainer.lineWidth = 2
+        skScene.addChild(playerHPContainer)
+        
+        let playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: 180, height: 8))
+        playerHPBar.position = CGPoint(x: -playerHPBar.size.width / 2, y: 0)
+        playerHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+        playerHPBar.zPosition = 3
+        playerHPContainer.addChild(playerHPBar)
+        
+        // Player HP Label
+        let playerHPLabel = SKLabelNode(text: "Deckem Jaskaran: \(Int(playerHealth * 100))%")
+        playerHPLabel.position = CGPoint(x: 150, y: 330)
+        playerHPLabel.fontColor = .white
+        playerHPLabel.fontSize = 12
+        playerHPLabel.zPosition = 5
+        skScene.addChild(playerHPLabel)
+        
     }
 
     func startTimer() {
