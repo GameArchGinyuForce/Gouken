@@ -54,25 +54,132 @@ TOUCH IT OTHERWISE BU HA0
 func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character) {
     buffer.updateInput()
     
-    // below dinky shit bc swift does not have negative modulus
-    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize
-    let input = buffer.buffer[readIdx]
+    let stateToChangeTo = readSequences(fromList: NinjaMoveSet, andBuffer: buffer).stateChages
     let isCharIdle = player.state == CharacterState.Idle
     let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight || player.state == CharacterState.Blocking
-    
-    if (input == ButtonType.Right && isCharIdle) {
-        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
-    } else if (input == ButtonType.Left && isCharIdle) {
-        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
-    } else if (input == ButtonType.Down && isCharIdle) {
-        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Blocking]!)
-    } else if (input == ButtonType.Up && isCharIdle) {
-            player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Jumping]!)
-    } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
-        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
-    }  else if (player.state != CharacterState.HeavyAttacking && input == ButtonType.HP && isCharIdle) {
-        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.HeavyAttacking]!)
-    } else if (canEnterNeutral && input == ButtonType.Neutral) {
-        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
+    let playerStateChanger = {(state : CharacterState) in
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[state]!)
     }
+    
+    
+    if (player.state == CharacterState.Downed || player.state == CharacterState.Stunned) {
+        return // character is dead or stunned
+    }
+    
+    switch (stateToChangeTo) {
+    case .Stunned:
+        playerStateChanger(.Stunned)
+        break
+    case .Downed:
+        playerStateChanger(.Downed)
+        break
+    case .RunningLeft:
+        if (isCharIdle) {
+            playerStateChanger(.RunningLeft)
+        }
+        break
+    case .RunningRight:
+        if (isCharIdle) {
+            playerStateChanger(.RunningRight)
+        }
+        break
+    case .Attacking:
+        if (isCharIdle) {
+            playerStateChanger(.Attacking)
+        }
+        break
+    case .Idle:
+        if (canEnterNeutral) {
+            playerStateChanger(.Idle)
+        }
+        break
+    case .Jumping:
+        if (isCharIdle) {
+            playerStateChanger(.Jumping)
+        }
+        break
+    case .Blocking:
+        if (isCharIdle) {
+            playerStateChanger(.Blocking)
+        }
+        break
+    case .DashingLeft:
+        if (isCharIdle) {
+            playerStateChanger(.DashingLeft)
+        }
+        break
+    case .DashingRight:
+        if (isCharIdle) {
+            playerStateChanger(.DashingRight)
+        }
+        break
+    case .HeavyAttacking:
+        if (isCharIdle) {
+            playerStateChanger(.HeavyAttacking)
+        }
+    }
+}
+
+
+func readSequences(fromList seq: [CharacterState: CharacterMove], andBuffer buffer: InputBuffer) -> CharacterMove {
+    for (_, move) in seq {
+        let moveSequence = move.sequence
+        let frameLeniency = move.frameLeniency
+        var currentBufferFrame = 0
+        var sequenceIdx = moveSequence.count - 1
+        while (currentBufferFrame < frameLeniency) {
+            let readIdx = (buffer.writeIdx - currentBufferFrame - 1) < 0 ? bufferSize - currentBufferFrame - 1 : (buffer.writeIdx - currentBufferFrame - 1) % bufferSize
+            
+            if (moveSequence[sequenceIdx] == buffer.buffer[readIdx]) {
+                sequenceIdx -= 1
+            }
+            
+            if (sequenceIdx == -1) {
+                return move
+            }
+            
+            currentBufferFrame += 1
+        }
+    }
+    
+    return CharacterMove(sequence: [ButtonType.Neutral], stateChages: CharacterState.Idle, priority: 1, frameLeniency: 1, attackKeyFrames: [])
+    
+//    // below dinky shit bc swift does not have negative modulus
+//    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize
+//    let input = buffer.buffer[readIdx]
+//    let isCharIdle = player.state == CharacterState.Idle
+//    let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight || player.state == CharacterState.Blocking
+//    
+//    if (input == ButtonType.Right && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
+//    } else if (input == ButtonType.Left && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
+//    } else if (input == ButtonType.Down && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Blocking]!)
+//    } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
+//        
+//        // Hardcoded adding of events for hitbox toggling
+////            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
+//        player.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
+//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+//        }
+//        
+//        player.animator.addAnimationEvent(keyTime: 0.2, callback: (player.deactivateHitboxesCallback)!)
+////            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
+//        player.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
+//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+//        }
+//        
+//        player.animator.addAnimationEvent(keyTime: 0.4, callback: (player.deactivateHitboxesCallback)!)
+////            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
+//        player.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
+//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
+//        }
+//        
+//        player.animator.addAnimationEvent(keyTime: 0.6, callback: (player.deactivateHitboxesCallback)!)
+//
+//    } else if (canEnterNeutral && input == ButtonType.Neutral) {
+//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
+//    }
 }

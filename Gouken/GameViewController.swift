@@ -135,7 +135,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
 
         player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
+        player2 = Character(withName: CharacterName.Ninja2, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
@@ -358,10 +358,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                                                            position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
                                                             health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!, angleP1:playerSpawn!.eulerAngles.y, angleP2:enemySpawn!.eulerAngles.y))
 
-//        print("player1: \(player1?.health.currentHealth)")
-//        print("player2: \(player2?.health.currentHealth)")
-        lastFrameTime = time
-    
     }
     
     func lookAtOpponent(player:SCNNode, enemy:SCNNode ){
