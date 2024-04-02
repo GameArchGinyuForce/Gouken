@@ -467,8 +467,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                                                            position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
                                                            health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
 
-        lastFrameTime = time
-    
     }
     
     func checkMovementAgainstPlayerBounds(runningDirection: Float, player1: SCNNode?, player2: SCNNode?) -> Bool{

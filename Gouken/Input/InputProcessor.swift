@@ -103,6 +103,16 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
             playerStateChanger(.Blocking)
         }
         break
+    case .DashingLeft:
+        if (isCharIdle) {
+            playerStateChanger(.DashingLeft)
+        }
+        break
+    case .DashingRight:
+        if (isCharIdle) {
+            playerStateChanger(.DashingRight)
+        }
+        break
     }
 }
 

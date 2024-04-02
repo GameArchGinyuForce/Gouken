@@ -85,6 +85,8 @@ class AttackKeyFrame {
 }
 
 let NinjaMoveSet : [CharacterMove] = [
+    CharacterMove(sequence: [ButtonType.Right, ButtonType.Neutral, ButtonType.Right], stateChages: CharacterState.DashingRight, priority: 1, frameLeniency: 20, attackKeyFrames: []),
+    CharacterMove(sequence: [ButtonType.Left, ButtonType.Neutral, ButtonType.Left], stateChages: CharacterState.DashingLeft, priority: 1, frameLeniency: 20, attackKeyFrames: []),
     CharacterMove(sequence: [ButtonType.Down], stateChages: CharacterState.Blocking, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterMove(sequence: [ButtonType.Left], stateChages: CharacterState.RunningLeft, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterMove(sequence: [ButtonType.Right], stateChages: CharacterState.RunningRight, priority: 1, frameLeniency: 1, attackKeyFrames: []),
