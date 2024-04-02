@@ -135,7 +135,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
 
         player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
+        player2 = Character(withName: CharacterName.Ninja2, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
