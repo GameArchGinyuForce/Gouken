@@ -6,6 +6,14 @@
 //
 
 import Foundation
+
+//
+//  AudioManager.swift
+//  Gouken
+//
+//  Created by Nathan Dong on 2024-03-28.
+//
+
 import AVFoundation
 
 
@@ -25,6 +33,7 @@ class AudioManager {
     var player1AudioChannelPlayer: AVAudioPlayer?
     var player2AudioChannelPlayer: AVAudioPlayer?
     
+    var HitEffect: AVAudioPlayer?
     var effectsAudioChannelPlayer: AVAudioPlayer?
     
     // Singleton Pattern
@@ -126,6 +135,26 @@ class AudioManager {
             print("Error creating audio player: \(error.localizedDescription)")
         }
     }
+    
+    
+    func playHitEffectSoundByURL(fileName: String, ext: String = ".mp3") {
+//        HitEffect?.stop()
+//        
+//        guard let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
+//            print("Could not find " + fileName + ext)
+//            return
+//        }
+//        
+//        do {
+//            HitEffect = try AVAudioPlayer(contentsOf: url)
+//            HitEffect?.numberOfLoops = 0 // Play once
+//            HitEffect?.volume = 1 // Adjust volume as needed
+//            HitEffect?.play()
+//        } catch let error {
+//            print("Error creating audio player: \(error.localizedDescription)")
+//        }
+    }
+
     
     func playEffectSoundByURL(fileName: String, ext: String = ".mp3") {
         

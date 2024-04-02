@@ -79,6 +79,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         AudioManager.Instance().stopAllAudioChannels()
         AudioManager.Instance().playBackgoundMusicSoundByURL(fileName: "Gouken_Battle_Theme", ext: ".mp3")
+        // Call preloadHitEffectSound method during game setup
+//        AudioManager.Instance().preloadHitEffectSound()
+//        // Call preloadAttackingSound method during game setup
+//        AudioManager.Instance().preloadAttackingSound()
+
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
