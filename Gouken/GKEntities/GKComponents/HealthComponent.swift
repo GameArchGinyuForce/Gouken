@@ -21,8 +21,7 @@ class HealthComponent : GKComponent {
         super.init(coder: coder)
     }
     
-    override func update(deltaTime seconds: TimeInterval) {
-    }
+    override func update(deltaTime seconds: TimeInterval) {    }
     
     func damage(_ amount: Int) {
         currentHealth = currentHealth - amount < 0 ? 0 : currentHealth - amount;
