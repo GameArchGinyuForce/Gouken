@@ -121,6 +121,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             
             print("\(myPeerDisplayName) and \(firstConnectedPeerDisplayName)")
             
+            GameManager.Instance().matchType = MatchType.MP
             if (myPeerDisplayName > firstConnectedPeerDisplayName) {
             
                 playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
@@ -136,6 +137,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 p2Char = CharacterName.Ninja
             }
         } else {
+            GameManager.Instance().matchType = MatchType.CPU
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
            
@@ -158,7 +160,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         player1?.setUpHurtBoxes()
         player2?.setUpHurtBoxes()
         
-        entityManager.addEntity(AIComponent(player: player1!, ai: player2!))
+        if (GameManager.Instance().matchType == MatchType.CPU) {
+            entityManager.addEntity(AIComponent(player: player1!, ai: player2!))
+        }
         
         // configure the view
         scnView.backgroundColor = UIColor.black
