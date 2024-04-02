@@ -7,8 +7,17 @@ class NinjaDashingLeftState: NinjaBaseState {
     let dashDistancePerTick = Float(0.1)
     var dashProgress = 0.0
     
+    var player1Node: SCNNode
+    var player2Node: SCNNode
+    var cameraNode: SCNNode
+    
+    
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
+        self.player1Node = stateMachine.character.parentNode
+        self.player2Node = GameManager.Instance().otherCharacter(character:stateMachine.character).parentNode
+        
+        self.cameraNode = GameManager.Instance().cameraNode!
     }
     
     func enter() {
@@ -21,7 +30,14 @@ class NinjaDashingLeftState: NinjaBaseState {
     
     func tick(_ deltaTime: TimeInterval) {
         dashProgress += deltaTime
-        stateMachine.character.characterNode.parent!.position.z -= dashDistancePerTick
+        
+        if (boundCheckWorld(player1Pos: player1Node.position.z, player2Pos: player2Node.position.z, newPos: player1Node.position.z - Float(dashDistancePerTick)) &&
+            boundCheckCamera(player1Pos: player1Node.position.z, player2Pos: player2Node.position.z, newPos: player1Node.position.z - Float(dashDistancePerTick), cameraPos: cameraNode.position.z)) {
+            player1Node.position.z =  player1Node.position.z - Float(dashDistancePerTick)
+        }
+     
+        
+        
         
         if (stateMachine.character.animator.currentTimeNormalized >= 1.0 || dashProgress >= dashDuration) {
             stateMachine.switchState(stateMachine.stateInstances[CharacterState.Idle]!)

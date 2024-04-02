@@ -44,7 +44,7 @@ class GameManager {
     var camera: SCNNode?
     var matchType: MatchType?
     var currentScene: CurrentScene?
-    
+    var cameraNode: SCNNode?
     
     // TODO: Additional parameters including Settings (Sound level, etc.), playerId?, matchHistory?
     
@@ -63,4 +63,14 @@ class GameManager {
     func doSomething() {
         print("Hey From GameManager Singleton")
     }
+    
+    func otherCharacter(character: Character) -> Character{
+        
+        if(character == GameManager.Instance().p1Character!){
+            return GameManager.Instance().p2Character!
+        }else{
+            return GameManager.Instance().p1Character!
+        }
+    }
+    
 }

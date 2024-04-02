@@ -41,7 +41,18 @@ enum CharacterState : String, Codable {
     case DashingRight
 }
 
-class Character {
+let runSpeed = 0.06
+
+class Character: Equatable {
+    
+    static func == (lhs: Character, rhs: Character) -> Bool {
+       
+         return lhs.characterName == rhs.characterName &&
+                lhs.playerSide == rhs.playerSide &&
+                lhs.state == rhs.state &&
+                lhs.entity == rhs.entity
+     }
+    
     
     var entity            : GKEntity = GKEntity() // composition over inheritance :^) - omg so smart
     var characterNode     : SCNNode
@@ -56,6 +67,7 @@ class Character {
     var scene             : SCNScene    // Scene reference to handle collision
     var parentNode        : SCNNode
     var hurtBoxes         : [SCNNode] = []
+    
     
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
