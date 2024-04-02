@@ -9,6 +9,10 @@ class GameplayStatusOverlay: SKScene {
     var countdownTimer: Timer?
     var totalTime = 10 // 2 minutes
     private var healthBars: SKScene
+    private var playerHP = 150
+    var playerHPBar: SKSpriteNode!
+    private var opponentHP = 150
+    var opponentHPBar: SKSpriteNode!
     
     
     override init(size: CGSize) {
@@ -48,6 +52,7 @@ class GameplayStatusOverlay: SKScene {
     
     
     func setupPlayer2Stats(skScene: SKScene) {
+        // HP bar for opponent
         let opponentHPBackground = SKShapeNode(rectOf: CGSize(width: 180, height: 11), cornerRadius: 5)
         opponentHPBackground.position = CGPoint(x: 500, y: 320)
         opponentHPBackground.zPosition = 2
@@ -62,7 +67,7 @@ class GameplayStatusOverlay: SKScene {
         opponentHPContainer.lineWidth = 2 //
         skScene.addChild(opponentHPContainer)
         
-        let opponentHPBar = SKSpriteNode(color: .green, size: CGSize(width: 150, height: 8))
+        opponentHPBar = SKSpriteNode(color: .green, size: CGSize(width: opponentHP, height: 8))
         opponentHPBar.position = CGPoint(x: -opponentHPBar.size.width / 2, y: 0)
         opponentHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
         opponentHPBar.zPosition = 3
@@ -75,6 +80,17 @@ class GameplayStatusOverlay: SKScene {
         opponentHPLabel.fontSize = 12
         opponentHPLabel.zPosition = 5
         skScene.addChild(opponentHPLabel)
+    }
+    
+    func playerTakenDamage(attackType: ButtonType) {
+        playerHP = playerHP - (attackType == ButtonType.LP ? 25 : 35)
+        playerHPBar.size.width = CGFloat(playerHP)
+    }
+    
+    func opponentTakenDamage(attackType: ButtonType) {
+        
+        playerHP = playerHP - (attackType == ButtonType.LP ? 25 : 35)
+        playerHPBar.size.width = CGFloat(playerHP)
     }
     
     
@@ -95,7 +111,7 @@ class GameplayStatusOverlay: SKScene {
         playerHPContainer.lineWidth = 2
         skScene.addChild(playerHPContainer)
         
-        let playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: 180, height: 8))
+        playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: playerHP, height: 8))
         playerHPBar.position = CGPoint(x: -playerHPBar.size.width / 2, y: 0)
         playerHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
         playerHPBar.zPosition = 3
