@@ -88,7 +88,7 @@ class GameplayStatusOverlay: SKScene {
         playerHPBackground.fillColor = .black
         skScene.addChild(playerHPBackground)
         
-        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: 180, height: 10), cornerRadius: 5)
+        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: 150, height: 10), cornerRadius: 5)
         playerHPContainer.position = CGPoint(x: 160, y: 320)
         playerHPContainer.zPosition = 4
         playerHPContainer.strokeColor = .yellow
