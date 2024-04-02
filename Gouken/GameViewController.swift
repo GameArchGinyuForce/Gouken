@@ -96,6 +96,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // create and add a camera to the scene
         cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+
         
         GameManager.Instance().cameraNode = cameraNode
         
@@ -167,6 +168,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         player1?.setUpHurtBoxes()
         player2?.setUpHurtBoxes()
+        
+        //        GameManager.Instance().camera = cameraNode
+                
+        var gkEntity = GKEntity()
+        var cameraComponent: GKComponent = CameraComponent(camera: cameraNode)
+        gkEntity.addComponent(cameraComponent)
+        entityManager.addEntity(gkEntity)
         
         // configure the view
         scnView.backgroundColor = UIColor.black
@@ -293,6 +301,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 //component.move()
             }
         }
+        
+        
+        gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
+        
+        gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
+    
+        
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
 
         lookAtOpponent(player: playerSpawn!, enemy: enemySpawn!)

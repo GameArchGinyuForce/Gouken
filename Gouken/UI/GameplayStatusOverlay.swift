@@ -107,6 +107,17 @@ class GameplayStatusOverlay: SKScene {
         opponentHPBar.size.width = CGFloat(opponentHP)
     }
     
+    func setOpponentHealth(amount: Int) {
+    
+        opponentHP = amount
+        opponentHPBar.size.width = CGFloat(opponentHP)
+    }
+    func setPlayerHealth(amount: Int) {
+    
+        playerHP = amount
+        playerHPBar.size.width = CGFloat(playerHP)
+       
+    }
     
     func setupPlayer1Stats(skScene: SKScene) {
         

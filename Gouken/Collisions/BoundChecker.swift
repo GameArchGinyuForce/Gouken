@@ -11,7 +11,7 @@ import SceneKit
 let worldBoundSize: Float = 15
 let insidePlayerBoundSize: Float = 0.4
 let pushPlayerBoundSize: Float = 0.8
-var cameraBoundSize: Float = 3
+var cameraBoundSize: Float = 5
 var pushSpeed: Float = 0.05
 
 func boundCheckAll(player1Node: SCNNode, player2Node: SCNNode, newPos: Float, cameraPos: Float) -> Float {
@@ -21,7 +21,12 @@ func boundCheckAll(player1Node: SCNNode, player2Node: SCNNode, newPos: Float, ca
     
     let adjustedPos = boundCheckPlayer(player1Node: player1Node, player2Node: player2Node, newPos: newPos)
     if let adjustedPos = adjustedPos {
-        return adjustedPos
+        if (boundCheckWorld(player1Pos: player1Pos, player2Pos: player2Pos, newPos: adjustedPos))
+        {
+            return adjustedPos
+        } else {
+            return player1Pos
+        }
     }
     
     
@@ -60,11 +65,22 @@ func boundCheckPlayer(player1Node: SCNNode, player2Node: SCNNode, newPos: Float)
 func boundCheckWorld(player1Pos: Float, player2Pos: Float, newPos: Float) -> Bool {
     let lowerBound = -worldBoundSize / 2
     let upperBound = worldBoundSize / 2
+    let outOfBoundsLeft = newPos <= lowerBound
+    let outOfBoundsRight = newPos >= upperBound
+    
+    if (outOfBoundsLeft && newPos > player1Pos) {
+        return true
+    }
+    
+    if (outOfBoundsRight && newPos < player1Pos) {
+        return true
+    }
+
     return newPos >= lowerBound && newPos <= upperBound
 }
 
 func boundCheckCamera(player1Pos: Float, player2Pos: Float, newPos: Float, cameraPos: Float) -> Bool {
-    let lowerBound = -cameraBoundSize
-    let upperBound = cameraBoundSize
-    return newPos >= lowerBound && newPos <= upperBound
+    let difference = abs(newPos - player2Pos)
+    print("difference: \(difference)")
+    return difference < cameraBoundSize
 }
