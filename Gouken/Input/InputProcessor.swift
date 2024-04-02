@@ -122,12 +122,17 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
 
 
 func readSequences(fromList seq: [CharacterState: CharacterMove], andBuffer buffer: InputBuffer) -> CharacterMove {
+    var currentMovesPrio = -1
+    var currentMove = CharacterMove(sequence: [ButtonType.Neutral], stateChages: CharacterState.Idle, priority: 1, frameLeniency: 1, attackKeyFrames: [])
     for (_, move) in seq {
         let moveSequence = move.sequence
         let frameLeniency = move.frameLeniency
         var currentBufferFrame = 0
         var sequenceIdx = moveSequence.count - 1
         while (currentBufferFrame < frameLeniency) {
+            if move.priority < currentMovesPrio {
+                break
+            }
             let readIdx = (buffer.writeIdx - currentBufferFrame - 1) < 0 ? bufferSize - currentBufferFrame - 1 : (buffer.writeIdx - currentBufferFrame - 1) % bufferSize
             
             if (moveSequence[sequenceIdx] == buffer.buffer[readIdx]) {
@@ -135,14 +140,16 @@ func readSequences(fromList seq: [CharacterState: CharacterMove], andBuffer buff
             }
             
             if (sequenceIdx == -1) {
-                return move
+                currentMove = move
+                currentMovesPrio = currentMove.priority
+                break
             }
             
             currentBufferFrame += 1
         }
     }
     
-    return CharacterMove(sequence: [ButtonType.Neutral], stateChages: CharacterState.Idle, priority: 1, frameLeniency: 1, attackKeyFrames: [])
+    return currentMove
     
 //    // below dinky shit bc swift does not have negative modulus
 //    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize

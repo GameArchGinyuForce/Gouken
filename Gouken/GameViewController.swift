@@ -14,6 +14,7 @@ import GameController
 
 var p1Side = PlayerType.P1
 var p2Side = PlayerType.P2
+let debugBoxes = false
 
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {
@@ -107,6 +108,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         p1Side = PlayerType.P1
         p2Side = PlayerType.P2
+        
+        var p1Char = CharacterName.Ninja
+        var p2Char = CharacterName.Ninja2
 
         //decide who is player 1 and player 2
         if multipeerConnect.connectedPeers.count > 0 {
@@ -121,12 +125,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             
                 playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
                 enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
+                
             } else {
               
                 playerSpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
                 enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
                 p1Side = PlayerType.P2
                 p2Side = PlayerType.P1
+                p1Char = CharacterName.Ninja2
+                p2Char = CharacterName.Ninja
             }
         } else {
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
@@ -134,8 +141,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
            
         }
 
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene)
-        player2 = Character(withName: CharacterName.Ninja2, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
+        player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene)
+        player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
@@ -160,7 +167,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         initWorld(scene: scene)
 //        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
-        scnViewNew.debugOptions = [.showPhysicsShapes]
+        if (debugBoxes) {
+            scnViewNew.debugOptions = [.showPhysicsShapes]
+        }
 //        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
 //        scnViewNew.debugOptions = [.showWireframe]
 
@@ -363,13 +372,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func lookAtOpponent(player:SCNNode, enemy:SCNNode ){
+        
         var relativePos1 = player.position.z - enemy.position.z
       
-        
         if(relativePos1 >= 0){
             player.eulerAngles.y = Float.pi
+            enemy.eulerAngles.y = 0
         }else{
             player.eulerAngles.y = 0
+            enemy.eulerAngles.y = Float.pi
         }
         
     }
@@ -446,6 +457,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             player2?.stateMachine?.switchState(NinjaBlockingState((player2!.stateMachine! as! NinjaStateMachine)))
         }else if (player2?.state != CharacterState.Downed && enemyState == CharacterState.Downed){
             player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.DashingLeft && enemyState == CharacterState.DashingLeft){
+            player2?.stateMachine?.switchState(NinjaDashingLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.DashingRight && enemyState == CharacterState.DashingRight){
+            player2?.stateMachine?.switchState(NinjaDashingRightState((player2!.stateMachine! as! NinjaStateMachine)))
         }
     }
 
