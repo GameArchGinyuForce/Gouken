@@ -32,14 +32,30 @@ class AIComponent : GKEntity {
         
         tickAIAttackTimer(seconds)
         
+        // Block if player is attacking
+        if (player.state == CharacterState.Attacking || player.state == CharacterState.HeavyAttacking) {
+            tryBlock()
+        } else {
+            if (ai.state == CharacterState.Blocking) {
+                switchAIState(state: CharacterState.Idle)
+            }
+        }
+        
         // Move to player, attack if within range
         if (distanceToPlayer() <= aiAttackRange) {
+            
+            // If player is attack, try move out of range
+            if (isPlayerAttacking()) {
+                tryDash()
+            }
+            
+            // Attack if not already attacking and attack is not on cooldown
             if (ai.state != CharacterState.Attacking && !isAIAttackOnCooldown) {
                 switchAIState(state: CharacterState.Attacking)
                 isAIAttackOnCooldown = true
             }
         } else {
-            if (canAIMove()) {
+            if (canAIMove() && !isPlayerAttacking()) {
                 moveToPlayer()
             }
         }
@@ -53,8 +69,18 @@ class AIComponent : GKEntity {
     }
     
     func tryDash() {
-        if (Int.random(in: 1..<10) == 1) {
-            
+        if (canAIDash() && Int.random(in: 1..<100) == 1) {
+            if (isPlayerOnLeftSide()) {
+                switchAIState(state: CharacterState.DashingRight)
+            } else {
+                switchAIState(state: CharacterState.DashingLeft)
+            }
+        }
+    }
+    
+    func tryBlock() {
+        if (canAIBlock() && Int.random(in: 1..<100) == 1) {
+            switchAIState(state: CharacterState.Blocking)
         }
     }
     
@@ -84,6 +110,28 @@ class AIComponent : GKEntity {
     
     func canAIMove() -> Bool {
         return ai.state == CharacterState.Idle
+    }
+    
+    func canAIDash() -> Bool {
+        if (ai.state != CharacterState.DashingLeft &&
+            ai.state != CharacterState.DashingRight &&
+            ai.state != CharacterState.Attacking) {
+            return true
+        }
+        return false
+    }
+    
+    func canAIBlock() -> Bool {
+        if (ai.state != CharacterState.Blocking &&
+            ai.state != CharacterState.DashingLeft &&
+            ai.state != CharacterState.DashingRight) {
+            return true
+        }
+        return false
+    }
+    
+    func isPlayerAttacking() -> Bool {
+        return player.state == CharacterState.Attacking || player.state == CharacterState.HeavyAttacking
     }
     
     func distanceToPlayer() -> Float {
