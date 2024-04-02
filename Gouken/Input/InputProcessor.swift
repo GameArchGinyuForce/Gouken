@@ -113,12 +113,16 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
             playerStateChanger(.DashingRight)
         }
         break
+    case .HeavyAttacking:
+        if (isCharIdle) {
+            playerStateChanger(.HeavyAttacking)
+        }
     }
 }
 
 
-func readSequences(fromList seq: [CharacterMove], andBuffer buffer: InputBuffer) -> CharacterMove {
-    for move in seq {
+func readSequences(fromList seq: [CharacterState: CharacterMove], andBuffer buffer: InputBuffer) -> CharacterMove {
+    for (_, move) in seq {
         let moveSequence = move.sequence
         let frameLeniency = move.frameLeniency
         var currentBufferFrame = 0
