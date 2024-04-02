@@ -41,6 +41,7 @@ class GameManager {
     var stageSelected: StageSelected?
     var p1Character: Character?
     var p2Character: Character?
+    var camera: SCNNode?
     var matchType: MatchType?
     var currentScene: CurrentScene?
     var cameraNode: SCNNode?
