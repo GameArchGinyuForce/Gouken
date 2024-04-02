@@ -36,15 +36,17 @@ class CharacterMove {
     var priority: Int
     var frameLeniency: Int
     var attackKeyFrames: [AttackKeyFrame]
+    var damage: Float
     var isProjectile  : Bool = false
     
-    init(sequence: [ButtonType], stateChages: CharacterState, priority: Int, frameLeniency: Int, attackKeyFrames: [AttackKeyFrame], isProjectile: Bool = false) {
+    init(sequence: [ButtonType], stateChages: CharacterState, priority: Int, frameLeniency: Int, attackKeyFrames: [AttackKeyFrame], isProjectile: Bool = false, damage: Float = 10.0) {
         self.sequence = sequence
         self.stateChages = stateChages
         self.priority = priority
         self.frameLeniency = frameLeniency
         self.attackKeyFrames = attackKeyFrames
         self.isProjectile = isProjectile
+        self.damage = damage
     }
     
     func addAttackKeyFramesAsAnimationEvents (stateMachine: NinjaStateMachine) {
@@ -54,10 +56,12 @@ class CharacterMove {
                     stateMachine.character?.animator.addAnimationEvent(
                         keyTime: CGFloat(attackKeyFrame.keyTime),
                         callback: (stateMachine.character?.deactivateHitboxesCallback)!)
+                    print("turned hitboxes off")
                 } else {
                     stateMachine.character.animator.addAnimationEvent(keyTime: CGFloat(attackKeyFrame.keyTime)) { node, eventData, playingBackward in
                         stateMachine.character.activateHitboxByNameCallback!(attackKeyFrame.name, eventData, playingBackward)
                     }
+                    print("turned hitboxes on")
                 }
             } else {
                 print("HurtBox Modifications not implemented yet")
@@ -82,22 +86,25 @@ class AttackKeyFrame {
     }
 }
 
-let NinjaMoveSet : [CharacterMove] = [
-    CharacterMove(sequence: [ButtonType.LP], stateChages: CharacterState.Attacking, priority: 1, frameLeniency: 2, attackKeyFrames: [
+let NinjaMoveSet : Dictionary = [
+    CharacterState.Attacking: CharacterMove(sequence: [ButtonType.LP], stateChages: CharacterState.Attacking, priority: 1, frameLeniency: 2, attackKeyFrames: [
         AttackKeyFrame(keyTime: 0.1, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
         AttackKeyFrame(keyTime: 0.2, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true),
         AttackKeyFrame(keyTime: 0.3, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
         AttackKeyFrame(keyTime: 0.4, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true),
         AttackKeyFrame(keyTime: 0.5, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
         AttackKeyFrame(keyTime: 0.6, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true)
-    ])
-]
+    ]),
+    CharacterState.HeavyAttacking: CharacterMove(sequence: [ButtonType.HP], stateChages: CharacterState.HeavyAttacking, priority: 1, frameLeniency: 2, attackKeyFrames: [
+        AttackKeyFrame(keyTime: 0.5, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
+        AttackKeyFrame(keyTime: 0.7, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true)
+    ]),
+    CharacterState.DashingRight: CharacterMove(sequence: [ButtonType.Right, ButtonType.Neutral, ButtonType.Right], stateChages: CharacterState.DashingRight, priority: 2, frameLeniency: 15, attackKeyFrames: []),
+    CharacterState.DashingLeft: CharacterMove(sequence: [ButtonType.Left, ButtonType.Neutral, ButtonType.Left], stateChages: CharacterState.DashingLeft, priority: 2, frameLeniency: 15, attackKeyFrames: []),
+    CharacterState.Blocking: CharacterMove(sequence: [ButtonType.Down], stateChages: CharacterState.Blocking, priority: 1, frameLeniency: 1, attackKeyFrames: []),
+    CharacterState.RunningLeft: CharacterMove(sequence: [ButtonType.Left], stateChages: CharacterState.RunningLeft, priority: 1, frameLeniency: 1, attackKeyFrames: []),
+    CharacterState.RunningRight: CharacterMove(sequence: [ButtonType.Right], stateChages: CharacterState.RunningRight, priority: 1, frameLeniency: 1, attackKeyFrames: []),
+    CharacterState.Jumping: CharacterMove(sequence: [ButtonType.Up], stateChages: CharacterState.Jumping, priority: 1, frameLeniency: 1, attackKeyFrames: [])
 
-//let tripleStrikeAttackKeyFrames: [AttackKeyFrame] = [
-//    AttackKeyFrame(keyTime: 0.1, pside: PlayerType.P1, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
-//    AttackKeyFrame(keyTime: 0.2, pside: PlayerType.P1, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true),
-//    AttackKeyFrame(keyTime: 0.3, pside: PlayerType.P1, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
-//    AttackKeyFrame(keyTime: 0.4, pside: PlayerType.P1, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true),
-//    AttackKeyFrame(keyTime: 0.5, pside: PlayerType.P1, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
-//    AttackKeyFrame(keyTime: 0.6, pside: PlayerType.P1, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true)
-//]
+    
+]
