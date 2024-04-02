@@ -1,12 +1,12 @@
 let characterModels     : Dictionary = [
-    CharacterName.Ninja: "art.scnassets/Synty_Ninja_NoAnim.scn"
+    CharacterName.Ninja: "art.scnassets/Synty_Ninja_Katana_Default.scn"
 ]
 
 let characterAnimations : Dictionary = [
     CharacterName.Ninja: [
         CharacterState.Idle         :   "art.scnassets/Synty_Frank_RPG_Katana_Stance1_Idle.dae",
-        CharacterState.RunningLeft      :    "art.scnassets/Synty_Frank_RPG_Katana_Run01.dae",
-        CharacterState.RunningRight      :    "art.scnassets/Synty_Frank_RPG_Katana_Run01.dae",
+        CharacterState.RunningLeft      :    "art.scnassets/Synty_Frank_RPG_Katana_Run_Stance2.dae",
+        CharacterState.RunningRight      :    "art.scnassets/Synty_Frank_RPG_Katana_Run_Stance2.dae",
         CharacterState.Jumping      :   "art.scnassets/Synty_Frank_RPG_Katana_Jump_ZeroHeight.dae",
         CharacterState.Attacking    : "art.scnassets/Synty_Frank_RPG_Katana_S1_Combo01_All__IP.dae",
         CharacterState.Blocking     :  "art.scnassets/Synty_Frank_RPG_Katana_Guard.dae",
