@@ -96,6 +96,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // create and add a camera to the scene
         cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+
         
         GameManager.Instance().cameraNode = cameraNode
         
@@ -164,6 +165,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         player1?.setUpHurtBoxes()
         player2?.setUpHurtBoxes()
+        
+        //        GameManager.Instance().camera = cameraNode
+                
+        var gkEntity = GKEntity()
+        var cameraComponent: GKComponent = CameraComponent(camera: cameraNode)
+        gkEntity.addComponent(cameraComponent)
+        entityManager.addEntity(gkEntity)
         
         // configure the view
         scnView.backgroundColor = UIColor.black

@@ -218,8 +218,8 @@ class Character: Equatable {
     
     func setUpHitBoxes() {
         var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
-        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.2, length: 0.2, position: SCNVector3(-30, -60, -10), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/32, y: 0, z: -Float.pi/8))
-        hitbox.isHidden = true
+        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.3, length: 0.2, position: SCNVector3(-30, -60, -20), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/10, y: 0, z: -Float.pi/7))
+        hitbox.isHidden = false
         addHitbox(hitboxNode: hitbox)
         
 //        var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
