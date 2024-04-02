@@ -70,27 +70,8 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
             player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Jumping]!)
     } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
-        
-        // Hardcoded adding of events for hitbox toggling
-//            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
-        player.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
-            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        player.animator.addAnimationEvent(keyTime: 0.2, callback: (player.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
-        player.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
-            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        player.animator.addAnimationEvent(keyTime: 0.4, callback: (player.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
-        player.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
-            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-        }
-        
-        player.animator.addAnimationEvent(keyTime: 0.6, callback: (player.deactivateHitboxesCallback)!)
-
+    }  else if (player.state != CharacterState.HeavyAttacking && input == ButtonType.HP && isCharIdle) {
+        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.HeavyAttacking]!)
     } else if (canEnterNeutral && input == ButtonType.Neutral) {
         player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
     }

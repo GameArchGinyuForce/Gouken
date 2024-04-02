@@ -135,7 +135,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
 
         player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
+        player2 = Character(withName: CharacterName.Ninja2, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
@@ -157,11 +157,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // init floor physics
         initWorld(scene: scene)
 //        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
-
-//        initHitboxAttack(playerSpawn: playerSpawn)
-//        setUpHitboxes(player: player1!)
-//        setUpHitboxes(player: player2!)
-//        setUpHurtBoxes(player: player2!)
         
         scnViewNew.debugOptions = [.showPhysicsShapes]
 //        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
@@ -200,7 +195,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var cameraNode : SCNNode = SCNNode()
     var playerSpawn : SCNNode?
     var enemySpawn : SCNNode?
-    var runSpeed = Float(0.1)
+    var runSpeed = Float(0.06)
     var hitbox = SCNNode()
     var hurtbox = SCNNode()
     
@@ -220,113 +215,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         super.viewDidLoad()
         loadMenu()
     }
-    
-    func setUpHurtBoxes(player: Character?) {
-        // Player 1 Hurtboxes Start
-        var modelSCNNode = player1?.characterNode.childNode(withName: "head", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.3, position: SCNVector3(0, 0, -10), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "UpperArm_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "lowerarm_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "UpperArm_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "lowerarm_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "Pelvis", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "spine_02", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "Thigh_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "calf_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "Thigh_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "calf_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: player1!.playerSide)
-        
-        // Player 2 Hurtboxes Start
-        modelSCNNode = player2?.characterNode.childNode(withName: "head", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.3, position: SCNVector3(0, 0, -10), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "UpperArm_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "lowerarm_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "UpperArm_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "lowerarm_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "Pelvis", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "spine_02", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "Thigh_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "calf_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "Thigh_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "calf_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: player2!.playerSide)
-    }
-    
-    func setUpHitboxes(player: Character?) {
-        var modelSCNNode = player?.characterNode.childNode(withName: "Hand_R", recursively: true)
-        var _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player!.playerSide, name: "Hand_R")
-        _hitbox.isHidden = true
-        player?.addHitbox(hitboxNode: _hitbox)
-        
-        modelSCNNode = player?.characterNode.childNode(withName: "Hand_L", recursively: true)
-        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player!.playerSide, name: "Hand_L")
-        _hitbox.isHidden = true
-        player?.addHitbox(hitboxNode: _hitbox)
-        
-//        modelSCNNode = player2?.characterNode.childNode(withName: "Hand_R", recursively: true)
-//        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player2!.playerSide, name: "Hand_R")
-//        _hitbox.isHidden = true
-//        player2?.addHitbox(hitboxNode: _hitbox)
-//        
-//        modelSCNNode = player2?.characterNode.childNode(withName: "Hand_L", recursively: true)
-//        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player2!.playerSide, name: "Hand_L")
-//        _hitbox.isHidden = true
-//        player2?.addHitbox(hitboxNode: _hitbox)
-        
-    }
 
     // TODO: for testing player controls and animations
     func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if (!hasBeenPressed) { return }
-//        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
-        
-        // Bugfixing functionality
-        if isHitboxesOn {
-            toggleHitboxesOff = true
-        } else {
-            toggleHitboxesOn = true
-        }
-        isHitboxesOn = !isHitboxesOn
-        
     }
     
     // test collison between node a and node b
@@ -404,47 +296,33 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if let component = entity.component(ofType: MovementComponent.self) {
                 // Update entity based on movement component
                 //component.move()
-                
             }
         }
-        
-        // Hitboxes bugfixing
-        if toggleHitboxesOn {
-            print("toggleHitboxesOn")
-            toggleHitboxesOn = false
-            player1?.hitbox.activateHitboxes()
-        }
-        if toggleHitboxesOff {
-            print("toggleHitboxesOff")
-            toggleHitboxesOff = false
-            player1?.hitbox.deactivateHitboxes()
-        }
-   
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
 
-        
+        lookAtOpponent(player: playerSpawn!, enemy: enemySpawn!)
 
         if (player1?.state == CharacterState.RunningLeft && !((playerSpawn!.position.z - runSpeed) < -3.0)){
             if(!checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: playerSpawn, player2: enemySpawn)){
                 
                 playerSpawn?.position.z -= runSpeed
-                playerSpawn?.eulerAngles.y = Float.pi
+                //playerSpawn?.eulerAngles.y = Float.pi
             }else{
                 
                 playerSpawn?.position.z -= runSpeed/2
                 enemySpawn?.position.z -= runSpeed/2
-                playerSpawn?.eulerAngles.y = Float.pi
+                //playerSpawn?.eulerAngles.y = Float.pi
             }
         } else if (player1?.state == CharacterState.RunningRight && !((playerSpawn!.position.z + runSpeed) > 2.6)){ if(!checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: playerSpawn, player2: enemySpawn))
             {
                 
                 playerSpawn?.position.z += runSpeed
-                playerSpawn?.eulerAngles.y = 0
+                //playerSpawn?.eulerAngles.y = 0
             }else{
                 
                 playerSpawn?.position.z += runSpeed/2
                 enemySpawn?.position.z += runSpeed/2
-                playerSpawn?.eulerAngles.y = 0
+                //playerSpawn?.eulerAngles.y = 0
             }
         }
         
@@ -453,21 +331,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if(!checkMovementAgainstPlayerBounds(runningDirection: -runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
                
                 enemySpawn?.position.z -= runSpeed
-                enemySpawn?.eulerAngles.y = Float.pi
+                //enemySpawn?.eulerAngles.y = Float.pi
             }else{
                 playerSpawn?.position.z -= runSpeed/2
                 enemySpawn?.position.z -= runSpeed/2
-                enemySpawn?.eulerAngles.y = Float.pi
+                //enemySpawn?.eulerAngles.y = Float.pi
             }
         } else if (player2?.state == CharacterState.RunningRight && !((enemySpawn!.position.z + runSpeed) > 2.6)){
             if(!checkMovementAgainstPlayerBounds(runningDirection: runSpeed*3, player1: enemySpawn, player2: playerSpawn)){
               
             enemySpawn?.position.z += runSpeed
-            enemySpawn?.eulerAngles.y = 0
+            //enemySpawn?.eulerAngles.y = 0
         }else{
             playerSpawn?.position.z += runSpeed/2
             enemySpawn?.position.z += runSpeed/2
-            enemySpawn?.eulerAngles.y = 0
+            //enemySpawn?.eulerAngles.y = 0
         }
         }
         
@@ -478,12 +356,24 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         //send data at the end of the game loop
         multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
                                                            position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
-                                                           health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!))
+                                                            health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!, angleP1:playerSpawn!.eulerAngles.y, angleP2:enemySpawn!.eulerAngles.y))
 
 //        print("player1: \(player1?.health.currentHealth)")
 //        print("player2: \(player2?.health.currentHealth)")
         lastFrameTime = time
     
+    }
+    
+    func lookAtOpponent(player:SCNNode, enemy:SCNNode ){
+        var relativePos1 = player.position.z - enemy.position.z
+      
+        
+        if(relativePos1 >= 0){
+            player.eulerAngles.y = Float.pi
+        }else{
+            player.eulerAngles.y = 0
+        }
+        
     }
     
     func checkMovementAgainstPlayerBounds(runningDirection: Float, player1: SCNNode?, player2: SCNNode?) -> Bool{
@@ -503,14 +393,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     
     func handleReceivedData(_ receivedData: PlayerData) {
         
-        
         if(receivedData.player.ticks % 1 == 0){
             if(playerSpawn?.name == Optional("p1Spawn") ){
                 
                 //print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
                 
                 enemySpawn?.position.z = receivedData.player.position1z
+                enemySpawn?.position.y = receivedData.player.position1y
                 playerSpawn?.position.z = receivedData.player.position2z
+                playerSpawn?.position.y = receivedData.player.position2y
+                
+//                playerSpawn?.eulerAngles.y = receivedData.player.angleP2
+//                enemySpawn?.eulerAngles.y = receivedData.player.angleP1
                 
                 player1!.health.currentHealth = receivedData.player.health1
                 player2!.health.currentHealth = receivedData.player.health2
@@ -532,25 +426,31 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func convertEnemyDataToClient(enemyState: CharacterState){
-            if (player2?.state == CharacterState.Stunned) {
-                return
-            }
-        
-            if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
-                player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
-            } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
-                player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
-            } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
-                player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
-            }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned){
-                player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
-            }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
-                player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
-            }else if (player2?.state != CharacterState.Downed && enemyState == CharacterState.Downed){
-                player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
-            }
+        if (player2?.state == CharacterState.Stunned) {
+            return
         }
-    
+        
+        if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
+            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
+        } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
+            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+        } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
+            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned){
+            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
+            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.HeavyAttacking && enemyState == CharacterState.HeavyAttacking){
+            player2?.stateMachine?.switchState(NinjaHeavyAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Jumping && enemyState == CharacterState.Jumping){
+            player2?.stateMachine?.switchState(NinjaJumpState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Blocking && enemyState == CharacterState.Blocking){
+            player2?.stateMachine?.switchState(NinjaBlockingState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Downed && enemyState == CharacterState.Downed){
+            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
+        }
+    }
+
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView

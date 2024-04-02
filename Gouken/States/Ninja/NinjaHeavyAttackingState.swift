@@ -1,22 +1,29 @@
+//
+//  NinjaHeavyAttackingState.swift
+//  Gouken
+//
+//  Created by Nathan Dong on 2024-04-01.
+//
+
 import Foundation
 import GameplayKit
 
-class NinjaAttackingState: NinjaBaseState {
+class NinjaHeavyAttackingState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
-    let damage: Int = 10
+    let damage: Int = 50
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
     }
     
     func enter() {
-        print("enter NinjaAttackingState")
-        stateMachine.character.setState(withState: CharacterState.Attacking)
-        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
+        print("enter NinjaHeavyAttackingState")
+        stateMachine.character.setState(withState: CharacterState.HeavyAttacking)
+        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.HeavyAttacking]!, loop: false)
         
         // Hardcoded retrieval of move
-        let move: CharacterMove = NinjaMoveSet[CharacterState.Attacking]!
+        let move: CharacterMove = NinjaMoveSet[CharacterState.HeavyAttacking]!
         stateMachine.character.hitbox.damage = self.damage
         move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
     }
@@ -29,7 +36,8 @@ class NinjaAttackingState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaAttackingState")
+        print("exit NinjaHeavyAttackingState")
         stateMachine.character?.hitbox.deactivateHitboxes()    // Clears hitboxes if attack state disrupted
     }
 }
+

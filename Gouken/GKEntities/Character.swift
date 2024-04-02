@@ -11,10 +11,12 @@ import Foundation
 // Character List
 enum CharacterName {
     case Ninja
+    case Ninja2
 }
 
 let characterNameString = [
-    CharacterName.Ninja : "Ninja"
+    CharacterName.Ninja : "Ninja",
+    CharacterName.Ninja2: "Ninja2"
 ]
 
 // Character player side
@@ -30,6 +32,7 @@ enum CharacterState : String, Codable {
     case RunningLeft
     case RunningRight
     case Attacking
+    case HeavyAttacking
     case Idle
     case Jumping
     case Blocking
