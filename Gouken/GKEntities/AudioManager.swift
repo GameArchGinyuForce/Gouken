@@ -138,40 +138,70 @@ class AudioManager {
     
     
     func playHitEffectSoundByURL(fileName: String, ext: String = ".mp3") {
-//        HitEffect?.stop()
-//        
-//        guard let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
-//            print("Could not find " + fileName + ext)
-//            return
-//        }
-//        
-//        do {
-//            HitEffect = try AVAudioPlayer(contentsOf: url)
-//            HitEffect?.numberOfLoops = 0 // Play once
-//            HitEffect?.volume = 1 // Adjust volume as needed
-//            HitEffect?.play()
-//        } catch let error {
-//            print("Error creating audio player: \(error.localizedDescription)")
-//        }
+        DispatchQueue.global().async {
+            self.HitEffect?.stop()
+            print("playHitEffectSoundByURL")
+            
+            guard let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
+                print("Could not find " + fileName + ext)
+                return
+            }
+            
+            do {
+                self.HitEffect = try AVAudioPlayer(contentsOf: url)
+                self.HitEffect?.numberOfLoops = 0 // Play once
+                self.HitEffect?.volume = 1 // Adjust volume as needed
+                self.HitEffect?.play()
+            } catch let error {
+                print("Error creating audio player: \(error.localizedDescription)")
+            }
+        }
     }
 
     
     func playEffectSoundByURL(fileName: String, ext: String = ".mp3") {
-        
-        effectsAudioChannelPlayer?.stop();
-        
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
-            print("Could not find " + fileName + ext)
-            return
-        }
-        
-        do {
-            effectsAudioChannelPlayer = try AVAudioPlayer(contentsOf: url)
-            effectsAudioChannelPlayer?.numberOfLoops = 1 // Play once
-            effectsAudioChannelPlayer?.volume = 0.3
-            effectsAudioChannelPlayer?.play()
-        } catch let error {
-            print("Error creating audio player: \(error.localizedDescription)")
+        DispatchQueue.global().async {
+            self.effectsAudioChannelPlayer?.stop();
+            
+            // Get the current date and time
+                var currentTime = Date()
+                
+                // Create a date formatter
+                var dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+                
+                // Format the current time as a string
+                var formattedTime = dateFormatter.string(from: currentTime)
+                
+                // Print the formatted time
+                print("Before Time: \(formattedTime)")
+            
+            guard let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
+                print("Could not find " + fileName + ext)
+                return
+            }
+            
+            // Get the current date and time
+                currentTime = Date()
+                
+                // Create a date formatter
+                dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+                
+                // Format the current time as a string
+                formattedTime = dateFormatter.string(from: currentTime)
+                
+                // Print the formatted time
+                print("After Time: \(formattedTime)")
+            
+            do {
+                self.effectsAudioChannelPlayer = try AVAudioPlayer(contentsOf: url)
+                self.effectsAudioChannelPlayer?.numberOfLoops = 0 // Play once
+                self.effectsAudioChannelPlayer?.volume = 1
+                self.effectsAudioChannelPlayer?.play()
+            } catch let error {
+                print("Error creating audio player: \(error.localizedDescription)")
+            }
         }
     }
 
