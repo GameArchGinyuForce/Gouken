@@ -9,10 +9,15 @@ class GameplayStatusOverlay: SKScene {
     var countdownTimer: Timer?
     var totalTime = 10 // 2 minutes
     private var healthBars: SKScene
+    
     private var playerHP = 150
     var playerHPBar: SKSpriteNode!
+    var player1: Character!
+    
     private var opponentHP = 150
     var opponentHPBar: SKSpriteNode!
+    var player2: Character!
+    
     var currentRound = 1 // Initialize current round
     var skScene: SKScene!
     
@@ -26,12 +31,15 @@ class GameplayStatusOverlay: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupHealthBars(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -> SKScene {
+    func setupGameLoopStats(withViewHeight height: CGFloat, andViewWidth width: CGFloat, players: [Character?]) -> SKScene {
         
         let sceneSize = CGSize(width: width, height: height)
         print("Screen size of ", width, " by ", height)
         skScene = SKScene(size: sceneSize)
         skScene.scaleMode = .resizeFill
+        player1 = players[0]
+        player2 = players[1]
+        
         
         timerLabel = SKLabelNode(text: "Gouken") //shows the game title before the game starts with the timer
         timerLabel.position = CGPoint(x: width / 2, y: 320)
@@ -55,10 +63,17 @@ class GameplayStatusOverlay: SKScene {
     
     // TODO: Reset player states & their health here
     func startNewRound() {
+        
+        
+        
+        player1?.state = CharacterState.Idle
+        player2?.state = CharacterState.Idle
+        player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
+        player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+        
         currentRound += 1
-        // Reset player and opponent health, update UI
-        playerHealth = 1.0
-        opponentHealth = 1.0
+        playerHealth = 150
+        opponentHealth = 150
         updatePlayerHealth(playerHealth)
         updateOpponentHealth(opponentHealth)
         totalTime = 10 // Reset timer
@@ -169,8 +184,10 @@ class GameplayStatusOverlay: SKScene {
            if totalTime > 0 {
                totalTime -= 1
                timerLabel.text = "\(totalTime)"
+           } else if (playerHP == 0 || opponentHP == 0) {
+               endRound()
            } else {
-               endGame()
+               endRound()
            }
        }
        
@@ -182,7 +199,7 @@ class GameplayStatusOverlay: SKScene {
 
        
        // sample endgame function
-       func endGame() {
+       func endRound() {
            
            // Determine the winner based on player and opponent health
            var winner: String
@@ -194,7 +211,6 @@ class GameplayStatusOverlay: SKScene {
                winner = "It's a tie!"
            }
            
-           print("\(winner) wins!")
            
            
            let roundNumberLabel = SKLabelNode(text: "Round \(currentRound)")

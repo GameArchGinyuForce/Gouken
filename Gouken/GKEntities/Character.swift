@@ -56,6 +56,7 @@ class Character {
     var scene             : SCNScene    // Scene reference to handle collision
     var parentNode        : SCNNode
     var hurtBoxes         : [SCNNode] = []
+    var roundsWon         : Int = 0
     
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
