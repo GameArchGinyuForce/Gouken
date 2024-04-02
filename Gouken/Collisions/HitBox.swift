@@ -29,7 +29,7 @@ func initHitboxAttack(
     
     hitBoxNode.scale = SCNVector3(100, 100, 100) // Scale up by a factor of 10 in all directions
     
-    if pside == PlayerType.P1 {
+    if pside == PlayerType.P2 {
         hitBoxNode.physicsBody?.categoryBitMask = p1HitBox
         hitBoxNode.physicsBody?.collisionBitMask = p2HurtBox
         hitBoxNode.physicsBody?.contactTestBitMask = p2HurtBox
@@ -51,7 +51,8 @@ func initHitboxAttack(
     let redTransparentMaterial = SCNMaterial()
     redTransparentMaterial.diffuse.contents = redColor
     hitBoxNode.geometry?.materials = [redTransparentMaterial]
-
+    hitBoxNode.isHidden = true
+    
     // attach the hitbox to the playerSpawn node
     withPlayerNode.addChildNode(hitBoxNode)
     return hitBoxNode

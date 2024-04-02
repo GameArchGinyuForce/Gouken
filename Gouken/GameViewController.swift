@@ -12,6 +12,10 @@ import SpriteKit
 import GameplayKit
 import GameController
 
+var p1Side = PlayerType.P1
+var p2Side = PlayerType.P2
+
+
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {
     var scnView: SCNView!
     var menuLoaded = false
@@ -82,6 +86,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // Retrieve the SCNView
         let scnViewNew = self.view as! SCNView
+        
+
         scnViewNew.scene?.physicsWorld.contactDelegate = self
         
         // Set the scene to the view
@@ -98,7 +104,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnViewNew.addGestureRecognizer(tapGesture)
-    
+        
+        p1Side = PlayerType.P1
+        p2Side = PlayerType.P2
+
         //decide who is player 1 and player 2
         if multipeerConnect.connectedPeers.count > 0 {
             
@@ -116,6 +125,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
               
                 playerSpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
                 enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+                p1Side = PlayerType.P2
+                p2Side = PlayerType.P1
             }
         } else {
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
@@ -123,8 +134,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
            
         }
 
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, withManager: entityManager, scene: scene)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, withManager: entityManager, scene: scene)
+        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene)
+        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene)
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
@@ -377,6 +388,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             self?.handleReceivedData(receivedData)
         }
         
+//        if (player2?.state == CharacterState.Idle) {
+//            player2?.stateMachine?.switchState((player2?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
+//        }
+        
         //handle game logic
         ticksPassed!+=1
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
@@ -456,11 +471,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         }
         
+        if player1?.state == CharacterState.Stunned {
+            print("player is stunned")
+        }
+        
         //send data at the end of the game loop
         multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
                                                            position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
                                                             health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!, angleP1:playerSpawn!.eulerAngles.y, angleP2:enemySpawn!.eulerAngles.y))
 
+//        print("player1: \(player1?.health.currentHealth)")
+//        print("player2: \(player2?.health.currentHealth)")
         lastFrameTime = time
     
     }
@@ -478,7 +499,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func checkMovementAgainstPlayerBounds(runningDirection: Float, player1: SCNNode?, player2: SCNNode?) -> Bool{
-        let boundSize: Float = 0.9
+        let boundSize: Float = 0.5
             let newPlayerPositionZ = player1!.position.z + runningDirection
 
              //check if the new player position is within the boundary
@@ -527,30 +548,29 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func convertEnemyDataToClient(enemyState: CharacterState){
-            
-            if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
-        
-                player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
-            } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
-       
-                player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
-            } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
-
-                player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
-            }else if (enemyState == CharacterState.Stunned){
-
-                player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
-            }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
-
-                player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
-            }else if (player2?.state != CharacterState.Jumping && enemyState == CharacterState.Jumping){
-                
-                player2?.stateMachine?.switchState(NinjaJumpState((player2!.stateMachine! as! NinjaStateMachine)))
-            }else if (player2?.state != CharacterState.Blocking && enemyState == CharacterState.Blocking){
-                player2?.stateMachine?.switchState(NinjaBlockingState((player2!.stateMachine! as! NinjaStateMachine)))
-            }
+        if (player2?.state == CharacterState.Stunned) {
+            return
         }
-    
+        
+        if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
+            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
+        } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
+            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
+        } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
+            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned){
+            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
+            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Jumping && enemyState == CharacterState.Jumping){
+            player2?.stateMachine?.switchState(NinjaJumpState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Blocking && enemyState == CharacterState.Blocking){
+            player2?.stateMachine?.switchState(NinjaBlockingState((player2!.stateMachine! as! NinjaStateMachine)))
+        }else if (player2?.state != CharacterState.Downed && enemyState == CharacterState.Downed){
+            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
+        }
+    }
+
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
