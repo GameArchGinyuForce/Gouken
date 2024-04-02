@@ -54,6 +54,11 @@ TOUCH IT OTHERWISE BU HA0
 func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character) {
     buffer.updateInput()
     
+    if (player.state == CharacterState.Downed || player.state == CharacterState.Stunned) {
+        return // character is dead or stunned
+    }
+
+    
     let stateToChangeTo = readSequences(fromList: NinjaMoveSet, andBuffer: buffer).stateChages
     let isCharIdle = player.state == CharacterState.Idle
     let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight || player.state == CharacterState.Blocking
@@ -62,9 +67,6 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
     }
     
     
-    if (player.state == CharacterState.Downed || player.state == CharacterState.Stunned) {
-        return // character is dead or stunned
-    }
     
     switch (stateToChangeTo) {
     case .Stunned:
