@@ -206,15 +206,24 @@ class Character {
     
     func setUpHitBoxes() {
         var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
-        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_R")
+        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.2, length: 0.2, position: SCNVector3(-30, -60, -10), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/32, y: 0, z: -Float.pi/8))
         hitbox.isHidden = true
         addHitbox(hitboxNode: hitbox)
         
-        modelSCNNode = characterNode.childNode(withName: "Hand_L", recursively: true)
-        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_L")
-        hitbox.isHidden = true
-        addHitbox(hitboxNode: hitbox)
+//        var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
+//        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_R")
+//        hitbox.isHidden = true
+//        addHitbox(hitboxNode: hitbox)
         
+//        modelSCNNode = characterNode.childNode(withName: "Hand_L", recursively: true)
+//        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_L")
+//        hitbox.isHidden = true
+//        addHitbox(hitboxNode: hitbox)
+        
+//        modelSCNNode = characterNode.childNode(withName: "SM_Wep_Odachi_01", recursively: true)
+//        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.2, length: 0.2, position: SCNVector3(0, 1.5, 1), pside: playerSide, name: "SM_Wep_Odachi_01", rotation: SCNVector3(x: Float.pi / 4, y: Float.pi / 4, z: Float.pi / 4))
+//        hitbox.isHidden = false
+//        addHitbox(hitboxNode: hitbox)
     }
     
     required init?(coder aDecoder: NSCoder) {

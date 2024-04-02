@@ -14,7 +14,8 @@ func initHitboxAttack(
     length: CGFloat = 1.0,
     position: SCNVector3 = SCNVector3(0, 0, 0),
     pside: PlayerType,
-    name: String = ""
+    name: String = "",
+    rotation: SCNVector3 = SCNVector3(0, 0, 0)
 ) -> SCNNode {
     // create hit box node with geometry
     let hitboxGeometry = SCNBox(width: width, height: height, length: length, chamferRadius: 0.0)
@@ -26,6 +27,7 @@ func initHitboxAttack(
     hitBoxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
     hitBoxNode.physicsBody?.isAffectedByGravity = false
     hitBoxNode.name = name
+    hitBoxNode.eulerAngles = rotation
     
     hitBoxNode.scale = SCNVector3(100, 100, 100) // Scale up by a factor of 10 in all directions
     

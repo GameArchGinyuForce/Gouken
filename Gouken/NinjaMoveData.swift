@@ -97,7 +97,6 @@ let NinjaMoveSet : Dictionary = [
     ]),
     CharacterState.HeavyAttacking: CharacterMove(sequence: [ButtonType.HP], stateChages: CharacterState.HeavyAttacking, priority: 1, frameLeniency: 2, attackKeyFrames: [
         AttackKeyFrame(keyTime: 0.5, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
-        AttackKeyFrame(keyTime: 0.5, name: "Hand_L", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
         AttackKeyFrame(keyTime: 0.7, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true)
     ]),
     CharacterState.DashingRight: CharacterMove(sequence: [ButtonType.Right, ButtonType.Neutral, ButtonType.Right], stateChages: CharacterState.DashingRight, priority: 1, frameLeniency: 20, attackKeyFrames: []),
