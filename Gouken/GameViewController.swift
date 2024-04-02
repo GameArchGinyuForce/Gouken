@@ -525,8 +525,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 playerSpawn?.position.z = receivedData.player.position2z
                 playerSpawn?.position.y = receivedData.player.position2y
                 
-                playerSpawn?.eulerAngles.y = receivedData.player.angleP2
-                enemySpawn?.eulerAngles.y = receivedData.player.angleP1
+//                playerSpawn?.eulerAngles.y = receivedData.player.angleP2
+//                enemySpawn?.eulerAngles.y = receivedData.player.angleP1
                 
                 player1!.health.currentHealth = receivedData.player.health1
                 player2!.health.currentHealth = receivedData.player.health2
