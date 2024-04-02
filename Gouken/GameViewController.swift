@@ -291,6 +291,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 //component.move()
             }
         }
+        
+        
+        gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
+        
+        gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
+    
+        
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
 
         lookAtOpponent(player: playerSpawn!, enemy: enemySpawn!)

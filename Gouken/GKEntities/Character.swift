@@ -69,6 +69,7 @@ class Character: Equatable {
     var hurtBoxes         : [SCNNode] = []
     
     
+    
     // Callback Events
     var toggleHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     var activateHitboxesCallback: ((Any, Any?, Bool) -> Void)?

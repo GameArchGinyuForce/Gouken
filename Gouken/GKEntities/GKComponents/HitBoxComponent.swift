@@ -45,13 +45,9 @@ class HitBoxComponent : GKComponent {
         if (contactBitMask == p2HitBool && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
             GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, GameManager.Instance().p1Character!.hitbox.damage)
 
-            statsUI.playerTakenDamage(amount: GameManager.Instance().p1Character!.hitbox.damage)
-
         } else if (contactBitMask == p1HitBool && GameManager.Instance().p1Character?.state != CharacterState.Stunned) {
             
             GameManager.Instance().p1Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p2Character!, GameManager.Instance().p2Character!.hitbox.damage)
-            
-            statsUI.opponentTakenDamage(amount: GameManager.Instance().p2Character!.hitbox.damage)
         }
 
 //        if (contactBitMask == (p2HitBox | p1HurtBox) && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
