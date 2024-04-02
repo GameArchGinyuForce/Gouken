@@ -11,7 +11,7 @@ import GameplayKit
 class NinjaHeavyAttackingState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
-    let damage: Int = 50
+    let damage: Int = 40
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine

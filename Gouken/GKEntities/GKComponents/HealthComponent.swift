@@ -4,16 +4,19 @@ import GameplayKit
 class HealthComponent : GKComponent {
     var maxHealth: Int!
     var currentHealth: Int!
+    var statsUI: GameplayStatusOverlay!
+    
     
     var onHit: ((_ hitter: Character, _ damage: Int) -> Void)?
     var onDamage: (() -> Void)?
     var onHeal: (() -> Void)?
     var onDie: (() -> Void)?
     
-    init(maxHealth: Int) {
+    init(maxHealth: Int, statsUI: GameplayStatusOverlay) {
         super.init()
         
         self.maxHealth = maxHealth
+        self.statsUI = statsUI
         currentHealth = maxHealth
     }
     
@@ -25,7 +28,6 @@ class HealthComponent : GKComponent {
     
     func damage(_ amount: Int) {
         currentHealth = currentHealth - amount < 0 ? 0 : currentHealth - amount;
-        
         onDamage?()
         
         if (currentHealth == 0) {
