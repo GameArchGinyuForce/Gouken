@@ -1,6 +1,6 @@
 let characterModels     : Dictionary = [
-    CharacterName.Ninja: "art.scnassets/Synty_Ninja_Katana_1.scn",
-    CharacterName.Ninja2: "art.scnassets/Synty_Ninja_Katana_2.scn"
+    CharacterName.Ninja: "art.scnassets/Ninja_Katana_Default.dae",
+    CharacterName.Ninja2: "art.scnassets/Ninja_Katana_Default2.dae",
 ]
 
 let characterAnimations : Dictionary = [
