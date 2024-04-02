@@ -283,7 +283,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
      */
     @objc
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        
+        print("P1 HEALTH: ", player1?.health.currentHealth)
+        print("P2 HEALTH: ", player2?.health.currentHealth)
         //receive data  from the beginning of loop to handle game loop
         multipeerConnect.receivedDataHandler = { [weak self] receivedData in
             self?.handleReceivedData(receivedData)
@@ -366,6 +367,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
                                                            position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
                                                             health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!, angleP1:playerSpawn!.eulerAngles.y, angleP2:enemySpawn!.eulerAngles.y))
+        
 
     }
     
@@ -433,7 +435,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
     
     func convertEnemyDataToClient(enemyState: CharacterState){
-        if (player2?.state == CharacterState.Stunned) {
+        if (player2?.state == CharacterState.Stunned || player2?.state == CharacterState.Downed) {
             return
         }
         
