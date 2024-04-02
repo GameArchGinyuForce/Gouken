@@ -68,7 +68,7 @@ class HitBoxComponent : GKComponent {
         }
 //        
         for _hitbox in hitboxes {
-            let enemyHurtBox = _hitbox.physicsBody!.categoryBitMask == p1HitBox ? p2HurtBox : p1HurtBox
+            let enemyHurtBox = _hitbox.physicsBody!.categoryBitMask == p1HitBox ? p2HurtBox : _hitbox.physicsBody!.collisionBitMask
             if ((_hitbox.physicsBody) == nil) {
                 continue
             }
@@ -77,11 +77,35 @@ class HitBoxComponent : GKComponent {
 //            print(enemyHurtBox)
             let collision = scene?.physicsWorld.contactTest(with: _hitbox.physicsBody!, options: [SCNPhysicsWorld.TestOption.collisionBitMask: enemyHurtBox])
             if (collision != nil && !collision!.isEmpty) {
-                print(enemyHurtBox)
-                print("First detected collision:", collision?[0])
-                print("(\(collision![0].nodeA.physicsBody!.categoryBitMask),\(collision![0].nodeA.physicsBody!.collisionBitMask), \(collision![0].nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(collision![0].nodeB.physicsBody!.categoryBitMask),\(collision![0].nodeB.physicsBody!.collisionBitMask), \(collision![0].nodeB.physicsBody!.contactTestBitMask))")
-                return (collision![0].nodeA.physicsBody!.categoryBitMask) | (collision![0].nodeB.physicsBody!.categoryBitMask)
-                
+                for coll in collision! {
+                    print(enemyHurtBox)
+                    print("First detected collision:", collision?[0].nodeB.physicsBody!.categoryBitMask)
+                    print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
+
+                    if coll.nodeA.physicsBody!.contactTestBitMask != coll.nodeB.physicsBody!.categoryBitMask {
+                        continue
+                    }
+                    print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
+                    return (coll.nodeA.physicsBody!.categoryBitMask) | (coll.nodeB.physicsBody!.categoryBitMask)
+                    
+                }
+            }
+            
+            let hurtBoxes = _hitbox.physicsBody!.categoryBitMask == p1HitBox ? GameManager.Instance().p1Character!.hurtBoxes : GameManager.Instance().p2Character!.hurtBoxes
+            
+            for _hurtBox in hurtBoxes {
+                var colls = scene?.physicsWorld.contactTestBetween(_hitbox.physicsBody!, _hurtBox.physicsBody!)
+                if (colls != nil && !colls!.isEmpty) {
+                    for coll in colls! {
+                        print(enemyHurtBox)
+                        print("First detected collision:", coll.nodeB.physicsBody!.categoryBitMask)
+                        print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
+
+                        print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
+                        return (coll.nodeA.physicsBody!.categoryBitMask) | (coll.nodeB.physicsBody!.categoryBitMask)
+                        
+                    }
+                }
             }
         }
         return -1
