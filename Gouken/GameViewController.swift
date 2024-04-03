@@ -327,7 +327,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
-        print("isPaused? \(gameplayStatsOverlay.isGamePaused())")
         if (!gameplayStatsOverlay.isGamePaused()) {
             processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
         }

@@ -7,7 +7,7 @@ class GameplayStatusOverlay: SKScene {
     var opponentHealth: CGFloat = 1.0 // Full health (1.0 for 100%)
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
-    var totalTime = 10 // 2 minutes
+    var totalTime = 20 // 2 minutes
     private var healthBars: SKScene
     var MAX_HEALTH = 150
     
@@ -78,7 +78,7 @@ class GameplayStatusOverlay: SKScene {
         roundNumberLabel.fontSize = 30
         roundNumberLabel.fontName = "Arial-BoldMT"
         roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        roundNumberLabel.fontColor = .white
+        roundNumberLabel.fontColor = .red
         roundNumberLabel.fontSize = 30
         roundNumberLabel.zPosition = 10
         skScene.addChild(roundNumberLabel)
@@ -101,12 +101,21 @@ class GameplayStatusOverlay: SKScene {
         updateOpponentHealth(opponentHealth)
         totalTime = 10 // Reset timer
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self = self else { return }
 
-            roundNumberLabel.removeFromParent()
-            self.isPaused = false
-            startTimer()
+            // Remove roundNumberLabel after 5 seconds
+            roundNumberLabel.text = "Fight!"
+
+            // Add a delay before setting isPaused to false and starting the timer
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                guard let self = self else { return }
+
+                roundNumberLabel.removeFromParent()
+
+                self.isPaused = false
+                self.startTimer()
+            }
         }
         
     }
