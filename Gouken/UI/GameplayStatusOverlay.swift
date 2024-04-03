@@ -7,7 +7,8 @@ class GameplayStatusOverlay: SKScene {
     var opponentHealth: CGFloat = 1.0 // Full health (1.0 for 100%)
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
-    var totalTime = 20 // 2 minutes
+    var START_TIME = 50
+    var totalTime = 50 // 2 minutes
     private var healthBars: SKScene
     var MAX_HEALTH = 150
     
@@ -100,7 +101,7 @@ class GameplayStatusOverlay: SKScene {
         currentRound += 1
         updatePlayerHealth(playerHealth)
         updateOpponentHealth(opponentHealth)
-        totalTime = 10 // Reset timer
+        totalTime = START_TIME // Reset timer
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self = self else { return }
