@@ -18,12 +18,13 @@
 		1CDA63062BB6497600B76510 /* InputProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDA63052BB6497600B76510 /* InputProcessor.swift */; };
 		1CDA63092BB663F500B76510 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = 1CDA63082BB663F500B76510 /* Atomics */; };
 		6948156B2BBB7D33008CF343 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948156A2BBB7D33008CF343 /* AudioManager.swift */; };
-		6948156E2BBB82B5008CF343 /* Gouken_Menu_Theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6948156D2BBB82B5008CF343 /* Gouken_Menu_Theme.mp3 */; };
 		694815722BBB863E008CF343 /* Gouken_Battle_Theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 694815712BBB863E008CF343 /* Gouken_Battle_Theme.mp3 */; };
 		6948157A2BBB8ACD008CF343 /* Running.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 694815792BBB8ACD008CF343 /* Running.mp3 */; };
-		694815872BBB9CA2008CF343 /* Ninja_Hit_Effect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 694815862BBB9CA2008CF343 /* Ninja_Hit_Effect.mp3 */; };
 		694815892BBB9D53008CF343 /* oof.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 694815882BBB9D53008CF343 /* oof.mp3 */; };
 		8767925A2BB77995009B05ED /* HitBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876792592BB77995009B05ED /* HitBox.swift */; };
+		952CEFC72BBCEE40001386E8 /* Gouken_Menu_Theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFC62BBCEE40001386E8 /* Gouken_Menu_Theme.mp3 */; };
+		952CEFC92BBCEE53001386E8 /* Gouken_Ninja_Hit_Effect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFC82BBCEE53001386E8 /* Gouken_Ninja_Hit_Effect.mp3 */; };
+		952CEFCB2BBCEE62001386E8 /* Ninja_Hit_Effect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFCA2BBCEE62001386E8 /* Ninja_Hit_Effect.mp3 */; };
 		954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */; };
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* HurtBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* HurtBox.swift */; };
@@ -74,12 +75,13 @@
 		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
 		1CDA63052BB6497600B76510 /* InputProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputProcessor.swift; sourceTree = "<group>"; };
 		6948156A2BBB7D33008CF343 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
-		6948156D2BBB82B5008CF343 /* Gouken_Menu_Theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Gouken_Menu_Theme.mp3; path = ../../../../Downloads/Gouken_Menu_Theme.mp3; sourceTree = "<group>"; };
 		694815712BBB863E008CF343 /* Gouken_Battle_Theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Gouken_Battle_Theme.mp3; sourceTree = "<group>"; };
 		694815792BBB8ACD008CF343 /* Running.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Running.mp3; sourceTree = "<group>"; };
-		694815862BBB9CA2008CF343 /* Ninja_Hit_Effect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Ninja_Hit_Effect.mp3; path = ../../../../Downloads/Ninja_Hit_Effect.mp3; sourceTree = "<group>"; };
 		694815882BBB9D53008CF343 /* oof.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = oof.mp3; sourceTree = "<group>"; };
 		876792592BB77995009B05ED /* HitBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitBox.swift; sourceTree = "<group>"; };
+		952CEFC62BBCEE40001386E8 /* Gouken_Menu_Theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Gouken_Menu_Theme.mp3; path = ../../../Downloads/Gouken_Menu_Theme.mp3; sourceTree = "<group>"; };
+		952CEFC82BBCEE53001386E8 /* Gouken_Ninja_Hit_Effect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Gouken_Ninja_Hit_Effect.mp3; sourceTree = "<group>"; };
+		952CEFCA2BBCEE62001386E8 /* Ninja_Hit_Effect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Ninja_Hit_Effect.mp3; path = ../../../Downloads/Ninja_Hit_Effect.mp3; sourceTree = "<group>"; };
 		954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
 		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		954F765C2B9D6ED700CB7767 /* HurtBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HurtBox.swift; sourceTree = "<group>"; };
@@ -284,9 +286,10 @@
 				F031DA0C2B7609EC00E3F4B5 /* art.scnassets */,
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
 				694815882BBB9D53008CF343 /* oof.mp3 */,
-				694815862BBB9CA2008CF343 /* Ninja_Hit_Effect.mp3 */,
+				952CEFC82BBCEE53001386E8 /* Gouken_Ninja_Hit_Effect.mp3 */,
+				952CEFCA2BBCEE62001386E8 /* Ninja_Hit_Effect.mp3 */,
 				694815792BBB8ACD008CF343 /* Running.mp3 */,
-				6948156D2BBB82B5008CF343 /* Gouken_Menu_Theme.mp3 */,
+				952CEFC62BBCEE40001386E8 /* Gouken_Menu_Theme.mp3 */,
 				694815712BBB863E008CF343 /* Gouken_Battle_Theme.mp3 */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
@@ -376,15 +379,16 @@
 				F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */,
 				DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */,
 				6948157A2BBB8ACD008CF343 /* Running.mp3 in Resources */,
-				6948156E2BBB82B5008CF343 /* Gouken_Menu_Theme.mp3 in Resources */,
 				954F76582B9D6DF500CB7767 /* background.jpg in Resources */,
+				952CEFCB2BBCEE62001386E8 /* Ninja_Hit_Effect.mp3 in Resources */,
+				952CEFC72BBCEE40001386E8 /* Gouken_Menu_Theme.mp3 in Resources */,
 				694815722BBB863E008CF343 /* Gouken_Battle_Theme.mp3 in Resources */,
 				954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */,
 				F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */,
 				F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */,
 				694815892BBB9D53008CF343 /* oof.mp3 in Resources */,
-				694815872BBB9CA2008CF343 /* Ninja_Hit_Effect.mp3 in Resources */,
 				F031DA122B7609EC00E3F4B5 /* Main.storyboard in Resources */,
+				952CEFC92BBCEE53001386E8 /* Gouken_Ninja_Hit_Effect.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
