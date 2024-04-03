@@ -296,9 +296,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func handleDoubleTap(_ gestureRecognize: UIGestureRecognizer) {
     }
     
-    
-    var gamePaused = false
-    
+        
     /*
      This method is being called every frame and is our update() method.
      */
@@ -329,10 +327,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
-        if (gamePaused) {
+        print("isPaused? \(gameplayStatsOverlay.isGamePaused())")
+        if (!gameplayStatsOverlay.isGamePaused()) {
             processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
-            processBuffer(fromBuffer: P2Buffer, onCharacter: player2!)
-
         }
 
         lookAtOpponent(player: playerSpawn!, enemy: enemySpawn!)
