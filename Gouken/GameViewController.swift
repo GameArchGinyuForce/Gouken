@@ -65,6 +65,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         GameManager.Instance().doSomething();
+        AudioManager.Instance().playBackgoundMusicSound(audio: AudioDict.Menu)
         
     }
     
@@ -222,6 +223,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?
         
         ticksPassed = 0
+        
+        AudioManager.Instance().stopAllAudioChannels()
+        AudioManager.Instance().playBackgoundMusicSound(audio: AudioDict.Game)
     }
     
     var entityManager = EntityManager()

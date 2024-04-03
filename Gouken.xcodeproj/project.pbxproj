@@ -15,8 +15,8 @@
 		0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */; };
 		1C2B21F42BA77C87006928F5 /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2B21F32BA77C87006928F5 /* GamePad.swift */; };
 		1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */; };
-		1C61FA3F2BBD2539003AC691 /* Temple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C61FA3E2BBD2539003AC691 /* Temple.swift */; };
 		1C61FA3D2BBCFA0C003AC691 /* NinjaDragonPunchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C61FA3C2BBCFA0C003AC691 /* NinjaDragonPunchState.swift */; };
+		1C61FA3F2BBD2539003AC691 /* Temple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C61FA3E2BBD2539003AC691 /* Temple.swift */; };
 		1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */; };
 		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
 		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
@@ -30,6 +30,9 @@
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* HurtBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* HurtBox.swift */; };
 		954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765E2B9D6EF300CB7767 /* Colliders.swift */; };
+		9581817F2BBDBAC500009A8D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9581817E2BBDBAC500009A8D /* AudioManager.swift */; };
+		958181812BBDBAE500009A8D /* Gouken_Menu_Theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 958181802BBDBAE500009A8D /* Gouken_Menu_Theme.mp3 */; };
+		958181832BBDBAEB00009A8D /* Gouken_Battle_Theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 958181822BBDBAEB00009A8D /* Gouken_Battle_Theme.mp3 */; };
 		95DBEA6A2BBA8A36001F04A7 /* NinjaJumpState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DBEA692BBA8A36001F04A7 /* NinjaJumpState.swift */; };
 		A5BA078C2BA7A5F00080B32E /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BA078B2BA7A5F00080B32E /* GameManager.swift */; };
 		A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D2DA652B981C4600A32416 /* MenuOverlay.swift */; };
@@ -75,8 +78,8 @@
 		0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineComponent.swift; sourceTree = "<group>"; };
 		1C2B21F32BA77C87006928F5 /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
 		1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPlayer.swift; sourceTree = "<group>"; };
-		1C61FA3E2BBD2539003AC691 /* Temple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple.swift; sourceTree = "<group>"; };
 		1C61FA3C2BBCFA0C003AC691 /* NinjaDragonPunchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaDragonPunchState.swift; sourceTree = "<group>"; };
+		1C61FA3E2BBD2539003AC691 /* Temple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple.swift; sourceTree = "<group>"; };
 		1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazingBrentwood.swift; sourceTree = "<group>"; };
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
@@ -89,6 +92,9 @@
 		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		954F765C2B9D6ED700CB7767 /* HurtBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HurtBox.swift; sourceTree = "<group>"; };
 		954F765E2B9D6EF300CB7767 /* Colliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colliders.swift; sourceTree = "<group>"; };
+		9581817E2BBDBAC500009A8D /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		958181802BBDBAE500009A8D /* Gouken_Menu_Theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Gouken_Menu_Theme.mp3; sourceTree = "<group>"; };
+		958181822BBDBAEB00009A8D /* Gouken_Battle_Theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Gouken_Battle_Theme.mp3; sourceTree = "<group>"; };
 		95DBEA692BBA8A36001F04A7 /* NinjaJumpState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaJumpState.swift; sourceTree = "<group>"; };
 		A5BA078B2BA7A5F00080B32E /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		A5D2DA652B981C4600A32416 /* MenuOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOverlay.swift; sourceTree = "<group>"; };
@@ -239,6 +245,7 @@
 				0A5BB2D52BBB9E9400F62E8E /* AIDirectorEntity.swift */,
 				F021769A2B82B935000993B2 /* GKComponents */,
 				F02F5D562BB64FB000E0D5CD /* SerializableCharacter.swift */,
+				9581817E2BBDBAC500009A8D /* AudioManager.swift */,
 			);
 			path = GKEntities;
 			sourceTree = "<group>";
@@ -299,6 +306,8 @@
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
+				958181822BBDBAEB00009A8D /* Gouken_Battle_Theme.mp3 */,
+				958181802BBDBAE500009A8D /* Gouken_Menu_Theme.mp3 */,
 				954F76572B9D6DF500CB7767 /* background.jpg */,
 				954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */,
 				F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */,
@@ -384,7 +393,9 @@
 			files = (
 				F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */,
 				DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */,
+				958181812BBDBAE500009A8D /* Gouken_Menu_Theme.mp3 in Resources */,
 				954F76582B9D6DF500CB7767 /* background.jpg in Resources */,
+				958181832BBDBAEB00009A8D /* Gouken_Battle_Theme.mp3 in Resources */,
 				954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */,
 				F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */,
 				F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */,
@@ -402,6 +413,7 @@
 				DBF1C45D2B85A79300B40007 /* Overlay.swift in Sources */,
 				0A5BB2D62BBB9E9400F62E8E /* AIDirectorEntity.swift in Sources */,
 				F021769E2B82BBAF000993B2 /* EntityManager.swift in Sources */,
+				9581817F2BBDBAC500009A8D /* AudioManager.swift in Sources */,
 				F0FCA3642BBB68A600B50931 /* GameplayStatusOverlay.swift in Sources */,
 				F021769C2B82B958000993B2 /* MovementComponent.swift in Sources */,
 				95DBEA6A2BBA8A36001F04A7 /* NinjaJumpState.swift in Sources */,
@@ -612,6 +624,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -623,7 +636,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BCIT.Gouken;
+				PRODUCT_BUNDLE_IDENTIFIER = Jeff.Gouken;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -646,6 +659,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -657,7 +671,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = BCIT.Gouken;
+				PRODUCT_BUNDLE_IDENTIFIER = Jeff.Gouken;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
