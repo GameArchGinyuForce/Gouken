@@ -302,6 +302,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
+                
+        if (player2!.health.currentHealth! == 0 && player1!.characterNode.parent!.name == "p1Spawn") {
+            player1!.stateMachine!.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
+        }
+
+//        if (GameManager.Instance().p2Character?.health.currentHealth! == 0) {
+//            GameManager.Instance().p1Character?.stateMachine!.switchState((GameManager.Instance().p1Character?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
+//        }
         
         gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
         
@@ -347,8 +355,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 playerSpawn?.position.z = receivedData.player.position2z
                 playerSpawn?.position.y = receivedData.player.position2y
                 
-                player1!.health.currentHealth = receivedData.player.health1
-                player2!.health.currentHealth = receivedData.player.health2
+                if (!(player1!.health.currentHealth == 0) && !(player2!.health.currentHealth == 0)) {
+                        player1!.health.currentHealth = receivedData.player.health1
+                        player2!.health.currentHealth = receivedData.player.health2
+                    }
             }
 
         }
@@ -363,6 +373,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         guard let player2 = player2,
               let stateMachine = player2.stateMachine,
               player2.state != enemyState else {
+            return
+        }
+        
+        if (player2.state == CharacterState.Stunned || player2.state == CharacterState.Downed) {
             return
         }
         
