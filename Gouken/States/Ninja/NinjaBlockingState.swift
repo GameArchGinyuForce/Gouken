@@ -10,9 +10,6 @@ class NinjaBlockingState: NinjaBaseState {
     
     func enter() {
         print("enter NinjaBlockingState")
-        
-        AudioManager.Instance().playEffectSound(audio: AudioDict.Guard)
-        
         stateMachine.character.setState(withState: CharacterState.Blocking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Blocking]!, loop: true)
     }
