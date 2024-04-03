@@ -303,7 +303,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
                 
-        if (player2!.health.currentHealth! == 0 && player1!.characterNode.parent!.name == "p1Spawn") {
+        if (GameManager.Instance().matchType == MatchType.MP && player2!.health.currentHealth! == 0 && player1!.characterNode.parent!.name == "p1Spawn") {
             player1!.stateMachine!.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
         }
 
