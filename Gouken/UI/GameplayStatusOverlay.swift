@@ -7,16 +7,27 @@ class GameplayStatusOverlay: SKScene {
     var opponentHealth: CGFloat = 1.0 // Full health (1.0 for 100%)
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
-    var totalTime = 10 // 2 minutes
+    var START_TIME = 50
+    var totalTime = 50 // 2 minutes
     private var healthBars: SKScene
+    var MAX_HEALTH = 150
+    
     private var playerHP = 150
     var playerHPBar: SKSpriteNode!
+    var player1: Character!
+    
     private var opponentHP = 150
     var opponentHPBar: SKSpriteNode!
+    var player2: Character!
     
+    var currentRound = 1 // Initialize current round
+    var roundNumberLabel: SKLabelNode!
+    var skScene: SKScene!
+
     
     override init(size: CGSize) {
         self.healthBars = SKScene(size: size)
+        
         super.init(size: size)
     }
     
@@ -24,30 +35,91 @@ class GameplayStatusOverlay: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupHealthBars(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -> SKScene {
+    
+    func isGamePaused() -> Bool {
+        return self.isPaused
+    }
+    
+    func setupGameLoopStats(withViewHeight height: CGFloat, andViewWidth width: CGFloat, players: [Character?]) -> SKScene {
         
+        
+        self.isPaused = true
         let sceneSize = CGSize(width: width, height: height)
         print("Screen size of ", width, " by ", height)
-        let skScene = SKScene(size: sceneSize)
+        skScene = SKScene(size: sceneSize)
         skScene.scaleMode = .resizeFill
+        player1 = players[0]
+        player2 = players[1]
         
+        
+        setupPlayer1Stats(skScene: skScene)
+        
+        // P2 Stats
+        setupPlayer2Stats(skScene: skScene)
+        
+        startNewRound()
+                
         timerLabel = SKLabelNode(text: "Gouken") //shows the game title before the game starts with the timer
         timerLabel.position = CGPoint(x: width / 2, y: 320)
         timerLabel.fontName = "Chalkduster"
         timerLabel.fontColor = .white
         timerLabel.fontSize = 20
         timerLabel.zPosition = 5
-        
         skScene.addChild(timerLabel)
         
-        startTimer()
-        // P1 Stats
-        setupPlayer1Stats(skScene: skScene)
-        
-        // P2 Stats
-        setupPlayer2Stats(skScene: skScene)
         
         return skScene
+    }
+    
+    
+    // TODO: Reset player states & their health here
+    func startNewRound(winnerOfRound: String="") {
+                
+        
+        roundNumberLabel = SKLabelNode(text: "Round \(currentRound)")
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.fontName = "Arial-BoldMT"
+        roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        roundNumberLabel.fontColor = .red
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.zPosition = 10
+        skScene.addChild(roundNumberLabel)
+        
+        // Reset both player states
+        player1?.state = CharacterState.Idle
+        player2?.state = CharacterState.Idle
+        player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
+        player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+        
+        playerHPBar?.size.width = CGFloat(MAX_HEALTH)
+        opponentHPBar?.size.width = CGFloat(MAX_HEALTH)
+        playerHP = MAX_HEALTH
+        opponentHP = MAX_HEALTH
+        player1?.health.currentHealth = MAX_HEALTH
+        player2?.health.currentHealth = MAX_HEALTH
+        
+        currentRound += 1
+        updatePlayerHealth(playerHealth)
+        updateOpponentHealth(opponentHealth)
+        totalTime = START_TIME // Reset timer
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+            guard let self = self else { return }
+
+            // Remove roundNumberLabel after 5 seconds
+            roundNumberLabel.text = "Fight!"
+
+            // Add a delay before setting isPaused to false and starting the timer
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                guard let self = self else { return }
+
+                roundNumberLabel.removeFromParent()
+
+                self.isPaused = false
+                self.startTimer()
+            }
+        }
+        
     }
     
     
@@ -150,7 +222,9 @@ class GameplayStatusOverlay: SKScene {
         playerHPLabel.zPosition = 5
         skScene.addChild(playerHPLabel)
         
+    
     }
+    
 
     func startTimer() {
            countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
@@ -161,8 +235,10 @@ class GameplayStatusOverlay: SKScene {
            if totalTime > 0 {
                totalTime -= 1
                timerLabel.text = "\(totalTime)"
+           } else if (playerHP == 0 || opponentHP == 0) {
+               endRound()
            } else {
-               endGame()
+               endRound()
            }
        }
        
@@ -174,8 +250,9 @@ class GameplayStatusOverlay: SKScene {
 
        
        // sample endgame function
-       func endGame() {
+       func endRound() {
            
+           self.isPaused = true
            // Determine the winner based on player and opponent health
            var winner: String
            if playerHealth > opponentHealth {
@@ -186,10 +263,12 @@ class GameplayStatusOverlay: SKScene {
                winner = "It's a tie!"
            }
            
-           print("\(winner) wins!")
            
+        
            // Stop the timer
            countdownTimer?.invalidate()
+           startNewRound()
+
        }
     
     
