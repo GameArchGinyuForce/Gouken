@@ -307,11 +307,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             }
         }
         
-        
-        gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
-        
-        gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
-    
+        if (GameManager.Instance().matchType == MatchType.CPU) {
+            gameplayStatsOverlay.setOpponentHealth(amount: player2!.health.currentHealth!)
+            gameplayStatsOverlay.setPlayerHealth(amount: player1!.health.currentHealth!)
+        } else {
+            gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
+            gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
+        }
         
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
 

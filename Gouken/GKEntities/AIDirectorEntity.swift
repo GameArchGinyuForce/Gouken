@@ -10,9 +10,8 @@ class AIComponent : GKEntity {
     // Constants
     let aiAttackCooldown = 3.0
     let aiAggressiveCooldown = 4.0
-    let aiRunSpeed = Float(0.01)
-    let aiAttackRange = Float(1.25)
-    let aiRunAwayFromPlayerDuration = 0.2
+    let aiAttackRange = Float(1.5)
+    let aiRunAwayFromPlayerDuration = 0.3
     let aiMaxDamagedPlayerCount = 3
     let aiMinDistanceToPlayer = Float(1.0)
     
@@ -39,12 +38,12 @@ class AIComponent : GKEntity {
         aiRunAwayFromPlayerTimer = aiRunAwayFromPlayerDuration
         aiDamagedPlayerCount = 0
         
-        ai.health.onDamage = { [self] in
+        ai.health.onDamage.append { [self] in
             enterAIAggressiveState()
         }
-        player.health.onDamage = { [self] in
+        player.health.onDamage.append { [self] in
             aiDamagedPlayerCount += 1
-            // If ai damages player too many times, give player some breathing room
+            // If AI damages player too many times, give player some breathing room
             if (aiDamagedPlayerCount >= aiMaxDamagedPlayerCount) {
                 exitAIAggressiveState()
                 isAIAggressiveOnCooldown = true
@@ -59,6 +58,8 @@ class AIComponent : GKEntity {
     override func update(deltaTime seconds: TimeInterval) {
         tickAIAttackCooldownTimer(seconds)
         tickAIAggressiveCooldownTimer(seconds)
+        
+        if (ai.state == CharacterState.Downed || ai.state == CharacterState.Stunned) { return }
         
         // AI moves away from player after being too aggressive
         if (isAIRunningAwayFromPlayer) {
@@ -120,7 +121,7 @@ class AIComponent : GKEntity {
                 tryHeavyAttack()
             }
             
-            if (canAIMove()) {
+            if (canAIMove() && !isPlayerAttacking()) {
                 moveToPlayer()
             }
         }
@@ -228,17 +229,17 @@ class AIComponent : GKEntity {
     
     func enterAIAggressiveState() {
         isAIAggressive = true
-        aiDamagedPlayerCount = 0
     }
     
     func exitAIAggressiveState() {
+        aiDamagedPlayerCount = 0
         isAIAggressive = false
         isAIRunningAwayFromPlayer = true
     }
     
     func canAIAttack() -> Bool {
-        if (ai.state != CharacterState.Attacking &&
-            ai.state != CharacterState.HeavyAttacking) {
+        if (!isAIAttacking() &&
+            ai.state != CharacterState.Stunned) {
             return true
         }
         return false
@@ -249,7 +250,8 @@ class AIComponent : GKEntity {
     }
     
     func canAIDash() -> Bool {
-        if (!isAIDashing()) {
+        if (!isAIDashing() &&
+            ai.state != CharacterState.Stunned) {
             return true
         }
         return false
@@ -257,6 +259,7 @@ class AIComponent : GKEntity {
     
     func canAIBlock() -> Bool {
         if (ai.state != CharacterState.Blocking &&
+            ai.state != CharacterState.Stunned &&
             ai.state != CharacterState.DashingLeft &&
             ai.state != CharacterState.DashingRight) {
             return true

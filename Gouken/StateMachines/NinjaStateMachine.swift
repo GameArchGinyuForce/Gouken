@@ -28,7 +28,7 @@ class NinjaStateMachine: CharacterStateMachine {
                 character.health.damage(damage)
             }
         }
-        character.health.onDamage = {
+        character.health.onDamage.append {
             self.switchState(self.stateInstances[CharacterState.Stunned]!)
         }
         character.health.onDie = {
