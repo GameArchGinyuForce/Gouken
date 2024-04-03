@@ -11,16 +11,19 @@ import SceneKit
 enum StageType {
     case AmazingBrentwood
     case PyramidOfGiza
+    case Temple
 }
 
 let StageScnMapper : Dictionary = [
     StageType.AmazingBrentwood: "art.scnassets/AmazingBrentwood.scn",
-    StageType.PyramidOfGiza: "art.scnassets/PyramidOfGiza.scn"
+    StageType.PyramidOfGiza: "art.scnassets/PyramidOfGiza.scn",
+    StageType.Temple:   "art.scnassets/Temple.scn"
 ]
 
 let StageName : Dictionary = [
     StageType.AmazingBrentwood: "The Amazing Brentwood",
-    StageType.AmazingBrentwood: "Pyramid of Giza"
+    StageType.PyramidOfGiza: "Pyramid of Giza",
+    StageType.Temple:           "The Temple"
 ]
 
 
