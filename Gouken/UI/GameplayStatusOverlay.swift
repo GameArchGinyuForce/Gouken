@@ -146,12 +146,12 @@ class GameplayStatusOverlay: SKScene {
         opponentHPContainer.addChild(opponentHPBar)
         
         // Opponent HP Label
-        let opponentHPLabel = SKLabelNode(text: "My name Jeff: \(Int(opponentHealth * 100))%")
-        opponentHPLabel.position = CGPoint(x: 500, y: 330)
-        opponentHPLabel.fontColor = .white
-        opponentHPLabel.fontSize = 12
-        opponentHPLabel.zPosition = 5
-        skScene.addChild(opponentHPLabel)
+//        let opponentHPLabel = SKLabelNode(text: "My name Jeff: \(Int(opponentHealth * 100))%")
+//        opponentHPLabel.position = CGPoint(x: 500, y: 330)
+//        opponentHPLabel.fontColor = .white
+//        opponentHPLabel.fontSize = 12
+//        opponentHPLabel.zPosition = 5
+//        skScene.addChild(opponentHPLabel)
     }
     
     func playerTakenDamage(amount: Int) {
@@ -215,12 +215,12 @@ class GameplayStatusOverlay: SKScene {
         playerHPContainer.addChild(playerHPBar)
         
         // Player HP Label
-        let playerHPLabel = SKLabelNode(text: "Deckem Jaskaran: \(Int(playerHealth * 100))%")
-        playerHPLabel.position = CGPoint(x: 150, y: 330)
-        playerHPLabel.fontColor = .white
-        playerHPLabel.fontSize = 12
-        playerHPLabel.zPosition = 5
-        skScene.addChild(playerHPLabel)
+//        let playerHPLabel = SKLabelNode(text: "Deckem Jaskaran: \(Int(playerHealth * 100))%")
+//        playerHPLabel.position = CGPoint(x: 150, y: 330)
+//        playerHPLabel.fontColor = .white
+//        playerHPLabel.fontSize = 12
+//        playerHPLabel.zPosition = 5
+//        skScene.addChild(playerHPLabel)
         
     
     }
