@@ -5,7 +5,7 @@ class NinjaDashingRightState: NinjaBaseState {
     
     var stateMachine: NinjaStateMachine!
     let dashDuration = 0.3
-    let dashDistancePerTick = Float(0.1)
+    var dashDistancePerTick = Float(0.1)
     var dashProgress = 0.0
     
     var player1Node: SCNNode
@@ -26,7 +26,12 @@ class NinjaDashingRightState: NinjaBaseState {
         dashProgress = 0.0
         
         stateMachine.character.setState(withState: CharacterState.DashingRight)
-        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DashingRight]!, loop: false)
+        if (player1Node.position.z - player2Node.position.z) > 0 {
+            stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DashingLeft]!, loop: false)
+        } else {
+            stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DashingRight]!, loop: false)
+        }
+//        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DashingRight]!, loop: false)
     }
     
     func tick(_ deltaTime: TimeInterval) {
