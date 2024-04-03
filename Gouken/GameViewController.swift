@@ -298,7 +298,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         if (player1?.state == CharacterState.Downed) {
             gameplayStatsOverlay.endRound()
-            player1?.roundsWon += 1
+            player2?.roundsWon += 1
         } else if (player1?.state == CharacterState.Downed) {
             gameplayStatsOverlay.endRound()
             player2?.roundsWon += 1
