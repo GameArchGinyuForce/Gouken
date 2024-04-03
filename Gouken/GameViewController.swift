@@ -291,17 +291,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             self?.handleReceivedData(receivedData)
         }
         
-//        if (player2?.state == CharacterState.Idle) {
-//            player2?.stateMachine?.switchState((player2?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
-//        }
-        
         
         if (player1?.state == CharacterState.Downed) {
             gameplayStatsOverlay.endRound()
-            player2?.roundsWon += 1
         } else if (player1?.state == CharacterState.Downed) {
             gameplayStatsOverlay.endRound()
-            player2?.roundsWon += 1
         }
         
         //handle game logic
