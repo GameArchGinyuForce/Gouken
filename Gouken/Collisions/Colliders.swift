@@ -30,7 +30,7 @@ let p2MeshBitMask = 1 << 6      // Binary: 01000000
 // Hitboxes and Hurtboxes bitmasks.
 let p1HitBox = 1 << 0           // Binary: 00000001
 let p2HitBox = 1 << 1      // Binary: 00100000
-let p1HurtBox = 6          // Binary: 00010000
+let p1HurtBox = 8          // Binary: 00010000
 let p2HurtBox = 1 << 2          // Binary: 00000100
 
 

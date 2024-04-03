@@ -5,6 +5,8 @@
 //  Created by Nathan Dong on 2024-03-17.
 //
 
+import SceneKit
+
 enum StageSelected {
     case
     AmazingBrentwood,
@@ -39,9 +41,10 @@ class GameManager {
     var stageSelected: StageSelected?
     var p1Character: Character?
     var p2Character: Character?
+    var camera: SCNNode?
     var matchType: MatchType?
     var currentScene: CurrentScene?
-    
+    var cameraNode: SCNNode?
     
     // TODO: Additional parameters including Settings (Sound level, etc.), playerId?, matchHistory?
     
@@ -60,4 +63,14 @@ class GameManager {
     func doSomething() {
         print("Hey From GameManager Singleton")
     }
+    
+    func otherCharacter(character: Character) -> Character{
+        
+        if(character == GameManager.Instance().p1Character!){
+            return GameManager.Instance().p2Character!
+        }else{
+            return GameManager.Instance().p1Character!
+        }
+    }
+    
 }

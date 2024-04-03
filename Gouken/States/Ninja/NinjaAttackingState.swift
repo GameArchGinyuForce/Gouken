@@ -4,6 +4,8 @@ import GameplayKit
 class NinjaAttackingState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
+    let damage: Int = 30
+    
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
     }
@@ -15,8 +17,8 @@ class NinjaAttackingState: NinjaBaseState {
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
         
         // Hardcoded retrieval of move
-        let move = NinjaMoveSet[0]
-        
+        let move: CharacterMove = NinjaMoveSet[CharacterState.Attacking]!
+        stateMachine.character.hitbox.damage = self.damage
         move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
     }
     

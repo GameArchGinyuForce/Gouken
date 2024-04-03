@@ -41,11 +41,16 @@ func initHurtboxAttack(
 
     print("Created a hurtbox with category mask: ", hurtBoxNode.physicsBody!.categoryBitMask, " and collision mask: ", hurtBoxNode.physicsBody!.collisionBitMask, " and contact bitmask: ", hurtBoxNode.physicsBody!.contactTestBitMask)
 
+    var alpha = 0.0
     // create a visible hitbox
-    let greenColor = UIColor.green.withAlphaComponent(0.2) // Adjust the alpha value for transparency
+    if (debugBoxes) {
+        alpha = 0.2
+    }
+    let greenColor = UIColor.green.withAlphaComponent(alpha) // Adjust the alpha value for transparency
     let greenTransparentMaterial = SCNMaterial()
     greenTransparentMaterial.diffuse.contents = greenColor
     hurtBoxNode.geometry?.materials = [greenTransparentMaterial]
+//    hurtBoxNode.isHidden = true
 
     // attach the hitbox to the playerSpawn node
     playerSpawn.addChildNode(hurtBoxNode)
