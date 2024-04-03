@@ -8,7 +8,7 @@ class HealthComponent : GKComponent {
     
     
     var onHit: ((_ hitter: Character, _ damage: Int) -> Void)?
-    var onDamage: (() -> Void)?
+    var onDamage: [() -> Void] = []
     var onHeal: (() -> Void)?
     var onDie: (() -> Void)?
     
@@ -28,7 +28,10 @@ class HealthComponent : GKComponent {
     
     func damage(_ amount: Int) {
         currentHealth = currentHealth - amount < 0 ? 0 : currentHealth - amount;
-        onDamage?()
+        
+        for closure in onDamage {
+            closure()
+        }
         
         print("whats our health here? ", currentHealth)
         if (currentHealth == 0) {

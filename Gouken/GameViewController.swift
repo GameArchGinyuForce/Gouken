@@ -121,6 +121,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             
             print("\(myPeerDisplayName) and \(firstConnectedPeerDisplayName)")
             
+            GameManager.Instance().matchType = MatchType.MP
             if (myPeerDisplayName > firstConnectedPeerDisplayName) {
             
                 playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
@@ -141,6 +142,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             GameManager.Instance().matchType = MatchType.MP
 
         } else {
+            GameManager.Instance().matchType = MatchType.CPU
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
             GameManager.Instance().matchType = MatchType.CPU
@@ -169,6 +171,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         player1?.setUpHurtBoxes()
         player2?.setUpHurtBoxes()
         
+        if (GameManager.Instance().matchType == MatchType.CPU) {
+            entityManager.addEntity(AIComponent(player: player1!, ai: player2!))
+        }
         //        GameManager.Instance().camera = cameraNode
                 
         var gkEntity = GKEntity()
@@ -301,20 +306,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 //component.move()
             }
         }
-        
                 
         if (GameManager.Instance().matchType == MatchType.MP && player2!.health.currentHealth! == 0 && player1!.characterNode.parent!.name == "p1Spawn") {
             player1!.stateMachine!.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
         }
-
-//        if (GameManager.Instance().p2Character?.health.currentHealth! == 0) {
-//            GameManager.Instance().p1Character?.stateMachine!.switchState((GameManager.Instance().p1Character?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
-//        }
         
-        gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
-        
-        gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
-    
+        if (GameManager.Instance().matchType == MatchType.CPU) {
+            gameplayStatsOverlay.setOpponentHealth(amount: player2!.health.currentHealth!)
+            gameplayStatsOverlay.setPlayerHealth(amount: player1!.health.currentHealth!)
+        } else {
+            gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
+            gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
+        }    
         
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
 
