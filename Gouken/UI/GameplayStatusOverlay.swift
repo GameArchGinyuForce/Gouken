@@ -22,7 +22,6 @@ class GameplayStatusOverlay: SKScene {
     var currentRound = 1 // Initialize current round
     var roundNumberLabel: SKLabelNode!
     var skScene: SKScene!
-    var gameIsPaused: Bool = true
 
     
     override init(size: CGSize) {
@@ -42,6 +41,8 @@ class GameplayStatusOverlay: SKScene {
     
     func setupGameLoopStats(withViewHeight height: CGFloat, andViewWidth width: CGFloat, players: [Character?]) -> SKScene {
         
+        
+        self.isPaused = true
         let sceneSize = CGSize(width: width, height: height)
         print("Screen size of ", width, " by ", height)
         skScene = SKScene(size: sceneSize)
