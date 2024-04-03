@@ -9,7 +9,7 @@ import GameplayKit
 import Foundation
 
 // Character List
-enum CharacterName {
+enum CharacterName : String {
     case Ninja
     case Ninja2
 }
@@ -84,6 +84,7 @@ class Character: Equatable {
         characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
         playerSide = side
         self.scene = scene
+        self.roundsWon = 0
         
         parentNode.addChildNode(characterMesh)
         characterNode = parentNode.childNodes[parentNode.childNodes.count - 1]
