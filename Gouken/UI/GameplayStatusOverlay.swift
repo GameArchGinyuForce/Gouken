@@ -7,8 +7,8 @@ class GameplayStatusOverlay: SKScene {
     var opponentHealth: CGFloat = 1.0 // Full health (1.0 for 100%)
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
-    var START_TIME = 50
-    var totalTime = 50 // 2 minutes
+    var START_TIME = 10
+    var totalTime = 10 // 2 minutes
     private var healthBars: SKScene
     var MAX_HEALTH = 150
     
@@ -86,11 +86,18 @@ class GameplayStatusOverlay: SKScene {
         skScene.addChild(roundNumberLabel)
         
         // Reset both player states
-        player1?.state = CharacterState.Idle
-        player2?.state = CharacterState.Idle
-        player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
-        player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
+        if (totalTime == 0 && playerHPBar.size.width > opponentHPBar.size.width) {
+            player2?.state = CharacterState.Downed
+            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
+            player1.roundsWon += 1
+            
+        } else if (totalTime == 0 && playerHPBar.size.width < opponentHPBar.size.width) {
+            player1?.state = CharacterState.Downed
+            player1?.stateMachine?.switchState(NinjaDownedState((player1!.stateMachine! as! NinjaStateMachine)))
+            player2.roundsWon += 1
+        }
         
+
         playerHPBar?.size.width = CGFloat(MAX_HEALTH)
         opponentHPBar?.size.width = CGFloat(MAX_HEALTH)
         playerHP = MAX_HEALTH
@@ -99,10 +106,7 @@ class GameplayStatusOverlay: SKScene {
         player2?.health.currentHealth = MAX_HEALTH
         
         currentRound += 1
-        updatePlayerHealth(playerHealth)
-        updateOpponentHealth(opponentHealth)
         totalTime = START_TIME // Reset timer
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
             guard let self = self else { return }
 
@@ -154,31 +158,6 @@ class GameplayStatusOverlay: SKScene {
         skScene.addChild(opponentHPLabel)
     }
     
-    func playerTakenDamage(amount: Int) {
-        
-        if playerHP == 0 {
-            return
-        }
-        
-        playerHP -= amount
-        
-        if playerHP < 0 {
-            playerHP = 0
-        }
-        playerHPBar.size.width = CGFloat(playerHP)
-    }
-    
-    func opponentTakenDamage(amount: Int) {
-        if opponentHP == 0 {
-            return
-        }
-        opponentHP -= amount
-        if opponentHP < 0 {
-            opponentHP = 0
-        }
-        opponentHPBar.size.width = CGFloat(opponentHP)
-    }
-    
     func setOpponentHealth(amount: Int) {
     
         opponentHP = amount
@@ -221,7 +200,6 @@ class GameplayStatusOverlay: SKScene {
         playerHPLabel.fontSize = 12
         playerHPLabel.zPosition = 5
         skScene.addChild(playerHPLabel)
-        
     
     }
     
@@ -253,23 +231,46 @@ class GameplayStatusOverlay: SKScene {
        func endRound() {
            
            self.isPaused = true
-           // Determine the winner based on player and opponent health
-           var winner: String
-           if playerHealth > opponentHealth {
-               winner = "Player"
-           } else if opponentHealth > playerHealth {
-               winner = "Opponent"
-           } else {
-               winner = "It's a tie!"
-           }
            
-           
-        
            // Stop the timer
            countdownTimer?.invalidate()
-           startNewRound()
+           if !matchHasEnded() {
+               startNewRound()
+           } else {
+               displayWinner()
+           }
 
        }
+    
+    
+    func matchHasEnded() -> Bool {
+        
+        return currentRound > 3 || player1.roundsWon > 2 || player2.roundsWon > 2
+    }
+    
+    func displayWinner() {
+        
+        // Determine the winner based on player and opponent health
+        var winner: String
+        if playerHP > opponentHP {
+            winner = player1.characterName.rawValue
+        } else if opponentHealth > playerHealth {
+            winner = player2.characterName.rawValue
+        } else {
+            winner = "It's a tie!"
+        }
+        
+        
+        roundNumberLabel = SKLabelNode(text: "\(winner) Wins!")
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.fontName = "Arial-BoldMT"
+        roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        roundNumberLabel.fontColor = .red
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.zPosition = 10
+        skScene.addChild(roundNumberLabel)
+        
+    }
     
     
     // Function to update player health bar (this is all sample before connecting it to the assets)

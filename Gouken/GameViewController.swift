@@ -151,12 +151,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         
         gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
-        let players = [player1, player2]
-        let statsUI = gameplayStatsOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
+
         
 
         player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
         player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
+        
+        let players = [player1, player2]
+        let statsUI = gameplayStatsOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
         
         GameManager.Instance().p1Character = player1
         GameManager.Instance().p2Character = player2
@@ -292,6 +294,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        if (player2?.state == CharacterState.Idle) {
 //            player2?.stateMachine?.switchState((player2?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
 //        }
+        
+        
+        if (player1?.state == CharacterState.Downed) {
+            gameplayStatsOverlay.endRound()
+            player1?.roundsWon += 1
+        } else if (player1?.state == CharacterState.Downed) {
+            gameplayStatsOverlay.endRound()
+            player2?.roundsWon += 1
+        }
         
         //handle game logic
         ticksPassed!+=1
