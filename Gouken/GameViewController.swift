@@ -12,10 +12,16 @@ import SpriteKit
 import GameplayKit
 import GameController
 
+var p1Side = PlayerType.P1
+var p2Side = PlayerType.P2
+let debugBoxes = false
+
+
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
+    var gameplayStatsOverlay: GameplayStatusOverlay!
     
     func playButtonPressed() {
         removeMenuOverlay()
@@ -37,10 +43,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Load initial scene
         let scnScene = SCNScene() // Load your SCNScene for fancy background
         
-        // Present the SceneKit scene
-        // The menu bug present itself because the emulator confuses what orientation determines whats width/height
-        // Introduced a band-aid fix, should review later
-        //        let scnViewNew = SCNView(frame: CGRect(origin: .zero, size: CGSize(width: max(view.frame.size.height, view.frame.size.width), height: min(view.frame.size.height, view.frame.size.width))))
         let scnViewNew = SCNView(frame: view.bounds)    // original
         
         scnViewNew.scene = scnScene
@@ -64,7 +66,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         GameManager.Instance().doSomething();
         
-        
     }
     
     func loadGame() {
@@ -77,12 +78,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
         // let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
-        var stage : Stage = AmazingBrentwood(withManager: entityManager)
+        var stage : Stage = PyramidOfGiza(withManager: entityManager)
         let scene = stage.scene!
         
         
         // Retrieve the SCNView
         let scnViewNew = self.view as! SCNView
+        
+
         scnViewNew.scene?.physicsWorld.contactDelegate = self
         
         // Set the scene to the view
@@ -93,62 +96,104 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         // create and add a camera to the scene
         cameraNode = scene.rootNode.childNode(withName: "camera", recursively: true)!
+
+        
+        GameManager.Instance().cameraNode = cameraNode
         
         initLighting(scene:scene)
         
         // Add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnViewNew.addGestureRecognizer(tapGesture)
-    
+        
+        p1Side = PlayerType.P1
+        p2Side = PlayerType.P2
+        
+        var p1Char = CharacterName.Ninja
+        var p2Char = CharacterName.Ninja2
+
         //decide who is player 1 and player 2
         if multipeerConnect.connectedPeers.count > 0 {
-       
-            let myPeerDisplayName = multipeerConnect.myPeerId.displayName
-            let firstConnectedPeerDisplayName = multipeerConnect.connectedPeers.first!.displayName
             
-            if myPeerDisplayName > firstConnectedPeerDisplayName {
+       
+            let myPeerDisplayName = String(multipeerConnect.myPeerId.hash)
+            let firstConnectedPeerDisplayName = String(multipeerConnect.connectedPeers.first!.hash)
+            
+            print("\(myPeerDisplayName) and \(firstConnectedPeerDisplayName)")
+            
+            GameManager.Instance().matchType = MatchType.MP
+            if (myPeerDisplayName > firstConnectedPeerDisplayName) {
             
                 playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
                 enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
+        
+                
             } else {
               
                 playerSpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
                 enemySpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
+                p1Side = PlayerType.P2
+                p2Side = PlayerType.P1
+                p1Char = CharacterName.Ninja2
+                p2Char = CharacterName.Ninja
+//                swapMoves()
             }
+            
+            GameManager.Instance().matchType = MatchType.MP
+
         } else {
+            GameManager.Instance().matchType = MatchType.CPU
             playerSpawn = scene.rootNode.childNode(withName: "p1Spawn", recursively: true)!
             enemySpawn = scene.rootNode.childNode(withName: "p2Spawn", recursively: true)!
-           
+            GameManager.Instance().matchType = MatchType.CPU
         }
+        
+        
+        
+        gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
+        let players = [player1, player2]
+        let statsUI = gameplayStatsOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
+        
 
-        player1 = Character(withName: CharacterName.Ninja, underParentNode: playerSpawn!, onPSide: PlayerType.P1, withManager: entityManager)
-        player2 = Character(withName: CharacterName.Ninja, underParentNode: enemySpawn!, onPSide: PlayerType.P2, withManager: entityManager)
+        player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
+        player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
+        
+        GameManager.Instance().p1Character = player1
+        GameManager.Instance().p2Character = player2
         
         player1?.setupStateMachine(withStateMachine: NinjaStateMachine(player1!))
         player2?.setupStateMachine(withStateMachine: NinjaStateMachine(player2!))
         player1?.characterNode.name = "Ninja1"
         player2?.characterNode.name = "Ninja2"
         
+        player1?.setUpHitBoxes()
+        player2?.setUpHitBoxes()
+        
+        player1?.setUpHurtBoxes()
+        player2?.setUpHurtBoxes()
+        
+        if (GameManager.Instance().matchType == MatchType.CPU) {
+            entityManager.addEntity(AIComponent(player: player1!, ai: player2!))
+        }
+        //        GameManager.Instance().camera = cameraNode
+                
+        var gkEntity = GKEntity()
+        var cameraComponent: GKComponent = CameraComponent(camera: cameraNode)
+        gkEntity.addComponent(cameraComponent)
+        entityManager.addEntity(gkEntity)
+        
         // configure the view
         scnView.backgroundColor = UIColor.black
         
         // init floor physics
         initWorld(scene: scene)
-        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
-
-//        initHitboxAttack(playerSpawn: playerSpawn)
-        setUpHitboxes(player: player1!)
-        setUpHurtBoxes(player: player2!)
+//        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
-        scnViewNew.debugOptions = [.showPhysicsShapes]
+        if (debugBoxes) {
+            scnViewNew.debugOptions = [.showPhysicsShapes]
+        }
 //        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
 //        scnViewNew.debugOptions = [.showWireframe]
-
-
-        // Add gesture recognizers for testing player controls and animations
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        scnViewNew.addGestureRecognizer(doubleTapGesture)
         
         // Player Controls Overlay
 //        let overlayScene = GKScene(fileNamed: "Overlay")
@@ -159,13 +204,24 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
 //        gamePad?.buttonA.valueChangedHandler = changeAnimationA
 //        gamePad?.buttonB.valueChangedHandler = changeAnimationB
-        scnViewNew.overlaySKScene = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
-        // Configure the view
+        
+        
+
+        let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+              
+        statsUI.addChild(gamepadOverlay)
+        scnViewNew.overlaySKScene = statsUI
+        
+        
+        
+        
+        
+        
         scnViewNew.backgroundColor = UIColor.black
         
         scnView = scnViewNew    // Set reference to newly created scnView to access scene elements?
         
-        
+        ticksPassed = 0
     }
     
     var entityManager = EntityManager()
@@ -177,7 +233,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var cameraNode : SCNNode = SCNNode()
     var playerSpawn : SCNNode?
     var enemySpawn : SCNNode?
-    var runSpeed = Float(0.1)
+    var runSpeed = Float(0.06)
     var hitbox = SCNNode()
     var hurtbox = SCNNode()
     
@@ -190,106 +246,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var toggleHitboxesOff = true
     var isHitboxesOn = true
     
+    var ticksPassed : Int?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         loadMenu()
     }
-    
-    func setUpHurtBoxes(player: Character?) {
-        // Player 1 Hurtboxes Start
-        var modelSCNNode = player1?.characterNode.childNode(withName: "head", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.3, position: SCNVector3(0, 0, -10), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "UpperArm_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "lowerarm_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "UpperArm_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "lowerarm_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "Pelvis", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "spine_02", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "Thigh_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "calf_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "Thigh_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player1!.playerSide)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "calf_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: player1!.playerSide)
-        
-        // Player 2 Hurtboxes Start
-        modelSCNNode = player2?.characterNode.childNode(withName: "head", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.3, position: SCNVector3(0, 0, -10), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "UpperArm_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "lowerarm_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "UpperArm_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "lowerarm_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "Pelvis", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "spine_02", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "Thigh_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "calf_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "Thigh_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: player2!.playerSide)
-        
-        modelSCNNode = player2?.characterNode.childNode(withName: "calf_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: player2!.playerSide)
-    }
-    
-    func setUpHitboxes(player: Character?) {
-        var modelSCNNode = player1?.characterNode.childNode(withName: "Hand_R", recursively: true)
-        var _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide, name: "Hand_R")
-        player1?.addHitbox(hitboxNode: _hitbox)
-        
-        modelSCNNode = player1?.characterNode.childNode(withName: "Hand_L", recursively: true)
-        _hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: player1!.playerSide, name: "Hand_L")
-        player1?.addHitbox(hitboxNode: _hitbox)
-        
-    }
 
     // TODO: for testing player controls and animations
     func changeAnimationA(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if (!hasBeenPressed) { return }
-//        player1?.stateMachine?.switchState(NinjaRunningState((player1!.stateMachine! as! NinjaStateMachine)))
-        
-        // Bugfixing functionality
-        if isHitboxesOn {
-            toggleHitboxesOff = true
-        } else {
-            toggleHitboxesOn = true
-        }
-        isHitboxesOn = !isHitboxesOn
-        
     }
     
     // test collison between node a and node b
@@ -299,7 +266,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         let collision = scnView.scene?.physicsWorld.contactTest(with: physicsBodyA, options: nil)
-        print(collision)
         return collision != nil && !collision!.isEmpty
     }
     
@@ -307,73 +273,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     // On attack, check that character's Hitboxes and check collisions
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
-            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))
-            
-            // Hardcoded adding of events for hitbox toggling
-//            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.2, callback: (player1?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.4, callback: (player1?.deactivateHitboxesCallback)!)
-//            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
-            player1?.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
-                self.player1?.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-            }
-            
-            player1?.animator.addAnimationEvent(keyTime: 0.6, callback: (player1?.deactivateHitboxesCallback)!)
-            
+            player1?.stateMachine?.switchState(NinjaAttackingState((player1!.stateMachine! as! NinjaStateMachine)))            
         }
     }
         
-        func thumbstickHandler(_ dPad: GCControllerDirectionPad, _ xValue: Float, _ yValue: Float) {
-            //print("Thumbstick x=\(xValue) y=\(yValue)")
-            
-            //rotate, play running animations, based on thumbstick input
-            let deadZone = Float(0.2)
-            let player = playerSpawn
-            
-            // Control everything therough state
-            if(xValue>0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                
-                print(String(describing: multipeerConnect.connectedPeers.map(\.displayName)))
-                player1?.stateMachine?.switchState(NinjaRunningRightState((player1!.stateMachine! as! NinjaStateMachine)))
-                
-            } else if(xValue<0 && abs(xValue)>deadZone && player1?.state==CharacterState.Idle){
-                
-                player1?.stateMachine?.switchState(NinjaRunningLeftState((player1!.stateMachine! as! NinjaStateMachine)))
-                
-//                if (multipeerConnect.connectedPeers.count == 0) {
-//                    print("!!!!without connected devices:")
-//                }
-//                if (multipeerConnect.connectedPeers.count > 0) {
-//                    print("!!!!with connected devices:")
-//                    multipeerConnect.send(player: SeralizableCharacter(characterState: '')(runLeft: runLeft, runRight: runRight, characterState: CharacterState.Running))
-//                }
-//                
-            } else if ( abs(xValue)<deadZone) {
-                
-                player1?.stateMachine?.switchState(NinjaIdleState((player1!.stateMachine! as! NinjaStateMachine)))
-                
-            }
-    }
-
-    @objc
-    func handleDoubleTap(_ gestureRecognize: UIGestureRecognizer) {
-    }
     
-    
+        
     /*
      This method is being called every frame and is our update() method.
      */
     @objc
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        //receive data  from the beginning of loop to handle game loop
+        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
+            self?.handleReceivedData(receivedData)
+        }
+        
+//        if (player2?.state == CharacterState.Idle) {
+//            player2?.stateMachine?.switchState((player2?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
+//        }
+        
+        //handle game logic
+        ticksPassed!+=1
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
         lastFrameTime = time
         // Update loop for any calls (our game loop)
@@ -384,122 +305,169 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             if let component = entity.component(ofType: MovementComponent.self) {
                 // Update entity based on movement component
                 //component.move()
+            }
+        }
                 
-            }
-            
-            // Check hitbox collisions
-            if let component: HitBoxComponent = entity.component(ofType: HitBoxComponent.self) {
-                component.checkCollisions(scene: scnView.scene)
-            }
+        if (GameManager.Instance().matchType == MatchType.MP && player2!.health.currentHealth! == 0 && player1!.characterNode.parent!.name == "p1Spawn") {
+            player1!.stateMachine!.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
         }
         
-        // Hitboxes bugfixing
-        if toggleHitboxesOn {
-            print("toggleHitboxesOn")
-            toggleHitboxesOn = false
-            player1?.hitbox.activateHitboxes()
-        }
-        if toggleHitboxesOff {
-            print("toggleHitboxesOff")
-            toggleHitboxesOff = false
-            player1?.hitbox.deactivateHitboxes()
-        }
+        if (GameManager.Instance().matchType == MatchType.CPU) {
+            gameplayStatsOverlay.setOpponentHealth(amount: player2!.health.currentHealth!)
+            gameplayStatsOverlay.setPlayerHealth(amount: player1!.health.currentHealth!)
+        } else {
+            gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
+            gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
+        }    
         
-        processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
         
-        multipeerConnect.send(player: SeralizableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
+        if (!gameplayStatsOverlay.isGamePaused()) {
+            processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
+        }
+
+        lookAtOpponent(player: playerSpawn!, enemy: enemySpawn!)
+        
+        //send data at the end of the game loop
+        multipeerConnect.send(player: SerializableCharacter(characterState: player1!.state, position1z: playerSpawn!.position.z,
                                                            position1y: playerSpawn!.position.y, position2z: enemySpawn!.position.z, position2y: enemySpawn!.position.y,
-                                                           health1:player1!.health.currentHealth,health2:player2!.health.currentHealth))
+                                                            health1:player1!.health.currentHealth,health2:player2!.health.currentHealth,  timestamp:Date().timeIntervalSince1970, ticks:ticksPassed!, angleP1:playerSpawn!.eulerAngles.y, angleP2:enemySpawn!.eulerAngles.y))
+        
 
-        if (player1?.state == CharacterState.RunningLeft) {
-            playerSpawn?.position.z -= runSpeed
-            playerSpawn?.eulerAngles.y = Float.pi
-            
-        } else if (player1?.state == CharacterState.RunningRight) {
-            playerSpawn?.position.z += runSpeed
-            playerSpawn?.eulerAngles.y = 0
+    }
+    
+    func lookAtOpponent(player:SCNNode, enemy:SCNNode ){
+        
+        var relativePos1 = player.position.z - enemy.position.z
+        var oldPlayerEulerAngle = player.eulerAngles.y
+      
+        if(relativePos1 >= 0){
+            player.eulerAngles.y = Float.pi
+            enemy.eulerAngles.y = 0
+        }else{
+            player.eulerAngles.y = 0
+            enemy.eulerAngles.y = Float.pi
         }
         
-
-        if (player2?.state == CharacterState.RunningLeft) {
-            enemySpawn?.position.z -= runSpeed
-            enemySpawn?.eulerAngles.y = Float.pi
-        } else if (player2?.state == CharacterState.RunningRight) {
-            enemySpawn?.position.z += runSpeed
-            enemySpawn?.eulerAngles.y = 0
-
-        }
-
-        lastFrameTime = time
-        
-        
-        multipeerConnect.receivedDataHandler = { [weak self] receivedData in
-            self?.handleReceivedData(receivedData)
+        if player.eulerAngles.y != oldPlayerEulerAngle {
+            swapMoves()
         }
         
     }
-    
+
     
     func handleReceivedData(_ receivedData: PlayerData) {
-        var enemyState = receivedData.player.characterState
         
-        //refactor this later
-        if (player2?.state != CharacterState.RunningRight && enemyState == CharacterState.RunningRight){
-            
-            player2?.stateMachine?.switchState(NinjaRunningRightState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        } else if (player2?.state != CharacterState.RunningLeft && enemyState == CharacterState.RunningLeft){
-            
-            player2?.stateMachine?.switchState(NinjaRunningLeftState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        } else if (player2?.state != CharacterState.Idle && enemyState == CharacterState.Idle){
-            
-            player2?.stateMachine?.switchState(NinjaIdleState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        }else if (player2?.state != CharacterState.Stunned && enemyState == CharacterState.Stunned && enemyState == CharacterState.Stunned){
-    
-            player2?.stateMachine?.switchState(NinjaStunnedState((player2!.stateMachine! as! NinjaStateMachine)))
-            
-        }else if (player2?.state != CharacterState.Attacking && enemyState == CharacterState.Attacking){
-            
-            player2?.stateMachine?.switchState(NinjaAttackingState((player2!.stateMachine! as! NinjaStateMachine)))
+        if(receivedData.player.ticks % 1 == 0){
+            if(playerSpawn?.name == Optional("p1Spawn") ){
+                
+                //print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
+                
+                enemySpawn?.position.z = receivedData.player.position1z
+                enemySpawn?.position.y = receivedData.player.position1y
+                playerSpawn?.position.z = receivedData.player.position2z
+                playerSpawn?.position.y = receivedData.player.position2y
+                
+                if (!(player1!.health.currentHealth == 0) && !(player2!.health.currentHealth == 0)) {
+                        player1!.health.currentHealth = receivedData.player.health1
+                        player2!.health.currentHealth = receivedData.player.health2
+                    }
+            }
+
         }
+        
+                     
+        var enemyState = receivedData.player.characterState
+        convertEnemyDataToClient(enemyState: enemyState)
+                     
     }
     
+    func convertEnemyDataToClient(enemyState: CharacterState){
+        guard let player2 = player2,
+              let stateMachine = player2.stateMachine,
+              player2.state != enemyState else {
+            return
+        }
+        
+        if (player2.state == CharacterState.Stunned || player2.state == CharacterState.Downed) {
+            return
+        }
+        
+        switch enemyState {
+        case .Stunned:
+            guard player2.state != .Stunned else { return }
+            stateMachine.switchState(NinjaStunnedState(stateMachine as! NinjaStateMachine))
+            break
+        case .RunningRight:
+            stateMachine.switchState(NinjaRunningRightState(stateMachine as! NinjaStateMachine))
+            break
+        case .RunningLeft:
+            stateMachine.switchState(NinjaRunningLeftState(stateMachine as! NinjaStateMachine))
+            break
+        case .Idle:
+            stateMachine.switchState(NinjaIdleState(stateMachine as! NinjaStateMachine))
+            break
+        case .Attacking:
+            stateMachine.switchState(NinjaAttackingState(stateMachine as! NinjaStateMachine))
+            break
+        case .HeavyAttacking:
+            stateMachine.switchState(NinjaHeavyAttackingState(stateMachine as! NinjaStateMachine))
+            break
+        case .Jumping:
+            stateMachine.switchState(NinjaJumpState(stateMachine as! NinjaStateMachine))
+            break
+        case .Blocking:
+            stateMachine.switchState(NinjaBlockingState(stateMachine as! NinjaStateMachine))
+            break
+        case .Downed:
+            stateMachine.switchState(NinjaDownedState(stateMachine as! NinjaStateMachine))
+            break
+        case .DashingLeft:
+            stateMachine.switchState(NinjaDashingLeftState(stateMachine as! NinjaStateMachine))
+            break
+        case .DashingRight:
+            stateMachine.switchState(NinjaDashingRightState(stateMachine as! NinjaStateMachine))
+            break
+        case .DragonPunch:
+            stateMachine.switchState(NinjaDragonPunchState(stateMachine as! NinjaStateMachine))
+            break
+        }
+    }
+
+
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        
-        // check what nodes are tapped
-        let p = gestureRecognize.location(in: scnView)
-        let hitResults = scnView.hitTest(p, options: [:])
-        // check that we clicked on at least one object
-        if hitResults.count > 0 {
-            // retrieved the first clicked object
-            let result = hitResults[0]
-            
-            // get its material
-            let material = result.node.geometry!.firstMaterial!
-            
-            // highlight it
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.5
-            
-            // on completion - unhighlight
-            SCNTransaction.completionBlock = {
-                SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
-                
-                material.emission.contents = UIColor.black
-                
-                SCNTransaction.commit()
-            }
-            
-            material.emission.contents = UIColor.red
-            
-            SCNTransaction.commit()
-        }
+//        // retrieve the SCNView
+//        let scnView = self.view as! SCNView
+//        
+//        // check what nodes are tapped
+//        let p = gestureRecognize.location(in: scnView)
+//        let hitResults = scnView.hitTest(p, options: [:])
+//        // check that we clicked on at least one object
+//        if hitResults.count > 0 {
+//            // retrieved the first clicked object
+//            let result = hitResults[0]
+//            
+//            // get its material
+//            let material = result.node.geometry!.firstMaterial!
+//            
+//            // highlight it
+//            SCNTransaction.begin()
+//            SCNTransaction.animationDuration = 0.5
+//            
+//            // on completion - unhighlight
+//            SCNTransaction.completionBlock = {
+//                SCNTransaction.begin()
+//                SCNTransaction.animationDuration = 0.5
+//                
+//                material.emission.contents = UIColor.black
+//                
+//                SCNTransaction.commit()
+//            }
+//            
+//            material.emission.contents = UIColor.red
+//            
+//            SCNTransaction.commit()
+//        }
     }
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
