@@ -33,7 +33,7 @@ class AnimatorComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        _currentTime += seconds
+        _currentTime += (seconds * animPlayer.speed)
     }
     
     func setSpeed(_ speed: CGFloat) {

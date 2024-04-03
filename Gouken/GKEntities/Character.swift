@@ -39,6 +39,7 @@ enum CharacterState : String, Codable {
     case Downed
     case DashingLeft
     case DashingRight
+    case DragonPunch
 }
 
 let runSpeed = 0.06

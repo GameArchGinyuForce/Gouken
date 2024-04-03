@@ -21,6 +21,7 @@ class NinjaHeavyAttackingState: NinjaBaseState {
         print("enter NinjaHeavyAttackingState")
         stateMachine.character.setState(withState: CharacterState.HeavyAttacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.HeavyAttacking]!, loop: false)
+        stateMachine.character.animator.setSpeed(1.5)
         
         // Hardcoded retrieval of move
         let move: CharacterMove = NinjaMoveSet[CharacterState.HeavyAttacking]!
