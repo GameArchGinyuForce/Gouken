@@ -10,6 +10,9 @@ class NinjaStunnedState: NinjaBaseState {
     
     func enter() {
         print("enter NinjaStunnedState")
+        
+        AudioManager.Instance().playEffectSound(audio: AudioDict.Stunned)
+        
         stateMachine.character.setState(withState: CharacterState.Stunned)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Stunned]!, loop: false)
     }

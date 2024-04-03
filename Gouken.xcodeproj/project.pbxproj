@@ -21,11 +21,21 @@
 		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
 		1CDA63062BB6497600B76510 /* InputProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDA63052BB6497600B76510 /* InputProcessor.swift */; };
 		1CDA63092BB663F500B76510 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = 1CDA63082BB663F500B76510 /* Atomics */; };
+		6948156B2BBB7D33008CF343 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948156A2BBB7D33008CF343 /* AudioManager.swift */; };
 		874D58EE2BBC9B2300FE168A /* CameraComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874D58ED2BBC9B2300FE168A /* CameraComponent.swift */; };
 		875B13CF2BBB7EAA00B68AF1 /* NinjaHeavyAttackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 875B13CE2BBB7EAA00B68AF1 /* NinjaHeavyAttackingState.swift */; };
 		8767925A2BB77995009B05ED /* HitBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876792592BB77995009B05ED /* HitBox.swift */; };
 		952CEFC52BBC5B9A001386E8 /* BoundChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952CEFC42BBC5B9A001386E8 /* BoundChecker.swift */; };
-		954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */; };
+		952CEFDA2BBD272B001386E8 /* Gouken_Hurt.wav in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD52BBD2722001386E8 /* Gouken_Hurt.wav */; };
+		952CEFDB2BBD272B001386E8 /* Gouken_Battle_Theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD82BBD2724001386E8 /* Gouken_Battle_Theme.mp3 */; };
+		952CEFDC2BBD272B001386E8 /* Gouken_Dragon_Punch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD12BBD2722001386E8 /* Gouken_Dragon_Punch.wav */; };
+		952CEFDD2BBD272B001386E8 /* Gouken_Die.wav in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD42BBD2722001386E8 /* Gouken_Die.wav */; };
+		952CEFDE2BBD272B001386E8 /* Gouken_Round_End.wav in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD22BBD2722001386E8 /* Gouken_Round_End.wav */; };
+		952CEFDF2BBD272B001386E8 /* Gouken_Round_Start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD32BBD2722001386E8 /* Gouken_Round_Start.wav */; };
+		952CEFE02BBD272B001386E8 /* Gouken_Ninja_Hit_Effect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD92BBD2724001386E8 /* Gouken_Ninja_Hit_Effect.mp3 */; };
+		952CEFE12BBD272B001386E8 /* Gouken_Guard.wav in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFD72BBD2722001386E8 /* Gouken_Guard.wav */; };
+		952CEFE32BBD274E001386E8 /* Gouken_Menu_Theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFE22BBD274E001386E8 /* Gouken_Menu_Theme.mp3 */; };
+		952CEFE52BBD2D7A001386E8 /* Gouken_Jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 952CEFE42BBD2D7A001386E8 /* Gouken_Jump.wav */; };
 		954F76582B9D6DF500CB7767 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 954F76572B9D6DF500CB7767 /* background.jpg */; };
 		954F765D2B9D6ED700CB7767 /* HurtBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765C2B9D6ED700CB7767 /* HurtBox.swift */; };
 		954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954F765E2B9D6EF300CB7767 /* Colliders.swift */; };
@@ -79,11 +89,21 @@
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
 		1CDA63052BB6497600B76510 /* InputProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputProcessor.swift; sourceTree = "<group>"; };
+		6948156A2BBB7D33008CF343 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		874D58ED2BBC9B2300FE168A /* CameraComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraComponent.swift; sourceTree = "<group>"; };
 		875B13CE2BBB7EAA00B68AF1 /* NinjaHeavyAttackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaHeavyAttackingState.swift; sourceTree = "<group>"; };
 		876792592BB77995009B05ED /* HitBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitBox.swift; sourceTree = "<group>"; };
 		952CEFC42BBC5B9A001386E8 /* BoundChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundChecker.swift; sourceTree = "<group>"; };
-		954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
+		952CEFD12BBD2722001386E8 /* Gouken_Dragon_Punch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Gouken_Dragon_Punch.wav; sourceTree = "<group>"; };
+		952CEFD22BBD2722001386E8 /* Gouken_Round_End.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Gouken_Round_End.wav; sourceTree = "<group>"; };
+		952CEFD32BBD2722001386E8 /* Gouken_Round_Start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Gouken_Round_Start.wav; sourceTree = "<group>"; };
+		952CEFD42BBD2722001386E8 /* Gouken_Die.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Gouken_Die.wav; sourceTree = "<group>"; };
+		952CEFD52BBD2722001386E8 /* Gouken_Hurt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Gouken_Hurt.wav; sourceTree = "<group>"; };
+		952CEFD72BBD2722001386E8 /* Gouken_Guard.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Gouken_Guard.wav; sourceTree = "<group>"; };
+		952CEFD82BBD2724001386E8 /* Gouken_Battle_Theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Gouken_Battle_Theme.mp3; sourceTree = "<group>"; };
+		952CEFD92BBD2724001386E8 /* Gouken_Ninja_Hit_Effect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Gouken_Ninja_Hit_Effect.mp3; sourceTree = "<group>"; };
+		952CEFE22BBD274E001386E8 /* Gouken_Menu_Theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Gouken_Menu_Theme.mp3; path = ../../../Downloads/Gouken_Menu_Theme.mp3; sourceTree = "<group>"; };
+		952CEFE42BBD2D7A001386E8 /* Gouken_Jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Gouken_Jump.wav; path = ../../../Downloads/Gouken_Jump.wav; sourceTree = "<group>"; };
 		954F76572B9D6DF500CB7767 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		954F765C2B9D6ED700CB7767 /* HurtBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HurtBox.swift; sourceTree = "<group>"; };
 		954F765E2B9D6EF300CB7767 /* Colliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colliders.swift; sourceTree = "<group>"; };
@@ -155,6 +175,13 @@
 				1CDA63052BB6497600B76510 /* InputProcessor.swift */,
 			);
 			path = Input;
+			sourceTree = "<group>";
+		};
+		952CEFCC2BBCF515001386E8 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		954F76592B9D6E9200CB7767 /* Collisions */ = {
@@ -236,6 +263,7 @@
 				0A5BB2D52BBB9E9400F62E8E /* AIDirectorEntity.swift */,
 				F021769A2B82B935000993B2 /* GKComponents */,
 				F02F5D562BB64FB000E0D5CD /* SerializableCharacter.swift */,
+				6948156A2BBB7D33008CF343 /* AudioManager.swift */,
 			);
 			path = GKEntities;
 			sourceTree = "<group>";
@@ -251,6 +279,7 @@
 		F021769A2B82B935000993B2 /* GKComponents */ = {
 			isa = PBXGroup;
 			children = (
+				952CEFCC2BBCF515001386E8 /* New Group */,
 				F021769B2B82B958000993B2 /* MovementComponent.swift */,
 				1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */,
 				DB035DD52B984DAD0014C675 /* HealthComponent.swift */,
@@ -294,10 +323,19 @@
 				F031DA0A2B7609EC00E3F4B5 /* AppDelegate.swift */,
 				F031DA0C2B7609EC00E3F4B5 /* art.scnassets */,
 				F031DA0E2B7609EC00E3F4B5 /* GameViewController.swift */,
+				952CEFE22BBD274E001386E8 /* Gouken_Menu_Theme.mp3 */,
+				952CEFD82BBD2724001386E8 /* Gouken_Battle_Theme.mp3 */,
+				952CEFD42BBD2722001386E8 /* Gouken_Die.wav */,
+				952CEFD12BBD2722001386E8 /* Gouken_Dragon_Punch.wav */,
+				952CEFD72BBD2722001386E8 /* Gouken_Guard.wav */,
+				952CEFD52BBD2722001386E8 /* Gouken_Hurt.wav */,
+				952CEFE42BBD2D7A001386E8 /* Gouken_Jump.wav */,
+				952CEFD92BBD2724001386E8 /* Gouken_Ninja_Hit_Effect.mp3 */,
+				952CEFD22BBD2722001386E8 /* Gouken_Round_End.wav */,
+				952CEFD32BBD2722001386E8 /* Gouken_Round_Start.wav */,
 				F031DA102B7609EC00E3F4B5 /* Main.storyboard */,
 				F031DA132B7609ED00E3F4B5 /* Assets.xcassets */,
 				954F76572B9D6DF500CB7767 /* background.jpg */,
-				954F76552B9D6DEE00CB7767 /* backgroundMusic.mp3 */,
 				F031DA152B7609ED00E3F4B5 /* LaunchScreen.storyboard */,
 				DBF1C4622B85B9B200B40007 /* SceneKitExtensions.swift */,
 				DB59F5682B89C71500B2D52D /* AnimationList.swift */,
@@ -380,12 +418,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				F031DA0D2B7609EC00E3F4B5 /* art.scnassets in Resources */,
+				952CEFDC2BBD272B001386E8 /* Gouken_Dragon_Punch.wav in Resources */,
+				952CEFE32BBD274E001386E8 /* Gouken_Menu_Theme.mp3 in Resources */,
+				952CEFDE2BBD272B001386E8 /* Gouken_Round_End.wav in Resources */,
 				DBF1C4612B85AB9800B40007 /* Overlay.sks in Resources */,
+				952CEFE12BBD272B001386E8 /* Gouken_Guard.wav in Resources */,
+				952CEFE02BBD272B001386E8 /* Gouken_Ninja_Hit_Effect.mp3 in Resources */,
+				952CEFDD2BBD272B001386E8 /* Gouken_Die.wav in Resources */,
 				954F76582B9D6DF500CB7767 /* background.jpg in Resources */,
-				954F76562B9D6DEE00CB7767 /* backgroundMusic.mp3 in Resources */,
+				952CEFDB2BBD272B001386E8 /* Gouken_Battle_Theme.mp3 in Resources */,
 				F031DA172B7609ED00E3F4B5 /* LaunchScreen.storyboard in Resources */,
 				F031DA142B7609ED00E3F4B5 /* Assets.xcassets in Resources */,
+				952CEFDF2BBD272B001386E8 /* Gouken_Round_Start.wav in Resources */,
+				952CEFDA2BBD272B001386E8 /* Gouken_Hurt.wav in Resources */,
 				F031DA122B7609EC00E3F4B5 /* Main.storyboard in Resources */,
+				952CEFE52BBD2D7A001386E8 /* Gouken_Jump.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +487,7 @@
 				F02F5D572BB64FB000E0D5CD /* SerializableCharacter.swift in Sources */,
 				DB035DE02B984FF40014C675 /* NinjaStunnedState.swift in Sources */,
 				1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */,
+				6948156B2BBB7D33008CF343 /* AudioManager.swift in Sources */,
 				DB0BBABE2B7CA68200A7A585 /* CharacterStateMachine.swift in Sources */,
 				F031DA0B2B7609EC00E3F4B5 /* AppDelegate.swift in Sources */,
 				954F765F2B9D6EF300CB7767 /* Colliders.swift in Sources */,

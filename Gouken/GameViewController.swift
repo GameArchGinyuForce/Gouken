@@ -64,7 +64,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return // Ensure self.view is actually an SCNView
         }
         
-        GameManager.Instance().doSomething();
+//        let audioManager = AudioManager.Instance()
+//        audioManager.playAudio(soundType: .Menu)
+//        audioManager.playAudio(soundType: .LightAttack)
+        
+        AudioManager.Instance().playBackgoundMusicSound(audio: AudioDict.Menu)
         
     }
     
@@ -73,7 +77,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             print("Menu not loaded yet!")
             return
         }
-        
+        AudioManager.Instance().stopAllAudioChannels()
+        AudioManager.Instance().playBackgoundMusicSound(audio: AudioDict.Game)
+        // Call preloadHitEffectSound method during game setup
+//        AudioManager.Instance().preloadHitEffectSound()
+//        // Call preloadAttackingSound method during game setup
+//        AudioManager.Instance().preloadAttackingSound()
+
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
