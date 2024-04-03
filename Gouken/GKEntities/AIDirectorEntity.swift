@@ -40,6 +40,7 @@ class AIComponent : GKEntity {
         
         ai.health.onDamage.append { [self] in
             enterAIAggressiveState()
+            aiDamagedPlayerCount = 0
         }
         player.health.onDamage.append { [self] in
             aiDamagedPlayerCount += 1
