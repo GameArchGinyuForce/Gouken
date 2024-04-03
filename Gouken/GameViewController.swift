@@ -146,7 +146,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 p2Side = PlayerType.P1
                 p1Char = CharacterName.Ninja2
                 p2Char = CharacterName.Ninja
-               
+//                swapMoves()
             }
             
             GameManager.Instance().matchType = MatchType.MP
@@ -348,6 +348,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     func lookAtOpponent(player:SCNNode, enemy:SCNNode ){
         
         var relativePos1 = player.position.z - enemy.position.z
+        var oldPlayerEulerAngle = player.eulerAngles.y
       
         if(relativePos1 >= 0){
             player.eulerAngles.y = Float.pi
@@ -355,6 +356,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }else{
             player.eulerAngles.y = 0
             enemy.eulerAngles.y = Float.pi
+        }
+        
+        if player.eulerAngles.y != oldPlayerEulerAngle {
+            swapMoves()
         }
         
     }
@@ -401,64 +406,78 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         case .Stunned:
             guard player2.state != .Stunned else { return }
             stateMachine.switchState(NinjaStunnedState(stateMachine as! NinjaStateMachine))
+            break
         case .RunningRight:
             stateMachine.switchState(NinjaRunningRightState(stateMachine as! NinjaStateMachine))
+            break
         case .RunningLeft:
             stateMachine.switchState(NinjaRunningLeftState(stateMachine as! NinjaStateMachine))
+            break
         case .Idle:
             stateMachine.switchState(NinjaIdleState(stateMachine as! NinjaStateMachine))
+            break
         case .Attacking:
             stateMachine.switchState(NinjaAttackingState(stateMachine as! NinjaStateMachine))
+            break
         case .HeavyAttacking:
             stateMachine.switchState(NinjaHeavyAttackingState(stateMachine as! NinjaStateMachine))
+            break
         case .Jumping:
             stateMachine.switchState(NinjaJumpState(stateMachine as! NinjaStateMachine))
+            break
         case .Blocking:
             stateMachine.switchState(NinjaBlockingState(stateMachine as! NinjaStateMachine))
+            break
         case .Downed:
             stateMachine.switchState(NinjaDownedState(stateMachine as! NinjaStateMachine))
+            break
         case .DashingLeft:
             stateMachine.switchState(NinjaDashingLeftState(stateMachine as! NinjaStateMachine))
+            break
         case .DashingRight:
             stateMachine.switchState(NinjaDashingRightState(stateMachine as! NinjaStateMachine))
+            break
+        case .DragonPunch:
+            stateMachine.switchState(NinjaDragonPunchState(stateMachine as! NinjaStateMachine))
+            break
         }
     }
 
 
     @objc
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        
-        // check what nodes are tapped
-        let p = gestureRecognize.location(in: scnView)
-        let hitResults = scnView.hitTest(p, options: [:])
-        // check that we clicked on at least one object
-        if hitResults.count > 0 {
-            // retrieved the first clicked object
-            let result = hitResults[0]
-            
-            // get its material
-            let material = result.node.geometry!.firstMaterial!
-            
-            // highlight it
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.5
-            
-            // on completion - unhighlight
-            SCNTransaction.completionBlock = {
-                SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
-                
-                material.emission.contents = UIColor.black
-                
-                SCNTransaction.commit()
-            }
-            
-            material.emission.contents = UIColor.red
-            
-            SCNTransaction.commit()
-        }
+//        // retrieve the SCNView
+//        let scnView = self.view as! SCNView
+//        
+//        // check what nodes are tapped
+//        let p = gestureRecognize.location(in: scnView)
+//        let hitResults = scnView.hitTest(p, options: [:])
+//        // check that we clicked on at least one object
+//        if hitResults.count > 0 {
+//            // retrieved the first clicked object
+//            let result = hitResults[0]
+//            
+//            // get its material
+//            let material = result.node.geometry!.firstMaterial!
+//            
+//            // highlight it
+//            SCNTransaction.begin()
+//            SCNTransaction.animationDuration = 0.5
+//            
+//            // on completion - unhighlight
+//            SCNTransaction.completionBlock = {
+//                SCNTransaction.begin()
+//                SCNTransaction.animationDuration = 0.5
+//                
+//                material.emission.contents = UIColor.black
+//                
+//                SCNTransaction.commit()
+//            }
+//            
+//            material.emission.contents = UIColor.red
+//            
+//            SCNTransaction.commit()
+//        }
     }
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {

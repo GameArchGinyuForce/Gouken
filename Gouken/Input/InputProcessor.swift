@@ -119,6 +119,12 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
         if (isCharIdle) {
             playerStateChanger(.HeavyAttacking)
         }
+        break
+    case .DragonPunch:
+        if (isCharIdle) {
+            playerStateChanger(.DragonPunch)
+        }
+        break
     }
 }
 

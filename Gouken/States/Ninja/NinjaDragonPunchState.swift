@@ -8,7 +8,7 @@
 import Foundation
 import GameplayKit
 
-class NinjaHeavyAttackingState: NinjaBaseState {
+class NinjaDragonPunchState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
     let damage: Int = 40
@@ -19,12 +19,8 @@ class NinjaHeavyAttackingState: NinjaBaseState {
     
     func enter() {
         print("enter NinjaHeavyAttackingState")
-        
-        AudioManager.Instance().playEffectSound(audio: AudioDict.HeavyAttack)
-        
-        stateMachine.character.setState(withState: CharacterState.HeavyAttacking)
-        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.HeavyAttacking]!, loop: false)
-        stateMachine.character.animator.setSpeed(1.5)
+        stateMachine.character.setState(withState: CharacterState.DragonPunch)
+        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DragonPunch]!, loop: false)
         
         // Hardcoded retrieval of move
         let move: CharacterMove = NinjaMoveSet[CharacterState.HeavyAttacking]!

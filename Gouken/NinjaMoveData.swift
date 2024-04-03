@@ -38,8 +38,9 @@ class CharacterMove {
     var attackKeyFrames: [AttackKeyFrame]
     var damage: Float
     var isProjectile  : Bool = false
+    var onDirectionalChange : ([ButtonType]) -> [ButtonType]
     
-    init(sequence: [ButtonType], stateChages: CharacterState, priority: Int, frameLeniency: Int, attackKeyFrames: [AttackKeyFrame], isProjectile: Bool = false, damage: Float = 10.0) {
+    init(sequence: [ButtonType], stateChages: CharacterState, priority: Int, frameLeniency: Int, attackKeyFrames: [AttackKeyFrame], isProjectile: Bool = false, damage: Float = 10.0, directionalChange : @escaping ([ButtonType]) -> [ButtonType] = {orig in return orig}) {
         self.sequence = sequence
         self.stateChages = stateChages
         self.priority = priority
@@ -47,6 +48,7 @@ class CharacterMove {
         self.attackKeyFrames = attackKeyFrames
         self.isProjectile = isProjectile
         self.damage = damage
+        self.onDirectionalChange = directionalChange
     }
     
     func addAttackKeyFramesAsAnimationEvents (stateMachine: NinjaStateMachine) {
@@ -68,6 +70,10 @@ class CharacterMove {
             }
         }
     }
+    
+    func updateOnDirectionalChange() {
+        self.sequence = onDirectionalChange(self.sequence)
+    }
 }
 
 class AttackKeyFrame {
@@ -83,6 +89,37 @@ class AttackKeyFrame {
         self.boxType = boxType
         self.boxModifier = boxModifier
         self.setAll = setAll
+    }
+}
+
+func oppositeDirection(ofButton btn: ButtonType) -> ButtonType {
+    switch (btn) {
+    case ButtonType.Left:
+        return ButtonType.Right
+    case ButtonType.Right:
+        return ButtonType.Left
+    default:
+        return btn
+    }
+}
+
+// swapping moves for directional changes of palyer, should refactor into component/entity loop later.
+func swapMovesHorizontalDirections(inMoveSequence seq : [ButtonType]) -> [ButtonType] {
+    var arr : [ButtonType] = []
+    for button in seq {
+        arr.append(oppositeDirection(ofButton: button))
+    }
+
+    return arr
+}
+
+let directionalSwappingMoves : [CharacterState] = [
+    CharacterState.DragonPunch
+]
+
+func swapMoves() {
+    for move in directionalSwappingMoves {
+        NinjaMoveSet[move]!.updateOnDirectionalChange()
     }
 }
 
@@ -104,7 +141,7 @@ let NinjaMoveSet : Dictionary = [
     CharacterState.Blocking: CharacterMove(sequence: [ButtonType.Down], stateChages: CharacterState.Blocking, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.RunningLeft: CharacterMove(sequence: [ButtonType.Left], stateChages: CharacterState.RunningLeft, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.RunningRight: CharacterMove(sequence: [ButtonType.Right], stateChages: CharacterState.RunningRight, priority: 1, frameLeniency: 1, attackKeyFrames: []),
-    CharacterState.Jumping: CharacterMove(sequence: [ButtonType.Up], stateChages: CharacterState.Jumping, priority: 1, frameLeniency: 1, attackKeyFrames: [])
+    CharacterState.Jumping: CharacterMove(sequence: [ButtonType.Up], stateChages: CharacterState.Jumping, priority: 1, frameLeniency: 1, attackKeyFrames: []),
+    CharacterState.DragonPunch: CharacterMove(sequence: [ButtonType.Right, ButtonType.Down, ButtonType.Right, ButtonType.HP], stateChages: CharacterState.DragonPunch, priority: 10, frameLeniency: 60, attackKeyFrames: [], directionalChange: swapMovesHorizontalDirections)
 
-    
 ]

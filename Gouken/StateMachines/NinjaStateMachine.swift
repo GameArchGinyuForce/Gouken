@@ -18,7 +18,8 @@ class NinjaStateMachine: CharacterStateMachine {
             CharacterState.Downed: NinjaDownedState(self),
             CharacterState.Jumping: NinjaJumpState(self),
             CharacterState.DashingLeft: NinjaDashingLeftState(self),
-            CharacterState.DashingRight: NinjaDashingRightState(self)
+            CharacterState.DashingRight: NinjaDashingRightState(self),
+            CharacterState.DragonPunch: NinjaDragonPunchState(self)
         ]
         
         character.health.onHit = { hitter, damage in
