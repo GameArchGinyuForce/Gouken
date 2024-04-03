@@ -24,6 +24,7 @@ enum ButtonType : Int {
     case Neutral
 }
 
+let gamePadButtons : [GamePadButton] = []
 
 /** This class handles gamepad buttons.
  */

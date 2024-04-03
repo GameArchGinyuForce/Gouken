@@ -151,7 +151,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         
         gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
-        let statsUI = gameplayStatsOverlay.setupHealthBars(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
+        let players = [player1, player2]
+        let statsUI = gameplayStatsOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
         
 
         player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
@@ -277,7 +278,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     }
         
     
-    
+        
     /*
      This method is being called every frame and is our update() method.
      */
@@ -319,7 +320,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
         }    
         
-        processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
+        
+        if (!gameplayStatsOverlay.isGamePaused()) {
+            processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
+        }
 
         lookAtOpponent(player: playerSpawn!, enemy: enemySpawn!)
         
