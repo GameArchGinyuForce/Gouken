@@ -40,7 +40,6 @@ class HitBoxComponent : GKComponent {
                 
         print(p2HitBool)
         print(p1HitBool)
-        
         // Check which player hit which && whether enemy is not stunned
         if (contactBitMask == p2HitBool && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
             GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, GameManager.Instance().p1Character!.hitbox.damage)

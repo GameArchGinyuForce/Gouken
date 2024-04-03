@@ -306,6 +306,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 //component.move()
             }
         }
+                
+        if (GameManager.Instance().matchType == MatchType.MP && player2!.health.currentHealth! == 0 && player1!.characterNode.parent!.name == "p1Spawn") {
+            player1!.stateMachine!.switchState((player1!.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
+        }
         
         if (GameManager.Instance().matchType == MatchType.CPU) {
             gameplayStatsOverlay.setOpponentHealth(amount: player2!.health.currentHealth!)
@@ -313,7 +317,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         } else {
             gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
             gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
-        }
+        }    
         
         processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
 
@@ -354,8 +358,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 playerSpawn?.position.z = receivedData.player.position2z
                 playerSpawn?.position.y = receivedData.player.position2y
                 
-                player1!.health.currentHealth = receivedData.player.health1
-                player2!.health.currentHealth = receivedData.player.health2
+                if (!(player1!.health.currentHealth == 0) && !(player2!.health.currentHealth == 0)) {
+                        player1!.health.currentHealth = receivedData.player.health1
+                        player2!.health.currentHealth = receivedData.player.health2
+                    }
             }
 
         }
@@ -370,6 +376,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         guard let player2 = player2,
               let stateMachine = player2.stateMachine,
               player2.state != enemyState else {
+            return
+        }
+        
+        if (player2.state == CharacterState.Stunned || player2.state == CharacterState.Downed) {
             return
         }
         

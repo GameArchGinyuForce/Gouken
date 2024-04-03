@@ -33,7 +33,9 @@ class HealthComponent : GKComponent {
             closure()
         }
         
+        print("whats our health here? ", currentHealth)
         if (currentHealth == 0) {
+            print("do we ever die?")
             die()
         }
     }
