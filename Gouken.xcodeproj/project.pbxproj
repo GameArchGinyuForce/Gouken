@@ -15,6 +15,7 @@
 		0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */; };
 		1C2B21F42BA77C87006928F5 /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2B21F32BA77C87006928F5 /* GamePad.swift */; };
 		1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */; };
+		1C61FA3F2BBD2539003AC691 /* Temple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C61FA3E2BBD2539003AC691 /* Temple.swift */; };
 		1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */; };
 		1C7C931D2B981F1200B59858 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C931C2B981F1200B59858 /* Stage.swift */; };
 		1C7C93222B982C4A00B59858 /* PerpetualEnvironmentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */; };
@@ -73,6 +74,7 @@
 		0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineComponent.swift; sourceTree = "<group>"; };
 		1C2B21F32BA77C87006928F5 /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
 		1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPlayer.swift; sourceTree = "<group>"; };
+		1C61FA3E2BBD2539003AC691 /* Temple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple.swift; sourceTree = "<group>"; };
 		1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazingBrentwood.swift; sourceTree = "<group>"; };
 		1C7C931C2B981F1200B59858 /* Stage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		1C7C93212B982C4A00B59858 /* PerpetualEnvironmentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerpetualEnvironmentComponent.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				1C7C931C2B981F1200B59858 /* Stage.swift */,
 				1C7C931A2B981EFC00B59858 /* AmazingBrentwood.swift */,
 				F0CE712B2BBA29CE0083ABE5 /* PyramidOfGiza.swift */,
+				1C61FA3E2BBD2539003AC691 /* Temple.swift */,
 			);
 			path = Stages;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				F031DA0F2B7609EC00E3F4B5 /* GameViewController.swift in Sources */,
 				DBF1C4632B85B9B200B40007 /* SceneKitExtensions.swift in Sources */,
 				1CDA63062BB6497600B76510 /* InputProcessor.swift in Sources */,
+				1C61FA3F2BBD2539003AC691 /* Temple.swift in Sources */,
 				952CEFC52BBC5B9A001386E8 /* BoundChecker.swift in Sources */,
 				F05BD1112BB7616800C4BEB8 /* NinjaRunningRightState.swift in Sources */,
 				A5D2DA662B981C4600A32416 /* MenuOverlay.swift in Sources */,

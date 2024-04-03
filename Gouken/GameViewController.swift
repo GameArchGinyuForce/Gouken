@@ -78,7 +78,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
         // let scene = SCNScene(named: "art.scnassets/TrainingStage.scn")!
-        var stage : Stage = PyramidOfGiza(withManager: entityManager)
+        var stage : Stage = Temple(withManager: entityManager)
         let scene = stage.scene!
         
         
@@ -186,7 +186,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         scnView.backgroundColor = UIColor.black
         
         // init floor physics
-        initWorld(scene: scene)
+//        initWorld(scene: scene)
 //        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
         if (debugBoxes) {
