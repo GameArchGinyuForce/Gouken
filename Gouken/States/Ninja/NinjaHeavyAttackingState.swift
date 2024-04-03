@@ -19,6 +19,9 @@ class NinjaHeavyAttackingState: NinjaBaseState {
     
     func enter() {
         print("enter NinjaHeavyAttackingState")
+        
+        AudioManager.Instance().playEffectSound(audio: AudioDict.HeavyAttack)
+        
         stateMachine.character.setState(withState: CharacterState.HeavyAttacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.HeavyAttacking]!, loop: false)
         

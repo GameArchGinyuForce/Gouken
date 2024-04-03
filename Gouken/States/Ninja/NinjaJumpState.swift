@@ -20,6 +20,9 @@ class NinjaJumpState: NinjaBaseState {
     
     func enter() {
         print("enter NinjaJump state")
+        
+        AudioManager.Instance().playEffectSound(audio: AudioDict.Jump)
+        
         self.initialPositionY = stateMachine.character.parentNode.position.y
         stateMachine.character.setState(withState: CharacterState.Jumping)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Jumping]!, loop: false)

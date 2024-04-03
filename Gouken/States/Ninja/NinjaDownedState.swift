@@ -10,6 +10,9 @@ class NinjaDownedState: NinjaBaseState {
     
     func enter() {
         print("enter NinjaDownedState")
+        
+        AudioManager.Instance().playEffectSound(audio: AudioDict.Downed)
+        
         stateMachine.character.setState(withState: CharacterState.Downed)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Downed]!, loop: true)
     }
