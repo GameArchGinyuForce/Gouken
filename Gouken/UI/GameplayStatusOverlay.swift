@@ -86,15 +86,17 @@ class GameplayStatusOverlay: SKScene {
         skScene.addChild(roundNumberLabel)
         
         // Reset both player states
-        if (totalTime == 0 && player1.health.currentHealth > player2.health.currentHealth) {
-            player2?.state = CharacterState.Downed
-            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
+        if (totalTime == 0 && playerHPBar.size.width > opponentHPBar.size.width) {
+//            player2?.state = CharacterState.Downed
+//            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))            
             player1.roundsWon += 1
-            
-        } else if (totalTime == 0 && player1.health.currentHealth < player1.health.currentHealth) {
-            player1?.state = CharacterState.Downed
-            player1?.stateMachine?.switchState(NinjaDownedState((player1!.stateMachine! as! NinjaStateMachine)))
+            print(player1.characterName.rawValue + " has won")
+
+        } else if (totalTime == 0 && playerHPBar.size.width < opponentHPBar.size.width) {
+//            player1?.state = CharacterState.Downed
+//            player1?.stateMachine?.switchState(NinjaDownedState((player1!.stateMachine! as! NinjaStateMachine)))
             player2.roundsWon += 1
+            print(player2.characterName.rawValue + " has won")
         }
         
 
@@ -240,6 +242,10 @@ class GameplayStatusOverlay: SKScene {
            
            // Stop the timer
            countdownTimer?.invalidate()
+           print("Round :\(currentRound)" )
+           print("Rounds won P1:\(player1.roundsWon) P2:\(player2.roundsWon)" )
+           print("match ended? :\(matchHasEnded())" )
+
            if !matchHasEnded() {
                startNewRound()
            } else {
@@ -252,17 +258,20 @@ class GameplayStatusOverlay: SKScene {
     
     func matchHasEnded() -> Bool {
         
-        return currentRound > 3 && player1.roundsWon > 2 || player2.roundsWon > 2
+        return player1.roundsWon > 1 || player2.roundsWon > 1
     }
     
     func displayWinner() {
         
         // Determine the winner based on player and opponent health
         var winner: String
-        if player1.health.currentHealth > player2.health.currentHealth {
+        var color: UIColor
+        if player1.roundsWon > player2.roundsWon{
             winner = player1.characterName.rawValue
+            color = .green
         } else {
             winner = player2.characterName.rawValue
+            color = .red
         }
         
         
@@ -270,7 +279,7 @@ class GameplayStatusOverlay: SKScene {
         roundNumberLabel.fontSize = 30
         roundNumberLabel.fontName = "Arial-BoldMT"
         roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        roundNumberLabel.fontColor = .red
+        roundNumberLabel.fontColor = color
         roundNumberLabel.fontSize = 30
         roundNumberLabel.zPosition = 10
         skScene.addChild(roundNumberLabel)
