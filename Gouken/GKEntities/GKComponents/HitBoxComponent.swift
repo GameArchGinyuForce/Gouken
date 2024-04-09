@@ -13,9 +13,9 @@ class HitBoxComponent : GKComponent {
     var hitboxesDict: Dictionary = [String: SCNNode]()  // Dictionary to activate specific hitboxes
     var scene: SCNScene!
     var damage: Int = 0
-    var statsUI: GameplayStatusOverlay!
+    var statsUI: GameplayOverlay!
     
-    init(scene: SCNScene, statsUI: GameplayStatusOverlay) {
+    init(scene: SCNScene, statsUI: GameplayOverlay) {
         super.init()
         self.scene = scene
         self.statsUI = statsUI

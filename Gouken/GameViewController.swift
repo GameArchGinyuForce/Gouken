@@ -21,7 +21,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var scnView: SCNView!
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
-    var gameplayStatsOverlay: GameplayStatusOverlay!
+    var gameplayOverlay: GameplayOverlay!
     
     func playButtonPressed() {
         removeMenuOverlay()
@@ -151,13 +151,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         
         
-        gameplayStatsOverlay = GameplayStatusOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
+        gameplayOverlay = GameplayOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
         let players = [player1, player2]
-        let statsUI = gameplayStatsOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
+        let statsUI = gameplayOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
         
 
-        player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
-        player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene, statsUI: gameplayStatsOverlay)
+        player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene, statsUI: gameplayOverlay)
+        player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene, statsUI: gameplayOverlay)
         
         GameManager.Instance().p1Character = player1
         GameManager.Instance().p2Character = player2
@@ -317,15 +317,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         if (GameManager.Instance().matchType == MatchType.CPU) {
-            gameplayStatsOverlay.setOpponentHealth(amount: player2!.health.currentHealth!)
-            gameplayStatsOverlay.setPlayerHealth(amount: player1!.health.currentHealth!)
+            gameplayOverlay.setOpponentHealth(amount: player2!.health.currentHealth!)
+            gameplayOverlay.setPlayerHealth(amount: player1!.health.currentHealth!)
         } else {
-            gameplayStatsOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
-            gameplayStatsOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
+            gameplayOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
+            gameplayOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
         }    
         
         
-        if (!gameplayStatsOverlay.isGamePaused()) {
+        if (!gameplayOverlay.isGamePaused()) {
             processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
         }
 

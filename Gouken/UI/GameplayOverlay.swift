@@ -1,6 +1,6 @@
 import SpriteKit
 
-class GameplayStatusOverlay: SKScene {
+class GameplayOverlay: SKScene {
     
     // Player and Opponent Health properties
     var playerHealth: CGFloat = 1.0 // Full health (1.0 for 100%)

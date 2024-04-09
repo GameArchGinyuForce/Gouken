@@ -78,7 +78,7 @@ class Character: Equatable {
     var activateHitboxByNameCallback: ((Any, Any?, Bool) -> Void)?
     var deactivateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     
-    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene, statsUI: GameplayStatusOverlay) {
+    init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene, statsUI: GameplayOverlay) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
            playerSide = side
         characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
