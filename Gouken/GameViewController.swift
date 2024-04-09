@@ -152,12 +152,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
         
         gameplayOverlay = GameplayOverlay(size: CGSize(width: scnViewNew.bounds.width, height: scnViewNew.bounds.height))
-        let players = [player1, player2]
-        let statsUI = gameplayOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
+
         
 
         player1 = Character(withName: p1Char, underParentNode: playerSpawn!, onPSide: p1Side, withManager: entityManager, scene: scene, statsUI: gameplayOverlay)
         player2 = Character(withName: p2Char, underParentNode: enemySpawn!, onPSide: p2Side, withManager: entityManager, scene: scene, statsUI: gameplayOverlay)
+        
+        let players = [player1, player2]
+        let statsUI = gameplayOverlay.setupGameLoopStats(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width, players: players)
         
         GameManager.Instance().p1Character = player1
         GameManager.Instance().p2Character = player2
@@ -322,8 +324,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         } else {
             gameplayOverlay.setOpponentHealth(amount: player1!.health.currentHealth!)
             gameplayOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
-        }    
+        }
         
+        if (player1?.state == CharacterState.Downed || player2?.state == CharacterState.Downed) {
+            gameplayOverlay.endRound()
+        }
+//        //            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
+
         
         if (!gameplayOverlay.isGamePaused()) {
             processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)

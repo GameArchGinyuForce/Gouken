@@ -7,8 +7,8 @@ class GameplayOverlay: SKScene {
     var opponentHealth: CGFloat = 1.0 // Full health (1.0 for 100%)
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
-    var START_TIME = 50
-    var totalTime = 50 // 2 minutes
+    var START_TIME = 13
+    var totalTime = 13 // 2 minutes
     private var healthBars: SKScene
     var MAX_HEALTH = 150
     
@@ -53,8 +53,6 @@ class GameplayOverlay: SKScene {
         
         
         setupPlayer1Stats(skScene: skScene)
-        
-        // P2 Stats
         setupPlayer2Stats(skScene: skScene)
         
         startNewRound()
@@ -99,8 +97,6 @@ class GameplayOverlay: SKScene {
         player2?.health.currentHealth = MAX_HEALTH
         
         currentRound += 1
-        updatePlayerHealth(playerHealth)
-        updateOpponentHealth(opponentHealth)
         totalTime = START_TIME // Reset timer
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
@@ -139,19 +135,13 @@ class GameplayOverlay: SKScene {
         opponentHPContainer.lineWidth = 2 //
         skScene.addChild(opponentHPContainer)
         
-        opponentHPBar = SKSpriteNode(color: .green, size: CGSize(width: opponentHP, height: 8))
+        opponentHPBar = SKSpriteNode(color: .red, size: CGSize(width: opponentHP, height: 8))
         opponentHPBar.position = CGPoint(x: -opponentHPBar.size.width / 2, y: 0)
         opponentHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
         opponentHPBar.zPosition = 3
         opponentHPContainer.addChild(opponentHPBar)
-        
-        // Opponent HP Label
-//        let opponentHPLabel = SKLabelNode(text: "My name Jeff: \(Int(opponentHealth * 100))%")
-//        opponentHPLabel.position = CGPoint(x: 500, y: 330)
-//        opponentHPLabel.fontColor = .white
-//        opponentHPLabel.fontSize = 12
-//        opponentHPLabel.zPosition = 5
-//        skScene.addChild(opponentHPLabel)
+
+
     }
     
     func playerTakenDamage(amount: Int) {
@@ -213,15 +203,6 @@ class GameplayOverlay: SKScene {
         playerHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
         playerHPBar.zPosition = 3
         playerHPContainer.addChild(playerHPBar)
-        
-        // Player HP Label
-//        let playerHPLabel = SKLabelNode(text: "Deckem Jaskaran: \(Int(playerHealth * 100))%")
-//        playerHPLabel.position = CGPoint(x: 150, y: 330)
-//        playerHPLabel.fontColor = .white
-//        playerHPLabel.fontSize = 12
-//        playerHPLabel.zPosition = 5
-//        skScene.addChild(playerHPLabel)
-        
     
     }
     
@@ -253,23 +234,56 @@ class GameplayOverlay: SKScene {
        func endRound() {
            
            self.isPaused = true
-           // Determine the winner based on player and opponent health
-           var winner: String
-           if playerHealth > opponentHealth {
-               winner = "Player"
-           } else if opponentHealth > playerHealth {
-               winner = "Opponent"
-           } else {
-               winner = "It's a tie!"
+           if playerHPBar.size.width > opponentHPBar.size.width {
+               player1.roundsWon += 1
+               print("player 1 has won the round")
+           } else if playerHPBar.size.width < opponentHPBar.size.width {
+               player2.roundsWon += 1
+               print("player 2 has won the round")
            }
            
            
-        
-           // Stop the timer
+           
            countdownTimer?.invalidate()
-           startNewRound()
-
+           
+           if (matchHasEnded()) {
+               endMatch()
+           } else {
+               startNewRound()
+           }
        }
+    
+    func matchHasEnded() -> Bool {
+        return player1.roundsWon > 1 || player2.roundsWon > 1
+    }
+    
+    func endMatch() {
+        
+        var winner: String
+        var color: UIColor
+        if player1.roundsWon > player2.roundsWon {
+            winner = "Green Ninja"
+            color = UIColor.green
+        } else {
+            winner = "Red Ninja"
+            color = UIColor.red
+        }
+        
+        roundNumberLabel = SKLabelNode(text: "\(winner) Has Won!")
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.fontName = "Arial-BoldMT"
+        roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        roundNumberLabel.fontColor = color
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.zPosition = 10
+        skScene.addChild(roundNumberLabel)
+        
+        
+        
+        // TODO: Return to main menu after delay
+        
+        
+    }
     
     
     // Function to update player health bar (this is all sample before connecting it to the assets)
