@@ -30,6 +30,10 @@ class NinjaDashingLeftState: NinjaBaseState {
         } else {
             stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DashingRight]!, loop: false)
         }
+        
+        // Hardcoded retrieval of move
+        let move: CharacterMove = NinjaMoveSet[CharacterState.DashingLeft]!
+        move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
     }
     
     func tick(_ deltaTime: TimeInterval) {

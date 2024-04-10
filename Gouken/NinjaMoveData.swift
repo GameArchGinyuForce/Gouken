@@ -65,8 +65,34 @@ class CharacterMove {
                     }
                     print("turned hitboxes on")
                 }
+            } else if attackKeyFrame.boxType == BoxType.Hurtbox {
+                if attackKeyFrame.setAll {
+                    if attackKeyFrame.boxModifier == BoxModifier.Active {
+                        stateMachine.character?.animator.addAnimationEvent(
+                            keyTime: CGFloat(attackKeyFrame.keyTime),
+                            callback: (stateMachine.character?.activateHurtboxesCallback)!)
+                        print("turned hurtboxes off")
+                    } else {
+                        stateMachine.character?.animator.addAnimationEvent(
+                            keyTime: CGFloat(attackKeyFrame.keyTime),
+                            callback: (stateMachine.character?.deactivateHurtboxesCallback)!)
+                        print("turned hurtboxes on")
+                    }
+                } else {
+                    if attackKeyFrame.boxModifier == BoxModifier.Active {
+                        stateMachine.character.animator.addAnimationEvent(keyTime: CGFloat(attackKeyFrame.keyTime)) { node, eventData, playingBackward in
+                            stateMachine.character.activateHurtboxByNameCallback!(attackKeyFrame.name, eventData, playingBackward)
+                        }
+                        print("turned hurtboxes on")
+                    } else {
+                        stateMachine.character.animator.addAnimationEvent(keyTime: CGFloat(attackKeyFrame.keyTime)) { node, eventData, playingBackward in
+                            stateMachine.character.deactivateHurtboxByNameCallback!(attackKeyFrame.name, eventData, playingBackward)
+                        }
+                        print("turned hurtboxes off")
+                    }
+                }
             } else {
-                print("HurtBox Modifications not implemented yet")
+                print("Invalid box type")
             }
         }
     }
@@ -134,10 +160,17 @@ let NinjaMoveSet : Dictionary = [
     ]),
     CharacterState.HeavyAttacking: CharacterMove(sequence: [ButtonType.HP], stateChages: CharacterState.HeavyAttacking, priority: 1, frameLeniency: 2, attackKeyFrames: [
         AttackKeyFrame(keyTime: 0.5, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
-        AttackKeyFrame(keyTime: 0.7, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true)
+        AttackKeyFrame(keyTime: 0.7, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true),
     ]),
-    CharacterState.DashingRight: CharacterMove(sequence: [ButtonType.Right, ButtonType.Neutral, ButtonType.Right], stateChages: CharacterState.DashingRight, priority: 2, frameLeniency: 15, attackKeyFrames: []),
-    CharacterState.DashingLeft: CharacterMove(sequence: [ButtonType.Left, ButtonType.Neutral, ButtonType.Left], stateChages: CharacterState.DashingLeft, priority: 2, frameLeniency: 15, attackKeyFrames: []),
+    CharacterState.DashingRight: CharacterMove(sequence: [ButtonType.Right, ButtonType.Neutral, ButtonType.Right], stateChages: CharacterState.DashingRight, priority: 2, frameLeniency: 15, attackKeyFrames: [
+        AttackKeyFrame(keyTime: 0.1, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Inactive, setAll: true),
+        AttackKeyFrame(keyTime: 0.5, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Active, setAll: true),
+    ]),
+    CharacterState.DashingLeft: CharacterMove(sequence: [ButtonType.Left, ButtonType.Neutral, ButtonType.Left], stateChages: CharacterState.DashingLeft, priority: 2, frameLeniency: 15, attackKeyFrames: [
+        AttackKeyFrame(keyTime: 0.1, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Inactive, setAll: true),
+        AttackKeyFrame(keyTime: 0.5, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Active, setAll: true),
+//        AttackKeyFrame(keyTime: 0.1, name: "head", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Inactive),
+    ]),
     CharacterState.Blocking: CharacterMove(sequence: [ButtonType.Down], stateChages: CharacterState.Blocking, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.RunningLeft: CharacterMove(sequence: [ButtonType.Left], stateChages: CharacterState.RunningLeft, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.RunningRight: CharacterMove(sequence: [ButtonType.Right], stateChages: CharacterState.RunningRight, priority: 1, frameLeniency: 1, attackKeyFrames: []),

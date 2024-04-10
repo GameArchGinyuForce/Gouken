@@ -78,6 +78,11 @@ class Character: Equatable {
     var activateHitboxByNameCallback: ((Any, Any?, Bool) -> Void)?
     var deactivateHitboxesCallback: ((Any, Any?, Bool) -> Void)?
     
+    var activateHurtboxesCallback: ((Any, Any?, Bool) -> Void)?
+    var activateHurtboxByNameCallback: ((Any, Any?, Bool) -> Void)?
+    var deactivateHurtboxByNameCallback: ((Any, Any?, Bool) -> Void)?
+    var deactivateHurtboxesCallback: ((Any, Any?, Bool) -> Void)?
+    
     init(withName name : CharacterName, underParentNode parentNode: SCNNode, onPSide side: PlayerType, components : [GKComponent] = [], withManager : EntityManager, scene: SCNScene, statsUI: GameplayStatusOverlay) {
            characterMesh = SCNScene(named: characterModels[name]!)!.rootNode.childNode(withName: characterNameString[name]!, recursively: true)!
            playerSide = side
@@ -133,6 +138,19 @@ class Character: Equatable {
         deactivateHitboxesCallback = { [weak self] param1, param2, param3 in
             self?.deactivateHitboxes()
         }
+        
+        activateHurtboxesCallback = { [weak self] param1, param2, param3 in
+            self?.activateHurtboxes()
+        }
+        activateHurtboxByNameCallback = { [weak self] param1, param2, param3 in
+            self?.activateHurtboxByName(name: param1 as! String)
+        }
+        deactivateHurtboxByNameCallback = { [weak self] param1, param2, param3 in
+            self?.deactivateHurtboxByName(name: param1 as! String)
+        }
+        deactivateHurtboxesCallback = { [weak self] param1, param2, param3 in
+            self?.deactivateHurtboxes()
+        }
     }
     
     func togglePlayerHitboxes() {
@@ -156,7 +174,24 @@ class Character: Equatable {
     }
     
     func deactivateHitboxes() {
-        hitbox.deactivateHitboxes()    }
+        hitbox.deactivateHitboxes()
+    }
+    
+    func activateHurtboxes() {
+        hitbox.activateHurtboxes()
+    }
+    
+    func activateHurtboxByName(name: String) {
+        hitbox.activateHurtboxByName(name: name)
+    }
+    
+    func deactivateHurtboxByName(name: String) {
+        hitbox.deactivateHurtboxByName(name: name)
+    }
+    
+    func deactivateHurtboxes() {
+        hitbox.deactivateHurtboxes()
+    }
     
     func update(deltaTime seconds : TimeInterval) {
         entity.update(deltaTime: seconds)
@@ -175,54 +210,53 @@ class Character: Equatable {
     
     func setUpHurtBoxes() {
         var modelSCNNode = characterNode.childNode(withName: "head", recursively: true)
-        var hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.3, position: SCNVector3(0, 0, -10), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        var hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.3, height: 0.3, length: 0.3, position: SCNVector3(0, 0, -10), pside: playerSide, name: "head")
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "UpperArm_R", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "lowerarm_r", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "UpperArm_L", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "lowerarm_l", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "Pelvis", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "spine_02", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "Thigh_R", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "calf_r", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "Thigh_L", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "calf_l", recursively: true)
         hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: playerSide)
-        hurtBoxes.append(hurtbox)
+        hitbox.addHurtbox(hurtbox: hurtbox)
     }
     
     func setUpHitBoxes() {
         var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
         var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.3, length: 0.2, position: SCNVector3(-30, -60, -20), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/10, y: 0, z: -Float.pi/7))
-        hitbox.isHidden = true
         addHitbox(hitboxNode: hitbox)
         
 //        var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)

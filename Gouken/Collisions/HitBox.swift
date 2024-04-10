@@ -20,7 +20,6 @@ func initHitboxAttack(
     // create hit box node with geometry
     let hitboxGeometry = SCNBox(width: width, height: height, length: length, chamferRadius: 0.0)
     let hitBoxNode = SCNNode(geometry: hitboxGeometry)
-    hitBoxNode.name = "hitBoxNode"
 //    hitboxNode.position.z = 1.0
 //    hitboxNode.position.y = 1.0
     hitBoxNode.position = position;

@@ -11,6 +11,10 @@ import GameplayKit
 class HitBoxComponent : GKComponent {
     var hitboxes: [SCNNode] = [SCNNode]()
     var hitboxesDict: Dictionary = [String: SCNNode]()  // Dictionary to activate specific hitboxes
+    
+    var hurtboxes: [SCNNode] = [SCNNode]()
+    var hurtboxesDict: Dictionary = [String: SCNNode]()  // Dictionary to activate specific hurtboxes
+    
     var scene: SCNScene!
     var damage: Int = 0
     var statsUI: GameplayStatusOverlay!
@@ -61,6 +65,12 @@ class HitBoxComponent : GKComponent {
         hitboxesDict[hitbox.name ?? ""] = hitbox
     }
     
+    
+    func addHurtbox(hurtbox: SCNNode) {
+        hurtboxes.append(hurtbox)
+        hurtboxesDict[hurtbox.name ?? ""] = hurtbox
+    }
+    
     /**
      Returns the bitmask of the hitbox that collided with a hurtbox
      
@@ -92,7 +102,7 @@ class HitBoxComponent : GKComponent {
                 }
             }
             
-            var hurtBoxes = GameManager.Instance().p2Character!.hurtBoxes
+            var hurtBoxes = GameManager.Instance().p2Character!.hitbox.hurtboxes
             if (GameManager.Instance().matchType == MatchType.MP) {
                 hurtBoxes = _hitbox.physicsBody!.categoryBitMask == p2HitBox ? GameManager.Instance().p1Character!.hurtBoxes : GameManager.Instance().p2Character!.hurtBoxes
             }
@@ -174,6 +184,66 @@ class HitBoxComponent : GKComponent {
             _hitbox.physicsBody = originalPhysicsBody
             
             _hitbox.isHidden = true
+        }
+    }
+    
+    
+   func activateHurtboxes() {
+       for _hurtbox in hurtboxes {
+           // Remove & Add physics body
+           let originalPhysicsBody = _hurtbox.physicsBody
+           _hurtbox.physicsBody = nil
+           _hurtbox.physicsBody = originalPhysicsBody
+           
+           _hurtbox.isHidden = false
+       }
+   }
+    
+    func activateHurtboxByName(name: String) {
+        let hurtbox: SCNNode? = hurtboxesDict[name]
+        
+        if (hurtbox == nil) {
+            print("Not hurtbox found with name: ", name)
+            return
+        }
+        
+        // Remove & Add physics body
+        let originalPhysicsBody = hurtbox!.physicsBody
+        hurtbox!.physicsBody = nil
+        hurtbox!.physicsBody = originalPhysicsBody
+        
+        hurtbox!.isHidden = false
+    }
+    
+    func deactivateHurtboxByName(name: String) {
+        let hurtbox: SCNNode? = hurtboxesDict[name]
+        
+        if (hurtbox == nil) {
+            print("Not hurtbox found with name: ", name)
+            return
+        }
+        
+        // Remove & Add physics body
+        let originalPhysicsBody = hurtbox!.physicsBody
+        hurtbox!.physicsBody = nil
+        hurtbox!.physicsBody = originalPhysicsBody
+        
+        hurtbox!.isHidden = true
+    }
+    
+    /**
+     Deactivates the hitboxes of the character
+     
+     See activateHitboxes() docs for more info
+     */
+    func deactivateHurtboxes() {
+        for _hurtbox in hurtboxes {
+            // Remove & Add physics body
+            let originalPhysicsBody = _hurtbox.physicsBody
+            _hurtbox.physicsBody = nil
+            _hurtbox.physicsBody = originalPhysicsBody
+            
+            _hurtbox.isHidden = true
         }
     }
 }

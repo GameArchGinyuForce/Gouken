@@ -14,7 +14,7 @@ import GameController
 
 var p1Side = PlayerType.P1
 var p2Side = PlayerType.P2
-let debugBoxes = false
+let debugBoxes = true
 
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {

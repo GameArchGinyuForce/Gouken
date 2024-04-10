@@ -31,5 +31,6 @@ class NinjaAttackingState: NinjaBaseState {
     func exit() {
         print("exit NinjaAttackingState")
         stateMachine.character?.hitbox.deactivateHitboxes()    // Clears hitboxes if attack state disrupted
+        stateMachine.character?.hitbox.activateHurtboxes()    // Clears hurtboxes if attack state disrupted
     }
 }
