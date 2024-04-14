@@ -46,9 +46,14 @@ func initHitboxAttack(
     )
  
 
+    var alpha = 0.0
+    // create a visible hitbox
+    if (debugBoxes) {
+        alpha = 0.1
+    }
     
     // create a visible hitbox
-    let redColor = UIColor.red.withAlphaComponent(0.8) // Adjust the alpha value for transparency
+    let redColor = UIColor.red.withAlphaComponent(alpha) // Adjust the alpha value for transparency
     let redTransparentMaterial = SCNMaterial()
     redTransparentMaterial.diffuse.contents = redColor
     hitBoxNode.geometry?.materials = [redTransparentMaterial]
