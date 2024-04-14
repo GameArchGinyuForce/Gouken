@@ -46,7 +46,7 @@ func initHurtboxAttack(
     var alpha = 0.0
     // create a visible hitbox
     if (debugBoxes) {
-        alpha = 0.2
+        alpha = 0.9
     }
     let greenColor = UIColor.green.withAlphaComponent(alpha) // Adjust the alpha value for transparency
     let greenTransparentMaterial = SCNMaterial()

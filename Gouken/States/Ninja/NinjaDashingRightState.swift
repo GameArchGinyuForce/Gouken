@@ -52,5 +52,7 @@ class NinjaDashingRightState: NinjaBaseState {
     
     func exit() {
         print("exit NinjaDashingRightState")
+        stateMachine.character?.hitbox.deactivateHitboxes()    // Clears hitboxes if dash state disrupted
+        stateMachine.character?.hitbox.activateHurtboxes()    // Clears hurtboxes if dash state disrupted
     }
 }

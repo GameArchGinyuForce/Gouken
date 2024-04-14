@@ -214,43 +214,43 @@ class Character: Equatable {
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "UpperArm_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide, name: "UpperArm_R")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "lowerarm_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide, name: "lowerarm_r")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "UpperArm_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide, name: "UpperArm_L")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "lowerarm_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide, name: "lowerarm_l")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "Pelvis", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.4, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Pelvis")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "spine_02", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.6, length: 0.2, position: SCNVector3(1, 0, 0), pside: playerSide, name: "spine_02")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "Thigh_R", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(10, 0, 0), pside: playerSide, name: "Thigh_R")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "calf_r", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(20, 0, 0), pside: playerSide, name: "calf_r")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "Thigh_L", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.6, height: 0.2, length: 0.2, position: SCNVector3(-10, 0, 0), pside: playerSide, name: "Thigh_L")
         hitbox.addHurtbox(hurtbox: hurtbox)
         
         modelSCNNode = characterNode.childNode(withName: "calf_l", recursively: true)
-        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: playerSide)
+        hurtbox = initHurtboxAttack(withParentNode: modelSCNNode!, width: 0.4, height: 0.2, length: 0.2, position: SCNVector3(-20, 0, 0), pside: playerSide, name: "calf_l")
         hitbox.addHurtbox(hurtbox: hurtbox)
     }
     
@@ -258,21 +258,6 @@ class Character: Equatable {
         var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
         var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.3, length: 0.2, position: SCNVector3(-30, -60, -20), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/10, y: 0, z: -Float.pi/7))
         addHitbox(hitboxNode: hitbox)
-        
-//        var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
-//        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_R")
-//        hitbox.isHidden = true
-//        addHitbox(hitboxNode: hitbox)
-        
-//        modelSCNNode = characterNode.childNode(withName: "Hand_L", recursively: true)
-//        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_L")
-//        hitbox.isHidden = true
-//        addHitbox(hitboxNode: hitbox)
-        
-//        modelSCNNode = characterNode.childNode(withName: "SM_Wep_Odachi_01", recursively: true)
-//        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.2, length: 0.2, position: SCNVector3(0, 1.5, 1), pside: playerSide, name: "SM_Wep_Odachi_01", rotation: SCNVector3(x: Float.pi / 4, y: Float.pi / 4, z: Float.pi / 4))
-//        hitbox.isHidden = false
-//        addHitbox(hitboxNode: hitbox)
     }
     
     required init?(coder aDecoder: NSCoder) {
