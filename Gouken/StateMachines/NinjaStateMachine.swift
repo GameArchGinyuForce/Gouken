@@ -8,6 +8,7 @@ class NinjaStateMachine: CharacterStateMachine {
         super.init(character)
         
         stateInstances = [
+            CharacterState.LongStunned: NinjaLongStunnedState(self),
             CharacterState.Stunned: NinjaStunnedState(self),
             CharacterState.RunningLeft: NinjaRunningLeftState(self),
             CharacterState.RunningRight: NinjaRunningRightState(self),
@@ -29,9 +30,16 @@ class NinjaStateMachine: CharacterStateMachine {
                 character.health.damage(damage)
             }
         }
-        character.health.onDamage.append {
-            self.switchState(self.stateInstances[CharacterState.Stunned]!)
+        character.health.onDamage.append { damage in
+            var stateChange = CharacterState.Stunned
+            
+            if damage >= 40 {
+                stateChange = CharacterState.LongStunned
+            }
+            
+            self.switchState(self.stateInstances[stateChange]!)
         }
+        
         character.health.onDie = {
             self.switchState(self.stateInstances[CharacterState.Downed]!)
         }

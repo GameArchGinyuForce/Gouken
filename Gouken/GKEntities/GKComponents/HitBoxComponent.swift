@@ -37,7 +37,7 @@ class HitBoxComponent : GKComponent {
             return
         }
         
-        print(contactBitMask)
+        //print(contactBitMask)
         
         let p2HitBool = p1Side == PlayerType.P1 ? (p2HitBox | p1HurtBox) : (p1HitBox | p2HurtBox)
         let p1HitBool = p1Side == PlayerType.P1 ? (p1HitBox | p2HurtBox) : (p2HitBox | p1HurtBox)
@@ -87,8 +87,8 @@ class HitBoxComponent : GKComponent {
                 continue
             }
             
-            //            print("(\(_hitbox.physicsBody!.categoryBitMask),\(_hitbox.physicsBody!.collisionBitMask), \(_hitbox.physicsBody!.contactTestBitMask))")
-            //            print(enemyHurtBox)
+//                        print("(\(_hitbox.physicsBody!.categoryBitMask),\(_hitbox.physicsBody!.collisionBitMask), \(_hitbox.physicsBody!.contactTestBitMask))")
+//                        print(enemyHurtBox)
             let collision = scene?.physicsWorld.contactTest(with: _hitbox.physicsBody!, options: [SCNPhysicsWorld.TestOption.collisionBitMask: enemyHurtBox])
             if (collision != nil && !collision!.isEmpty) {
                 for coll in collision! {
@@ -104,10 +104,11 @@ class HitBoxComponent : GKComponent {
             
             var hurtBoxes = GameManager.Instance().p2Character!.hitbox.hurtboxes
             if (GameManager.Instance().matchType == MatchType.MP) {
-                hurtBoxes = _hitbox.physicsBody!.categoryBitMask == p2HitBox ? GameManager.Instance().p1Character!.hurtBoxes : GameManager.Instance().p2Character!.hurtBoxes
+                hurtBoxes = _hitbox.physicsBody!.categoryBitMask == p2HitBox ? GameManager.Instance().p1Character!.hitbox.hurtboxes : GameManager.Instance().p2Character!.hitbox.hurtboxes
             }
             
             for _hurtBox in hurtBoxes {
+                //print(_hurtBox.physicsBody?.categoryBitMask)
                 var colls = scene?.physicsWorld.contactTestBetween(_hitbox.physicsBody!, _hurtBox.physicsBody!)
                 if (colls != nil && !colls!.isEmpty) {
                     for coll in colls! {
@@ -116,7 +117,7 @@ class HitBoxComponent : GKComponent {
                             continue
                         }
                         
-                        print(enemyHurtBox)
+                        //print(enemyHurtBox)
                         print("First detected collision:", coll.nodeB.physicsBody!.categoryBitMask)
                         print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
 

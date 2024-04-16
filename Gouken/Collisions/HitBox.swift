@@ -49,7 +49,7 @@ func initHitboxAttack(
     var alpha = 0.0
     // create a visible hitbox
     if (debugBoxes) {
-        alpha = 0.1
+        alpha = 0.9
     }
     
     // create a visible hitbox

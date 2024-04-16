@@ -28,6 +28,7 @@ enum PlayerType {
 
 // States that characters can go into
 enum CharacterState : String, Codable {
+    case LongStunned
     case Stunned
     case RunningLeft
     case RunningRight

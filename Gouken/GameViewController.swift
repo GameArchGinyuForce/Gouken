@@ -14,7 +14,7 @@ import GameController
 
 var p1Side = PlayerType.P1
 var p2Side = PlayerType.P2
-let debugBoxes = false
+let debugBoxes = true
 
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {
@@ -67,6 +67,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         GameManager.Instance().doSomething();
         AudioManager.Instance().playBackgoundMusicSound(audio: AudioDict.Menu)
         
+        // Load cutscene
+        let cutscene = SKVideoNode(fileNamed: "art.scnassets/COMP7905FinalProjectCutscene.mp4")
+        cutscene.name = "cutscene"
+        cutscene.size = CGSize(width: 800, height: 450)
+        cutscene.position = CGPoint(x: scnViewNew.bounds.midX, y: scnViewNew.bounds.midY)
+        menuOverlay.addChild(cutscene)
+        cutscene.play()
+        cutscene.zPosition = 10
+        // Remove cutscene when it finished
+        let cutsceneTimer = Timer.scheduledTimer(withTimeInterval: 22.0, repeats: true) { timer in
+            cutscene.removeFromParent()
+        }
     }
     
     func loadGame() {
@@ -397,9 +409,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         switch enemyState {
+        case .LongStunned:
+            guard player2.state != .Stunned && player2.state != .LongStunned else { return }
+            stateMachine.switchState(NinjaLongStunnedState(stateMachine as! NinjaStateMachine))
+            break
         case .Stunned:
-            guard player2.state != .Stunned else { return }
-            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Stunned]!)
+            guard player2.state != .Stunned && player2.state != .LongStunned else { return }
+            stateMachine.switchState(NinjaStunnedState(stateMachine as! NinjaStateMachine))
             break
         case .RunningRight:
 //            stateMachine.switchState(NinjaRunningRightState(stateMachine as! NinjaStateMachine))

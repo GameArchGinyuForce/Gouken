@@ -40,6 +40,10 @@ class AnimatorComponent: GKComponent {
         animPlayer.speed = speed
     }
     
+    func getSpeed() -> CGFloat {
+        return animPlayer.speed
+    }
+    
     func changeAnimation(animName: String, loop: Bool) {
         _currentTime = 0
         character.removeAllAnimations()

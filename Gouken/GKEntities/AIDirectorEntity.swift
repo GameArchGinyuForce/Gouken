@@ -38,11 +38,13 @@ class AIComponent : GKEntity {
         aiRunAwayFromPlayerTimer = aiRunAwayFromPlayerDuration
         aiDamagedPlayerCount = 0
         
-        ai.health.onDamage.append { [self] in
+        
+        
+        ai.health.onDamage.append { [self] damage in
             enterAIAggressiveState()
             aiDamagedPlayerCount = 0
         }
-        player.health.onDamage.append { [self] in
+        player.health.onDamage.append { [self] damage in
             aiDamagedPlayerCount += 1
             // If AI damages player too many times, give player some breathing room
             if (aiDamagedPlayerCount >= aiMaxDamagedPlayerCount) {

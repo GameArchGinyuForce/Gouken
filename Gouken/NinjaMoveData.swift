@@ -175,7 +175,7 @@ let NinjaMoveSet : Dictionary = [
     CharacterState.RunningRight: CharacterMove(sequence: [ButtonType.Right], stateChages: CharacterState.RunningRight, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.Jumping: CharacterMove(sequence: [ButtonType.Up], stateChages: CharacterState.Jumping, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.DragonPunch: CharacterMove(sequence: [ButtonType.Right, ButtonType.Down, ButtonType.Right, ButtonType.HP], stateChages: CharacterState.DragonPunch, priority: 10, frameLeniency: 60, attackKeyFrames: [
-        AttackKeyFrame(keyTime: 0.1, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
+        AttackKeyFrame(keyTime: 0.3, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
         AttackKeyFrame(keyTime: 0.7, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true),
     ], directionalChange: swapMovesHorizontalDirections)
 
