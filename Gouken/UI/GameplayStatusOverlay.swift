@@ -35,6 +35,7 @@ class GameplayStatusOverlay: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+
     
     func isGamePaused() -> Bool {
         return self.isPaused
@@ -154,6 +155,52 @@ class GameplayStatusOverlay: SKScene {
 //        skScene.addChild(opponentHPLabel)
     }
     
+   
+    func setupPlayer1Stats(skScene: SKScene) {
+        // Calculate sizes and positions relative to scene size
+        let healthBarWidth = 0.5 * skScene.size.width
+        let healthBarHeight = 0.035 * skScene.size.height
+        print(healthBarWidth, healthBarHeight)
+        let healthBarPosition = CGPoint(x: 0.25 * skScene.size.width, y: 0.9 * skScene.size.height)
+        
+        // Create player's health bar background
+        let playerHPBackground = SKShapeNode(rectOf: CGSize(width: healthBarWidth, height: healthBarHeight), cornerRadius: 5)
+        playerHPBackground.position = healthBarPosition
+        playerHPBackground.zPosition = 2
+        playerHPBackground.strokeColor = .black
+        playerHPBackground.fillColor = .black
+        skScene.addChild(playerHPBackground)
+        
+        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: healthBarWidth * (5.0/6.0), height: healthBarHeight * (10.0/11.0)), cornerRadius: 5)
+        playerHPContainer.position = CGPoint(x: 160, y: 320)
+        playerHPContainer.zPosition = 4
+        playerHPContainer.strokeColor = .yellow
+        playerHPContainer.lineWidth = 2
+        skScene.addChild(playerHPContainer)
+        
+        playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: playerHP, height: 8))
+        playerHPBar.position = CGPoint(x: -playerHPBar.size.width / 2, y: 0)
+        playerHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+        playerHPBar.zPosition = 3
+        playerHPContainer.addChild(playerHPBar)
+        
+
+        
+
+        
+        // Add more UI elements here, adjusting their positions and sizes based on the scene size
+        
+        // Player HP Label
+//        let playerHPLabel = SKLabelNode(text: "Deckem Jaskaran: \(Int(playerHealth * 100))%")
+//        playerHPLabel.position = CGPoint(x: 150, y: 330)
+//        playerHPLabel.fontColor = .white
+//        playerHPLabel.fontSize = 12
+//        playerHPLabel.zPosition = 5
+//        skScene.addChild(playerHPLabel)
+        
+    
+    }
+    
     func playerTakenDamage(amount: Int) {
         
         if playerHP == 0 {
@@ -191,41 +238,6 @@ class GameplayStatusOverlay: SKScene {
        
     }
     
-    func setupPlayer1Stats(skScene: SKScene) {
-        
-        // HP bar for player
-        let playerHPBackground = SKShapeNode(rectOf: CGSize(width: 180, height: 11), cornerRadius: 5)
-        playerHPBackground.position = CGPoint(x: 150, y: 320)
-        playerHPBackground.zPosition = 2
-        playerHPBackground.strokeColor = .black
-        playerHPBackground.fillColor = .black
-        skScene.addChild(playerHPBackground)
-        
-        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: 150, height: 10), cornerRadius: 5)
-        playerHPContainer.position = CGPoint(x: 160, y: 320)
-        playerHPContainer.zPosition = 4
-        playerHPContainer.strokeColor = .yellow
-        playerHPContainer.lineWidth = 2
-        skScene.addChild(playerHPContainer)
-        
-        playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: playerHP, height: 8))
-        playerHPBar.position = CGPoint(x: -playerHPBar.size.width / 2, y: 0)
-        playerHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
-        playerHPBar.zPosition = 3
-        playerHPContainer.addChild(playerHPBar)
-        
-        // Player HP Label
-//        let playerHPLabel = SKLabelNode(text: "Deckem Jaskaran: \(Int(playerHealth * 100))%")
-//        playerHPLabel.position = CGPoint(x: 150, y: 330)
-//        playerHPLabel.fontColor = .white
-//        playerHPLabel.fontSize = 12
-//        playerHPLabel.zPosition = 5
-//        skScene.addChild(playerHPLabel)
-        
-    
-    }
-    
-
     func startTimer() {
            countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
        }

@@ -25,18 +25,23 @@ class Overlay: SKScene {
         
     }
     
-    func setUpSecondaryUI () {
-        // Quit button
-        let buttonSize = CGSize(width: 20, height: 20)
-        let offsetFromMiddle = CGPoint(x: 0, y: -20)
-        let buttonSpacing: CGFloat = 10
+    func setUpSecondaryUI() {
+        // Calculate button size and spacing relative to scene size
+        let buttonSize = CGSize(width: size.width * 0.1, height: size.width * 0.1)
+        let buttonSpacing = size.width * 0.02
         
+        // Calculate button position relative to scene size
+        let offsetX = size.width * 0.4
+        let offsetY = size.height * 0.4
+        
+        // Quit button
         let settingsButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
-        settingsButton.position = CGPoint(x: size.width / 2 + offsetFromMiddle.x, y: size.height / 2 + offsetFromMiddle.y - (buttonSize.height + buttonSpacing))
+        settingsButton.position = CGPoint(x: offsetX, y: offsetY)
         settingsButton.name = "settingsButton"
         settingsButton.strokeColor = .white
-        settingsButton.lineWidth = 3
-        settingsButton.fillColor = .black // Set fill color
+        settingsButton.lineWidth = size.width * 0.01
+        settingsButton.fillColor = .black
         addChild(settingsButton)
     }
+
 }
