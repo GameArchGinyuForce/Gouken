@@ -67,6 +67,18 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         GameManager.Instance().doSomething();
         AudioManager.Instance().playBackgoundMusicSound(audio: AudioDict.Menu)
         
+        // Load cutscene
+        let cutscene = SKVideoNode(fileNamed: "art.scnassets/COMP7905FinalProjectCutscene.mp4")
+        cutscene.name = "cutscene"
+        cutscene.size = CGSize(width: 800, height: 450)
+        cutscene.position = CGPoint(x: scnViewNew.bounds.midX, y: scnViewNew.bounds.midY)
+        menuOverlay.addChild(cutscene)
+        cutscene.play()
+        cutscene.zPosition = 10
+        // Remove cutscene when it finished
+        let cutsceneTimer = Timer.scheduledTimer(withTimeInterval: 22.0, repeats: true) { timer in
+            cutscene.removeFromParent()
+        }
     }
     
     func loadGame() {
