@@ -69,6 +69,9 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
     
     
     switch (stateToChangeTo) {
+    case .LongStunned:
+        playerStateChanger(.Stunned)
+        break
     case .Stunned:
         playerStateChanger(.Stunned)
         break

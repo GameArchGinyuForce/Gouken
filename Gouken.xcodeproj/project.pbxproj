@@ -14,6 +14,7 @@
 		0ACBB7572BA51F39002907F6 /* AnimatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */; };
 		0ACBB7592BA5431E002907F6 /* StateMachineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */; };
 		1C2B21F42BA77C87006928F5 /* GamePad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2B21F32BA77C87006928F5 /* GamePad.swift */; };
+		1C56FAD92BCF04B20039847E /* NinjaLongStunnedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C56FAD82BCF04B20039847E /* NinjaLongStunnedState.swift */; };
 		1C5F31D12B91A0A0006FE4DA /* AnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */; };
 		1C61FA3D2BBCFA0C003AC691 /* NinjaDragonPunchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C61FA3C2BBCFA0C003AC691 /* NinjaDragonPunchState.swift */; };
 		1C61FA3F2BBD2539003AC691 /* Temple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C61FA3E2BBD2539003AC691 /* Temple.swift */; };
@@ -77,6 +78,7 @@
 		0ACBB7562BA51F39002907F6 /* AnimatorComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorComponent.swift; sourceTree = "<group>"; };
 		0ACBB7582BA5431E002907F6 /* StateMachineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineComponent.swift; sourceTree = "<group>"; };
 		1C2B21F32BA77C87006928F5 /* GamePad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePad.swift; sourceTree = "<group>"; };
+		1C56FAD82BCF04B20039847E /* NinjaLongStunnedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaLongStunnedState.swift; sourceTree = "<group>"; };
 		1C5F31D02B91A0A0006FE4DA /* AnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPlayer.swift; sourceTree = "<group>"; };
 		1C61FA3C2BBCFA0C003AC691 /* NinjaDragonPunchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaDragonPunchState.swift; sourceTree = "<group>"; };
 		1C61FA3E2BBD2539003AC691 /* Temple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				0A1FEE732BBB7649002C000A /* NinjaDashingLeftState.swift */,
 				0A1FEE712BBB6ED4002C000A /* NinjaDashingRightState.swift */,
 				1C61FA3C2BBCFA0C003AC691 /* NinjaDragonPunchState.swift */,
+				1C56FAD82BCF04B20039847E /* NinjaLongStunnedState.swift */,
 			);
 			path = Ninja;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				1C7C931D2B981F1200B59858 /* Stage.swift in Sources */,
 				1C7C931B2B981EFC00B59858 /* AmazingBrentwood.swift in Sources */,
 				954F765D2B9D6ED700CB7767 /* HurtBox.swift in Sources */,
+				1C56FAD92BCF04B20039847E /* NinjaLongStunnedState.swift in Sources */,
 				1C2B21F42BA77C87006928F5 /* GamePad.swift in Sources */,
 				F02F5D572BB64FB000E0D5CD /* SerializableCharacter.swift in Sources */,
 				954F765D2B9D6ED700CB7767 /* HurtBox.swift in Sources */,

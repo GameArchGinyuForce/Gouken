@@ -397,8 +397,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
         
         switch enemyState {
+        case .LongStunned:
+            guard player2.state != .Stunned && player2.state != .LongStunned else { return }
+            stateMachine.switchState(NinjaLongStunnedState(stateMachine as! NinjaStateMachine))
+            break
         case .Stunned:
-            guard player2.state != .Stunned else { return }
+            guard player2.state != .Stunned && player2.state != .LongStunned else { return }
             stateMachine.switchState(NinjaStunnedState(stateMachine as! NinjaStateMachine))
             break
         case .RunningRight:
