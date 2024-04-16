@@ -23,9 +23,17 @@ class NinjaDragonPunchState: NinjaBaseState {
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DragonPunch]!, loop: false)
         
         // Hardcoded retrieval of move
-        let move: CharacterMove = NinjaMoveSet[CharacterState.HeavyAttacking]!
+        let move: CharacterMove = NinjaMoveSet[CharacterState.DragonPunch]!
         stateMachine.character.hitbox.damage = self.damage
         move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
+        
+        // Sound effect for attack
+        stateMachine.character.animator.addAnimationEvent(keyTime: CGFloat(0.4)) { node, eventData, playingBackward in
+            AudioManager.Instance().playEffectSound(audio: AudioDict.DragonPunch)
+        }
+        stateMachine.character.animator.addAnimationEvent(keyTime: CGFloat(0.55)) { node, eventData, playingBackward in
+            AudioManager.Instance().playEffectSound(audio: AudioDict.DragonPunch)
+        }
     }
     
     // TODO: Turn on hitboxes at certain points

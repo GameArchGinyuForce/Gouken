@@ -27,6 +27,11 @@ class NinjaHeavyAttackingState: NinjaBaseState {
         let move: CharacterMove = NinjaMoveSet[CharacterState.HeavyAttacking]!
         stateMachine.character.hitbox.damage = self.damage
         move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
+        
+        // Sound effect for attack
+        stateMachine.character.animator.addAnimationEvent(keyTime: CGFloat(0.5)) { node, eventData, playingBackward in
+            AudioManager.Instance().playEffectSound(audio: AudioDict.HeavyAttack)
+        }
     }
     
     // TODO: Turn on hitboxes at certain points

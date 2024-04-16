@@ -399,40 +399,51 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         switch enemyState {
         case .Stunned:
             guard player2.state != .Stunned else { return }
-            stateMachine.switchState(NinjaStunnedState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Stunned]!)
             break
         case .RunningRight:
-            stateMachine.switchState(NinjaRunningRightState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaRunningRightState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
             break
         case .RunningLeft:
-            stateMachine.switchState(NinjaRunningLeftState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaRunningLeftState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
             break
         case .Idle:
-            stateMachine.switchState(NinjaIdleState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaIdleState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
             break
         case .Attacking:
-            stateMachine.switchState(NinjaAttackingState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaAttackingState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
             break
         case .HeavyAttacking:
-            stateMachine.switchState(NinjaHeavyAttackingState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaHeavyAttackingState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.HeavyAttacking]!)
             break
         case .Jumping:
-            stateMachine.switchState(NinjaJumpState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaJumpState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Jumping]!)
             break
         case .Blocking:
-            stateMachine.switchState(NinjaBlockingState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaBlockingState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Blocking]!)
             break
         case .Downed:
-            stateMachine.switchState(NinjaDownedState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaDownedState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.Downed]!)
             break
         case .DashingLeft:
-            stateMachine.switchState(NinjaDashingLeftState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaDashingLeftState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.DashingLeft]!)
             break
         case .DashingRight:
-            stateMachine.switchState(NinjaDashingRightState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaDashingRightState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.DashingRight]!)
             break
         case .DragonPunch:
-            stateMachine.switchState(NinjaDragonPunchState(stateMachine as! NinjaStateMachine))
+//            stateMachine.switchState(NinjaDragonPunchState(stateMachine as! NinjaStateMachine))
+            stateMachine.switchState((stateMachine as! NinjaStateMachine).stateInstances[CharacterState.DragonPunch]!)
             break
         }
     }

@@ -165,19 +165,18 @@ let NinjaMoveSet : Dictionary = [
     CharacterState.DashingRight: CharacterMove(sequence: [ButtonType.Right, ButtonType.Neutral, ButtonType.Right], stateChages: CharacterState.DashingRight, priority: 2, frameLeniency: 15, attackKeyFrames: [
         AttackKeyFrame(keyTime: 0.1, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Inactive, setAll: true),
         AttackKeyFrame(keyTime: 0.5, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Active, setAll: true),
-//        AttackKeyFrame(keyTime: 0.1, name: "head", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Inactive),
-//        AttackKeyFrame(keyTime: 0.5, name: "head", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Active),
     ]),
     CharacterState.DashingLeft: CharacterMove(sequence: [ButtonType.Left, ButtonType.Neutral, ButtonType.Left], stateChages: CharacterState.DashingLeft, priority: 2, frameLeniency: 15, attackKeyFrames: [
         AttackKeyFrame(keyTime: 0.1, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Inactive, setAll: true),
         AttackKeyFrame(keyTime: 0.5, name: "", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Active, setAll: true),
-//        AttackKeyFrame(keyTime: 0.1, name: "head", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Inactive),
-//        AttackKeyFrame(keyTime: 0.5, name: "head", boxType: BoxType.Hurtbox, boxModifier: BoxModifier.Active),
     ]),
     CharacterState.Blocking: CharacterMove(sequence: [ButtonType.Down], stateChages: CharacterState.Blocking, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.RunningLeft: CharacterMove(sequence: [ButtonType.Left], stateChages: CharacterState.RunningLeft, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.RunningRight: CharacterMove(sequence: [ButtonType.Right], stateChages: CharacterState.RunningRight, priority: 1, frameLeniency: 1, attackKeyFrames: []),
     CharacterState.Jumping: CharacterMove(sequence: [ButtonType.Up], stateChages: CharacterState.Jumping, priority: 1, frameLeniency: 1, attackKeyFrames: []),
-    CharacterState.DragonPunch: CharacterMove(sequence: [ButtonType.Right, ButtonType.Down, ButtonType.Right, ButtonType.HP], stateChages: CharacterState.DragonPunch, priority: 10, frameLeniency: 60, attackKeyFrames: [], directionalChange: swapMovesHorizontalDirections)
+    CharacterState.DragonPunch: CharacterMove(sequence: [ButtonType.Right, ButtonType.Down, ButtonType.Right, ButtonType.HP], stateChages: CharacterState.DragonPunch, priority: 10, frameLeniency: 60, attackKeyFrames: [
+        AttackKeyFrame(keyTime: 0.1, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),
+        AttackKeyFrame(keyTime: 0.7, name: "", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Inactive, setAll: true),
+    ], directionalChange: swapMovesHorizontalDirections)
 
 ]
