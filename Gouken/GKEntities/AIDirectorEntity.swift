@@ -57,6 +57,11 @@ class AIDirectorEntity : GKEntity {
     }
     
     override func update(deltaTime seconds: TimeInterval) {
+        
+        if (ai.isPlayerDisabled) {
+            return
+        }
+        
         tickAIAttackCooldownTimer(seconds)
         tickAIAggressiveCooldownTimer(seconds)
         

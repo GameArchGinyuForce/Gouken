@@ -69,6 +69,7 @@ class Character: Equatable {
     var parentNode        : SCNNode
     var hurtBoxes         : [SCNNode] = []
     var roundsWon         : Int = 0
+    var isPlayerDisabled  : Bool = false
     
     
     

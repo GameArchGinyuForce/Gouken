@@ -71,6 +71,8 @@ class RoundEntity : GKEntity {
         
         if (timerTextshown && fighttextshown && !hasRoundStarted) {
             hasRoundStarted = true
+            player2.isPlayerDisabled = false
+            player1.isPlayerDisabled = false
             startTimer()
         }
         
@@ -95,7 +97,9 @@ class RoundEntity : GKEntity {
    }
     
     func endRound() {
-        
+        player2.isPlayerDisabled = true
+        player1.isPlayerDisabled = true
+
         self.isPaused = true
         if player1.health.currentHealth > player2.health.currentHealth {
             player1.roundsWon += 1
@@ -166,9 +170,7 @@ class RoundEntity : GKEntity {
         totalTime = START_TIME // Reset timer
 
         self.isPaused = false
-        
-        self.startTimer()
-        
+                
         roundHasEnded = true
         
         timerTextshown = false
