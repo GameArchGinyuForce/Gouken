@@ -9,8 +9,8 @@ class RoundEntity : GKEntity {
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
     
-    var START_TIME = 13.0
-    var totalTime = 13.0 // 2 minutes
+    var START_TIME = 30.0
+    var totalTime = 30.0 // 2 minutes
     
     private var healthBars: SKScene?
     var MAX_HEALTH = 150
