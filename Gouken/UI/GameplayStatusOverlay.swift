@@ -11,6 +11,8 @@ class GameplayStatusOverlay: SKScene {
     var totalTime = 50 // 2 minutes
     private var healthBars: SKScene
     var MAX_HEALTH = 150
+    var hpContainerWidth = 0.0
+    var opponentHpContainerWidth = 0.0
     
     private var playerHP = 150
     var playerHPBar: SKSpriteNode!
@@ -61,7 +63,7 @@ class GameplayStatusOverlay: SKScene {
         startNewRound()
                 
         timerLabel = SKLabelNode(text: "Gouken") //shows the game title before the game starts with the timer
-        timerLabel.position = CGPoint(x: width / 2, y: 320)
+        timerLabel.position = CGPoint(x: 0.52 * skScene.size.width, y: 0.8 * skScene.size.height)
         timerLabel.fontName = "Chalkduster"
         timerLabel.fontColor = .white
         timerLabel.fontSize = 20
@@ -125,26 +127,34 @@ class GameplayStatusOverlay: SKScene {
     
     
     func setupPlayer2Stats(skScene: SKScene) {
-        // HP bar for opponent
-        let opponentHPBackground = SKShapeNode(rectOf: CGSize(width: 180, height: 11), cornerRadius: 5)
-        opponentHPBackground.position = CGPoint(x: 500, y: 320)
-        opponentHPBackground.zPosition = 2
-        opponentHPBackground.strokeColor = .black
-        opponentHPBackground.fillColor = .black
-        skScene.addChild(opponentHPBackground)
+        // Calculate sizes and positions relative to scene size
+        let OpponentHealthBarWidth = 0.5 * skScene.size.width
+        let OpponentHealthBarHeight = 0.035 * skScene.size.height
+        print(OpponentHealthBarWidth, OpponentHealthBarHeight)
+        let OpponentHealthBarPosition = CGPoint(x: 0.8 * skScene.size.width, y: 0.9 * skScene.size.height)
         
-        let opponentHPContainer = SKShapeNode(rectOf: CGSize(width: 150, height: 10), cornerRadius: 5)
-        opponentHPContainer.position = CGPoint(x: 510, y: 320)
-        opponentHPContainer.zPosition = 4
-        opponentHPContainer.strokeColor = .yellow
-        opponentHPContainer.lineWidth = 2 //
-        skScene.addChild(opponentHPContainer)
+        // Create opponent's health bar background
+        let OpponentPlayerHPBackground = SKShapeNode(rectOf: CGSize(width: OpponentHealthBarWidth, height: OpponentHealthBarHeight), cornerRadius: 5)
+        OpponentPlayerHPBackground.position = OpponentHealthBarPosition
+        OpponentPlayerHPBackground.zPosition = 2
+        OpponentPlayerHPBackground.strokeColor = .red
+        OpponentPlayerHPBackground.fillColor = .black
+        skScene.addChild(OpponentPlayerHPBackground)
         
-        opponentHPBar = SKSpriteNode(color: .green, size: CGSize(width: opponentHP, height: 8))
-        opponentHPBar.position = CGPoint(x: -opponentHPBar.size.width / 2, y: 0)
-        opponentHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+        opponentHpContainerWidth = OpponentHealthBarWidth * (5.6/6.0)
+        let OpponentPlayerHPContainer = SKShapeNode(rectOf: CGSize(width: opponentHpContainerWidth, height: OpponentHealthBarHeight * (10.0/11.0)), cornerRadius: 5)
+        OpponentPlayerHPContainer.position = OpponentHealthBarPosition
+        OpponentPlayerHPContainer.zPosition = 4
+        OpponentPlayerHPContainer.strokeColor = .black
+        OpponentPlayerHPContainer.lineWidth = 2
+        skScene.addChild(OpponentPlayerHPContainer)
+        
+        opponentHPBar = SKSpriteNode(color: .green, size: CGSize(width: opponentHpContainerWidth * opponentHealth, height: OpponentHealthBarHeight))
+        opponentHPBar.position = CGPoint(x: 0.5 * opponentHPBar.size.width, y: 0)
+        opponentHPBar.anchorPoint = CGPoint(x: 1, y: 0.5)
         opponentHPBar.zPosition = 3
-        opponentHPContainer.addChild(opponentHPBar)
+        OpponentPlayerHPContainer.addChild(opponentHPBar)
+        print(opponentHPBar.frame.width)
         
         // Opponent HP Label
 //        let opponentHPLabel = SKLabelNode(text: "My name Jeff: \(Int(opponentHealth * 100))%")
@@ -160,30 +170,30 @@ class GameplayStatusOverlay: SKScene {
         // Calculate sizes and positions relative to scene size
         let healthBarWidth = 0.5 * skScene.size.width
         let healthBarHeight = 0.035 * skScene.size.height
-        print(healthBarWidth, healthBarHeight)
         let healthBarPosition = CGPoint(x: 0.25 * skScene.size.width, y: 0.9 * skScene.size.height)
         
         // Create player's health bar background
         let playerHPBackground = SKShapeNode(rectOf: CGSize(width: healthBarWidth, height: healthBarHeight), cornerRadius: 5)
         playerHPBackground.position = healthBarPosition
         playerHPBackground.zPosition = 2
-        playerHPBackground.strokeColor = .black
+        playerHPBackground.strokeColor = .red
         playerHPBackground.fillColor = .black
         skScene.addChild(playerHPBackground)
         
-        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: healthBarWidth * (5.0/6.0), height: healthBarHeight * (10.0/11.0)), cornerRadius: 5)
-        playerHPContainer.position = CGPoint(x: 160, y: 320)
+        hpContainerWidth = healthBarWidth * (5.6/6.0)
+        let playerHPContainer = SKShapeNode(rectOf: CGSize(width: hpContainerWidth, height: healthBarHeight * (10.0/11.0)), cornerRadius: 5)
+        playerHPContainer.position = healthBarPosition
         playerHPContainer.zPosition = 4
-        playerHPContainer.strokeColor = .yellow
+        playerHPContainer.strokeColor = .black
         playerHPContainer.lineWidth = 2
         skScene.addChild(playerHPContainer)
         
-        playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: playerHP, height: 8))
+        playerHPBar = SKSpriteNode(color: .green, size: CGSize(width: hpContainerWidth * playerHealth, height: healthBarHeight))
         playerHPBar.position = CGPoint(x: -playerHPBar.size.width / 2, y: 0)
         playerHPBar.anchorPoint = CGPoint(x: 0.0, y: 0.5)
         playerHPBar.zPosition = 3
         playerHPContainer.addChild(playerHPBar)
-        
+        print(playerHPBar.frame.width)
 
         
 
@@ -201,40 +211,42 @@ class GameplayStatusOverlay: SKScene {
     
     }
     
-    func playerTakenDamage(amount: Int) {
-        
-        if playerHP == 0 {
-            return
-        }
-        
-        playerHP -= amount
-        
-        if playerHP < 0 {
-            playerHP = 0
-        }
-        playerHPBar.size.width = CGFloat(playerHP)
-    }
-    
-    func opponentTakenDamage(amount: Int) {
-        if opponentHP == 0 {
-            return
-        }
-        opponentHP -= amount
-        if opponentHP < 0 {
-            opponentHP = 0
-        }
-        opponentHPBar.size.width = CGFloat(opponentHP)
-    }
+//    func playerTakenDamage(amount: Int) {
+//        
+//        if playerHP == 0 {
+//            return
+//        }
+//        
+//        playerHP -= amount
+//        
+//        if playerHP < 0 {
+//            playerHP = 0
+//        }
+//        playerHPBar.size.width = CGFloat(playerHP)
+//    }
+//    
+//    func opponentTakenDamage(amount: Int) {
+//        if opponentHP == 0 {
+//            return
+//        }
+//        opponentHP -= amount
+//        if opponentHP < 0 {
+//            opponentHP = 0
+//        }
+//        opponentHPBar.size.width = CGFloat(opponentHP)
+//    }
     
     func setOpponentHealth(amount: Int) {
     
         opponentHP = amount
-        opponentHPBar.size.width = CGFloat(opponentHP)
+        let opponentPctHP = Double(opponentHP) / Double(MAX_HEALTH)
+        opponentHPBar.size.width = CGFloat(opponentPctHP * opponentHpContainerWidth)
     }
     func setPlayerHealth(amount: Int) {
     
         playerHP = amount
-        playerHPBar.size.width = CGFloat(playerHP)
+        let playerPctHP = Double(playerHP) / Double(MAX_HEALTH)
+        playerHPBar.size.width = CGFloat(playerPctHP * hpContainerWidth)
        
     }
     
@@ -292,6 +304,7 @@ class GameplayStatusOverlay: SKScene {
            let playerHPBar = playerHPContainer.childNode(withName: "playerHPBar") as? SKSpriteNode {
             let maxWidth = playerHPContainer.frame.width
             playerHPBar.size.width = maxWidth * playerHealth
+            playerHPBar.position = CGPoint(x: -playerHPBar.size.width / 2, y: 0)
         }
         // Update player HP label
         if let playerHPLabel = childNode(withName: "playerHPLabel") as? SKLabelNode {
@@ -307,6 +320,7 @@ class GameplayStatusOverlay: SKScene {
            let opponentHPBar = opponentHPContainer.childNode(withName: "opponentHPBar") as? SKSpriteNode {
             let maxWidth = opponentHPContainer.frame.width
             opponentHPBar.size.width = maxWidth * opponentHealth
+            opponentHPBar.position = CGPoint(x: opponentHPBar.size.width / 2, y: 0)
         }
         // Update opponent HP label
         if let opponentHPLabel = childNode(withName: "opponentHPLabel") as? SKLabelNode {
