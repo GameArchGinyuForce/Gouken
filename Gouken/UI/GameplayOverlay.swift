@@ -103,7 +103,7 @@ class GameplayOverlay: SKScene {
     // TODO: Reset player states & their health here
     func startNewRound() {
                 
-        
+        self.isPaused = true
         roundNumberLabel = SKLabelNode(text: "Round \(currentRound)")
         roundNumberLabel.fontSize = 30
         roundNumberLabel.fontName = "Arial-BoldMT"

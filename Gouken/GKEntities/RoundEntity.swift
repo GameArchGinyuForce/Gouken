@@ -65,14 +65,17 @@ class RoundEntity : GKEntity {
         
         
         if (roundHasEnded) {
+//            self.isPaused = true
+//            self.isPaused.toggle()
             countDownRoundNumber(seconds)
             countdownFightText(seconds)
         }
         
         if (timerTextshown && fighttextshown && !hasRoundStarted) {
             hasRoundStarted = true
-            player2.isPlayerDisabled = false
-            player1.isPlayerDisabled = false
+//            player2.isPlayerDisabled = false
+//            player1.isPlayerDisabled = false
+
             startTimer()
         }
         
@@ -88,7 +91,7 @@ class RoundEntity : GKEntity {
        if totalTime > 0 {
            totalTime -= seconds
            overlay?.timerLabel.text = "\(Int(totalTime))"
-       } else if (playerHP == 0 || opponentHP == 0) {
+       } else if (player1.health.currentHealth == 0 || player2.health.currentHealth == 0) {
            endRound()
 
        } else {
@@ -145,6 +148,8 @@ class RoundEntity : GKEntity {
                 overlay?.removeText()
                 self.isPaused = false
                 fightCooldownTimer = fightCooldown
+                player1.isPlayerDisabled = false
+                player2.isPlayerDisabled = false
             }
         }
     }
