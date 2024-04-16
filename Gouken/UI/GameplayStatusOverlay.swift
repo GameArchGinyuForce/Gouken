@@ -149,7 +149,7 @@ class GameplayStatusOverlay: SKScene {
         OpponentPlayerHPContainer.lineWidth = 2
         skScene.addChild(OpponentPlayerHPContainer)
         
-        opponentHPBar = SKSpriteNode(color: .green, size: CGSize(width: opponentHpContainerWidth * opponentHealth, height: OpponentHealthBarHeight))
+        opponentHPBar = SKSpriteNode(color: .red, size: CGSize(width: opponentHpContainerWidth * opponentHealth, height: OpponentHealthBarHeight))
         opponentHPBar.position = CGPoint(x: 0.5 * opponentHPBar.size.width, y: 0)
         opponentHPBar.anchorPoint = CGPoint(x: 1, y: 0.5)
         opponentHPBar.zPosition = 3
