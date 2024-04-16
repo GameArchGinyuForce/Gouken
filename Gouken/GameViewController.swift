@@ -22,6 +22,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var menuLoaded = false
     var multipeerConnect = MultipeerConnection()
     var gameplayOverlay: GameplayOverlay!
+    var roundEntity: RoundEntity?
     
     func playButtonPressed() {
         removeMenuOverlay()
@@ -176,8 +177,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         player2?.setUpHurtBoxes()
         
         if (GameManager.Instance().matchType == MatchType.CPU) {
+            self.roundEntity = RoundEntity(gameplayOverlay: gameplayOverlay, players: [player1, player2], isPaused: true)
+
             entityManager.addEntity(AIComponent(player: player1!, ai: player2!))
+            entityManager.addEntity(self.roundEntity!)
         }
+        
+        if (GameManager.Instance().matchType == MatchType.MP) {
+            self.roundEntity = RoundEntity(gameplayOverlay: gameplayOverlay, players: [player1, player2], isPaused: true)
+            entityManager.addEntity(self.roundEntity!)
+        }
+        
         //        GameManager.Instance().camera = cameraNode
                 
         var gkEntity = GKEntity()
@@ -299,6 +309,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 //            player2?.stateMachine?.switchState((player2?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
 //        }
         
+        
+        
+        
+        
         //handle game logic
         ticksPassed!+=1
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
@@ -326,13 +340,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             gameplayOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
         }
         
-        if (player1?.state == CharacterState.Downed || player2?.state == CharacterState.Downed) {
-            gameplayOverlay.endRound()
-        }
+
 //        //            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
 
         
-        if (!gameplayOverlay.isGamePaused()) {
+        if (!self.roundEntity!.isPaused) {
             processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
         }
 

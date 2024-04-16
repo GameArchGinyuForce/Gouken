@@ -43,7 +43,6 @@ class GameplayOverlay: SKScene {
     func setupGameLoopStats(withViewHeight height: CGFloat, andViewWidth width: CGFloat, players: [Character?]) -> SKScene {
         
         
-        self.isPaused = true
         let sceneSize = CGSize(width: width, height: height)
         print("Screen size of ", width, " by ", height)
         skScene = SKScene(size: sceneSize)
@@ -55,7 +54,6 @@ class GameplayOverlay: SKScene {
         setupPlayer1Stats(skScene: skScene)
         setupPlayer2Stats(skScene: skScene)
         
-        startNewRound()
                 
         timerLabel = SKLabelNode(text: "Gouken") //shows the game title before the game starts with the timer
         timerLabel.position = CGPoint(x: width / 2, y: 320)
@@ -70,8 +68,40 @@ class GameplayOverlay: SKScene {
     }
     
     
+    func displayNewRoundNumber() {
+        roundNumberLabel = SKLabelNode(text: "Round \(currentRound)")
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.fontName = "Arial-BoldMT"
+        roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        roundNumberLabel.fontColor = .red
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.zPosition = 10
+        skScene.addChild(roundNumberLabel)
+    }
+    
+    func changeTextToFight() {
+        roundNumberLabel?.text = "Fight!"
+    }
+    
+    func removeText() {
+        roundNumberLabel.removeFromParent()
+    }
+    
+    func displayMatchWinner(winner: String) {
+        
+        let color = winner.contains("Red") ? UIColor.red : UIColor.green
+        roundNumberLabel = SKLabelNode(text: "\(winner) Has Won!")
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.fontName = "Arial-BoldMT"
+        roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        roundNumberLabel.fontColor = color
+        roundNumberLabel.fontSize = 30
+        roundNumberLabel.zPosition = 10
+        skScene.addChild(roundNumberLabel)
+    }
+    
     // TODO: Reset player states & their health here
-    func startNewRound(winnerOfRound: String="") {
+    func startNewRound() {
                 
         
         roundNumberLabel = SKLabelNode(text: "Round \(currentRound)")
@@ -99,22 +129,22 @@ class GameplayOverlay: SKScene {
         currentRound += 1
         totalTime = START_TIME // Reset timer
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-            guard let self = self else { return }
-
-            // Remove roundNumberLabel after 5 seconds
-            roundNumberLabel.text = "Fight!"
-
-            // Add a delay before setting isPaused to false and starting the timer
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-                guard let self = self else { return }
-
-                roundNumberLabel.removeFromParent()
-
-                self.isPaused = false
-                self.startTimer()
-            }
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+//            guard let self = self else { return }
+//
+//            // Remove roundNumberLabel after 5 seconds
+//            roundNumberLabel.text = "Fight!"
+//
+//            // Add a delay before setting isPaused to false and starting the timer
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+//                guard let self = self else { return }
+//
+//                roundNumberLabel.removeFromParent()
+//
+//                self.isPaused = false
+//                self.startTimer()
+//            }
+//        }
         
     }
     
@@ -233,7 +263,6 @@ class GameplayOverlay: SKScene {
        // sample endgame function
        func endRound() {
            
-           self.isPaused = true
            if playerHPBar.size.width > opponentHPBar.size.width {
                player1.roundsWon += 1
                print("player 1 has won the round")
