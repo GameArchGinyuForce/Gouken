@@ -179,7 +179,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         if (GameManager.Instance().matchType == MatchType.CPU) {
             self.roundEntity = RoundEntity(gameplayOverlay: gameplayOverlay, players: [player1, player2], isPaused: true)
 
-            entityManager.addEntity(AIComponent(player: player1!, ai: player2!))
+            entityManager.addEntity(AIDirectorEntity(player: player1!, ai: player2!))
             entityManager.addEntity(self.roundEntity!)
         }
         

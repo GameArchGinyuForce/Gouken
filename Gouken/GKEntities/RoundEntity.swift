@@ -9,8 +9,8 @@ class RoundEntity : GKEntity {
     var timerLabel: SKLabelNode!
     var countdownTimer: Timer?
     
-    var START_TIME = 13
-    var totalTime = 13 // 2 minutes
+    var START_TIME = 13.0
+    var totalTime = 13.0 // 2 minutes
     
     private var healthBars: SKScene?
     var MAX_HEALTH = 150
@@ -83,22 +83,24 @@ class RoundEntity : GKEntity {
     
     
     @objc func updateTimer(_ seconds: TimeInterval) {
-         if totalTime > 0 {
-             totalTime -= Int(seconds)
-             overlay?.timerLabel.text = "\(totalTime)"
-         } else {
-             totalTime = START_TIME
-             endRound()
-         }
-     }
+       if totalTime > 0 {
+           totalTime -= seconds
+           overlay?.timerLabel.text = "\(Int(totalTime))"
+       } else if (playerHP == 0 || opponentHP == 0) {
+           endRound()
+
+       } else {
+           endRound()
+       }
+   }
     
     func endRound() {
         
         self.isPaused = true
-        if playerHPBar.size.width > opponentHPBar.size.width {
+        if player1.health.currentHealth > player2.health.currentHealth {
             player1.roundsWon += 1
             print("player 1 has won the round")
-        } else if playerHPBar.size.width < opponentHPBar.size.width {
+        } else if player1.health.currentHealth < player2.health.currentHealth {
             player2.roundsWon += 1
             print("player 2 has won the round")
         }

@@ -1,7 +1,7 @@
 import Foundation
 import GameplayKit
 
-class AIComponent : GKEntity {
+class AIDirectorEntity : GKEntity {
     var player: Character!
     var ai: Character!
     var playerNode: SCNNode!
