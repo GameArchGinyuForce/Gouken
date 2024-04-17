@@ -156,7 +156,7 @@ class RoundEntity : GKEntity {
             if (roundNumberCooldownTimer <= 0) {
                 timerTextshown = true
                 overlay?.changeTextToFight()
-                overlay?.displayNewRoundNumber()
+                overlay?.displayNewRoundNumber(roundNum: currentRound)
                 roundNumberCooldownTimer = roundNumberColldown
             }
         }
@@ -195,7 +195,7 @@ class RoundEntity : GKEntity {
         player1?.health.currentHealth = MAX_HEALTH
         player2?.health.currentHealth = MAX_HEALTH
         
-        currentRound += 1
+        self.currentRound += 1
         totalTime = START_TIME // Reset timer
 
         self.isPaused = false

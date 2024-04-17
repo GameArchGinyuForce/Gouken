@@ -68,8 +68,8 @@ class GameplayOverlay: SKScene {
     }
     
     
-    func displayNewRoundNumber() {
-        roundNumberLabel = SKLabelNode(text: "Round \(currentRound)")
+    func displayNewRoundNumber(roundNum: Int = 1) {
+        roundNumberLabel = SKLabelNode(text: "Round \(roundNum)")
         roundNumberLabel.fontSize = 30
         roundNumberLabel.fontName = "Arial-BoldMT"
         roundNumberLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
