@@ -17,7 +17,9 @@ class RoundEntity : GKEntity {
     let roundNumberColldown = 0.5
     let fightCooldown = 4.0
     let roundTimer = 13.0
-    
+    let endRoundDelay = 2.0
+
+    var endRoundDelayTimer: Double!
     var roundNumberCooldownTimer: Double!
     var fightCooldownTimer: Double!
     
@@ -52,6 +54,7 @@ class RoundEntity : GKEntity {
         player2 = players[1]
         roundNumberCooldownTimer = roundNumberColldown
         fightCooldownTimer = fightCooldown
+        endRoundDelayTimer = endRoundDelay
         overlay = gameplayOverlay
         self.isPaused = isPaused
 
@@ -88,16 +91,35 @@ class RoundEntity : GKEntity {
     
     
     @objc func updateTimer(_ seconds: TimeInterval) {
-       if totalTime > 0 {
+        if (player1.health.currentHealth == 0 || player2.health.currentHealth == 0) {
+            self.isPaused = true
+            player1.isPlayerDisabled = true
+            player2.isPlayerDisabled = true
+            if (player1.health.currentHealth == 0) {
+                player1?.state = CharacterState.Downed
+                player1?.stateMachine?.switchState(NinjaDownedState((player1!.stateMachine! as! NinjaStateMachine)))
+
+            } else if (player1.health.currentHealth == 0) {
+                player2?.state = CharacterState.Downed
+                player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
+            }
+            delayRoundEnd(seconds)
+            
+        } else if totalTime > 0 {
            totalTime -= seconds
            overlay?.timerLabel.text = "\(Int(totalTime))"
-       } else if (player1.health.currentHealth == 0 || player2.health.currentHealth == 0) {
-           endRound()
-
        } else {
            endRound()
        }
    }
+    
+    func delayRoundEnd(_ seconds: TimeInterval) {
+            endRoundDelayTimer -= seconds
+            if (endRoundDelayTimer <= 0) {
+                endRoundDelayTimer = endRoundDelay
+                endRound()
+            }
+    }
     
     func endRound() {
         player2.isPlayerDisabled = true
@@ -158,6 +180,8 @@ class RoundEntity : GKEntity {
     
     func startNewRound(winnerOfRound: String="") {
                 
+        
+        endRoundDelayTimer = endRoundDelay
         // Reset both player states
         player1?.state = CharacterState.Idle
         player2?.state = CharacterState.Idle
