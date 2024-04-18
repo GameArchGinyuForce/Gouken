@@ -8,6 +8,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's heavy attacking state
 class NinjaHeavyAttackingState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
@@ -18,7 +19,6 @@ class NinjaHeavyAttackingState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaHeavyAttackingState")
         stateMachine.character.setState(withState: CharacterState.HeavyAttacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.HeavyAttacking]!, loop: false)
         stateMachine.character.animator.setSpeed(1.5)
@@ -29,7 +29,6 @@ class NinjaHeavyAttackingState: NinjaBaseState {
         move.addAttackKeyFramesAsAnimationEvents(stateMachine: stateMachine)
     }
     
-    // TODO: Turn on hitboxes at certain points
     func tick(_ deltaTime: TimeInterval) {
         if (stateMachine.character.animator.currentTimeNormalized >= 1.0) {
             stateMachine.switchState(stateMachine.stateInstances[CharacterState.Idle]!)
@@ -37,7 +36,6 @@ class NinjaHeavyAttackingState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaHeavyAttackingState")
         stateMachine.character?.hitbox.deactivateHitboxes()    // Clears hitboxes if attack state disrupted
     }
 }

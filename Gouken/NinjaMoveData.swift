@@ -7,7 +7,6 @@
 
 import CoreFoundation
 
-
 // Character player side
 enum BoxType {
     case Hitbox
@@ -20,15 +19,7 @@ enum BoxModifier {
 }
 
 /**
- enum ButtonType : Int {
-     case Up
-     case Left
-     case Right
-     case Down
-     case LP
-     case HP
-     case Neutral
- }
+ CharacterMove class that contains the properties
  */
 class CharacterMove {
     var sequence: [ButtonType]
@@ -51,6 +42,9 @@ class CharacterMove {
         self.onDirectionalChange = directionalChange
     }
     
+    /**
+     Adds animation events for every attack keyframe
+    */
     func addAttackKeyFramesAsAnimationEvents (stateMachine: NinjaStateMachine) {
         for attackKeyFrame in attackKeyFrames {
             if attackKeyFrame.boxType == BoxType.Hitbox {
@@ -58,15 +52,11 @@ class CharacterMove {
                     stateMachine.character?.animator.addAnimationEvent(
                         keyTime: CGFloat(attackKeyFrame.keyTime),
                         callback: (stateMachine.character?.deactivateHitboxesCallback)!)
-                    print("turned hitboxes off")
                 } else {
                     stateMachine.character.animator.addAnimationEvent(keyTime: CGFloat(attackKeyFrame.keyTime)) { node, eventData, playingBackward in
                         stateMachine.character.activateHitboxByNameCallback!(attackKeyFrame.name, eventData, playingBackward)
                     }
-                    print("turned hitboxes on")
                 }
-            } else {
-                print("HurtBox Modifications not implemented yet")
             }
         }
     }
@@ -76,6 +66,9 @@ class CharacterMove {
     }
 }
 
+/**
+ AttackKeyFrame object to describe how to manipulate hitboxes/hurtboxes for said keyframe
+*/
 class AttackKeyFrame {
     var keyTime:        Float  // 0.0 - 1.0
     var name:           String = ""
@@ -92,6 +85,7 @@ class AttackKeyFrame {
     }
 }
 
+// Returns the opposite direction of a given move.
 func oppositeDirection(ofButton btn: ButtonType) -> ButtonType {
     switch (btn) {
     case ButtonType.Left:
@@ -113,16 +107,19 @@ func swapMovesHorizontalDirections(inMoveSequence seq : [ButtonType]) -> [Button
     return arr
 }
 
+// Moves whose directions depend on side.
 let directionalSwappingMoves : [CharacterState] = [
     CharacterState.DragonPunch
 ]
 
+// Swaps the direction of moves depending on the character's side.
 func swapMoves() {
     for move in directionalSwappingMoves {
         NinjaMoveSet[move]!.updateOnDirectionalChange()
     }
 }
 
+// Think of the below as a fighting game character's move-list.
 let NinjaMoveSet : Dictionary = [
     CharacterState.Attacking: CharacterMove(sequence: [ButtonType.LP], stateChages: CharacterState.Attacking, priority: 1, frameLeniency: 2, attackKeyFrames: [
         AttackKeyFrame(keyTime: 0.1, name: "Hand_R", boxType: BoxType.Hitbox, boxModifier: BoxModifier.Active),

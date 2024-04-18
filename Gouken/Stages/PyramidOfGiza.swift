@@ -8,6 +8,7 @@
 import SceneKit
 import GameplayKit
 
+// Pyramid of Giza class, extending Stage for displaying the level
 class PyramidOfGiza : Stage {
     
     let stage : StageType = StageType.PyramidOfGiza
@@ -23,6 +24,8 @@ class PyramidOfGiza : Stage {
 
 }
 
+
+// Sets up the perpetual environment component
 private func setUpComponents(_ scene: SCNScene?) -> [GKComponent] {
 
     var actions : [SCNAction] = []

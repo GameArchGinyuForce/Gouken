@@ -8,6 +8,9 @@
 import Foundation
 import GameplayKit
 
+/*
+CameraComponent is responsible for lerping the camera to be between both characters
+*/
 class CameraComponent : GKComponent {
     var camera: SCNNode?
     var player1: Character?
@@ -37,16 +40,6 @@ class CameraComponent : GKComponent {
         } else {
             targetPosition = SCNVector3(x: initialPosition.x, y: initialPosition.y, z: (player2?.characterNode.parent!.position.z)! - -(abs((player2?.characterNode.parent!.position.z)! - (player1?.characterNode.parent!.position.z)!)) / 2 + 0.1) // 0.1 to account for character model width
         }
-
-        /**
-         Code for moving camera on jump
-         */
-//        if (player1?.characterNode.parent!.position.z)! - (player2?.characterNode.parent!.position.z)! < 0.0 {
-//            
-//            targetPosition = SCNVector3(x: initialPosition.x, y: max(cameraPosInitial!.y, max((player1?.characterNode.parent!.position.y)!, (player2?.characterNode.parent!.position.y)!)), z: (player2?.characterNode.parent!.position.z)! - abs((player2?.characterNode.parent!.position.z)! - (player1?.characterNode.parent!.position.z)!) / 2)
-//        } else {
-//            targetPosition = SCNVector3(x: initialPosition.x, y: max(cameraPosInitial!.y, max((player1?.characterNode.parent!.position.y)!, (player2?.characterNode.parent!.position.y)!)), z: (player2?.characterNode.parent!.position.z)! - -(abs((player2?.characterNode.parent!.position.z)! - (player1?.characterNode.parent!.position.z)!)) / 2)
-//        }
         
         let playerZDistance = (player2?.characterNode.parent!.position.z)! - (player1?.characterNode.parent!.position.z)!
 

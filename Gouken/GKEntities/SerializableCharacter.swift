@@ -2,7 +2,7 @@ import Foundation
 import SceneKit
 
 
-
+// The encoded game statesent through multipeer
 class SerializableCharacter : Codable {
     var characterState: CharacterState
     

@@ -17,6 +17,7 @@ class AudioManager {
         return (AudioManager.Instance_)!
     }
     
+    // Plays a looping background music on the background channel
     func playBackgoundMusicSound(audio: AudioDict) {
         guard let audioInfo = gameAudio[audio], let fileName = audioInfo.first, let ext = audioInfo.last, let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
             print("Could not find \(audio.rawValue)?? ")
@@ -35,6 +36,7 @@ class AudioManager {
         }
     }
     
+    // Sound player for player 1
     func playPlayer1Sound(audio: AudioDict) {
         guard let audioInfo = gameAudio[audio], let fileName = audioInfo.first, let ext = audioInfo.last, let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
             print("Could not find \(audio.rawValue)?? ")
@@ -53,6 +55,7 @@ class AudioManager {
         }
     }
     
+    // Sound player for player 2
     func playPlayer2Sound(audio: AudioDict) {
         guard let audioInfo = gameAudio[audio], let fileName = audioInfo.first, let ext = audioInfo.last, let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
             print("Could not find \(audio.rawValue)?? ")
@@ -70,7 +73,8 @@ class AudioManager {
             print("Error creating audio player: \(error.localizedDescription)")
         }
     }
-    
+
+    // SFX channel player
     func playEffectSound(audio: AudioDict) {
         guard let audioInfo = gameAudio[audio], let fileName = audioInfo.first, let ext = audioInfo.last, let url = Bundle.main.url(forResource: fileName, withExtension: ext) else {
             print("Could not find \(audio.rawValue)?? ")
@@ -118,6 +122,7 @@ enum AudioDict: String {
     case DragonPunch
 }
 
+//all of the sound is dictated here, file extentsions also matter
 let gameAudio: [AudioDict: [String]] = [
     .Menu: ["Gouken_Menu_Theme", "mp3"],
     .Game: ["Gouken_Battle_Theme", "mp3"],

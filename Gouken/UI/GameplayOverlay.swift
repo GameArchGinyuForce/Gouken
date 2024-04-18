@@ -1,5 +1,6 @@
 import SpriteKit
 
+// Overlay that shows up during
 class GameplayOverlay: SKScene {
     
     // Player and Opponent Health properties
@@ -35,22 +36,23 @@ class GameplayOverlay: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    // Checks if the game is paused
     func isGamePaused() -> Bool {
         return self.isPaused
     }
     
+    // Sets up the player health bars and all the stats that are supposed to be displayed during gameplay
     func setupGameLoopStats(withViewHeight height: CGFloat, andViewWidth width: CGFloat, players: [Character?]) -> SKScene {
         
         
+        // Grabs the scene size and the player details
         let sceneSize = CGSize(width: width, height: height)
-        print("Screen size of ", width, " by ", height)
         skScene = SKScene(size: sceneSize)
         skScene.scaleMode = .resizeFill
         player1 = players[0]
         player2 = players[1]
         
-        
+        // Sets up Player 1 & Player 2 healthbars in the scene
         setupPlayer1Stats(skScene: skScene)
         setupPlayer2Stats(skScene: skScene)
         
@@ -67,7 +69,7 @@ class GameplayOverlay: SKScene {
         return skScene
     }
     
-    
+    // Function to display the round number
     func displayNewRoundNumber(roundNum: Int = 1) {
         roundNumberLabel = SKLabelNode(text: "Round \(roundNum)")
         roundNumberLabel.fontSize = 30
@@ -79,14 +81,17 @@ class GameplayOverlay: SKScene {
         skScene.addChild(roundNumberLabel)
     }
     
+    // Function to change the current text label to "Fight!"
     func changeTextToFight() {
         roundNumberLabel?.text = "Fight!"
     }
     
+    // Removes the text label
     func removeText() {
         roundNumberLabel.removeFromParent()
     }
     
+    // Display the match winner, once the match is finished
     func displayMatchWinner(winner: String) {
         
         let color = winner.contains("Red") ? UIColor.red : UIColor.green
@@ -100,7 +105,7 @@ class GameplayOverlay: SKScene {
         skScene.addChild(roundNumberLabel)
     }
     
-    // TODO: Reset player states & their health here
+    // Starts the new round with a new text
     func startNewRound() {
                 
         self.isPaused = true
@@ -129,26 +134,10 @@ class GameplayOverlay: SKScene {
         currentRound += 1
         totalTime = START_TIME // Reset timer
         
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-//            guard let self = self else { return }
-//
-//            // Remove roundNumberLabel after 5 seconds
-//            roundNumberLabel.text = "Fight!"
-//
-//            // Add a delay before setting isPaused to false and starting the timer
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-//                guard let self = self else { return }
-//
-//                roundNumberLabel.removeFromParent()
-//
-//                self.isPaused = false
-//                self.startTimer()
-//            }
-//        }
         
     }
     
-    
+    // Sets Up the player 2 stats UI on the health bar
     func setupPlayer2Stats(skScene: SKScene) {
         // HP bar for opponent
         let opponentHPBackground = SKShapeNode(rectOf: CGSize(width: 180, height: 11), cornerRadius: 5)
@@ -174,6 +163,7 @@ class GameplayOverlay: SKScene {
 
     }
     
+    //Function that registers player damage
     func playerTakenDamage(amount: Int) {
         
         if playerHP == 0 {
@@ -188,6 +178,7 @@ class GameplayOverlay: SKScene {
         playerHPBar.size.width = CGFloat(playerHP)
     }
     
+    //Function that registers enemy damage
     func opponentTakenDamage(amount: Int) {
         if opponentHP == 0 {
             return
@@ -198,12 +189,16 @@ class GameplayOverlay: SKScene {
         }
         opponentHPBar.size.width = CGFloat(opponentHP)
     }
-    
+
+    // Sets the opponent health
     func setOpponentHealth(amount: Int) {
     
         opponentHP = amount
         opponentHPBar.size.width = CGFloat(opponentHP)
     }
+
+
+    // Sets the player health
     func setPlayerHealth(amount: Int) {
     
         playerHP = amount
@@ -211,6 +206,7 @@ class GameplayOverlay: SKScene {
        
     }
     
+    // Sets Up the player 1 stats UI on the health bar
     func setupPlayer1Stats(skScene: SKScene) {
         
         // HP bar for player
@@ -221,6 +217,7 @@ class GameplayOverlay: SKScene {
         playerHPBackground.fillColor = .black
         skScene.addChild(playerHPBackground)
         
+        //HP container for player
         let playerHPContainer = SKShapeNode(rectOf: CGSize(width: 150, height: 10), cornerRadius: 5)
         playerHPContainer.position = CGPoint(x: 160, y: 320)
         playerHPContainer.zPosition = 4
@@ -237,6 +234,7 @@ class GameplayOverlay: SKScene {
     }
     
 
+    //function with timer functionality
     func startTimer() {
            countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
        }
@@ -286,6 +284,8 @@ class GameplayOverlay: SKScene {
         return player1.roundsWon > 1 || player2.roundsWon > 1
     }
     
+
+    //real endgame function
     func endMatch() {
         
         var winner: String
@@ -306,10 +306,6 @@ class GameplayOverlay: SKScene {
         roundNumberLabel.fontSize = 30
         roundNumberLabel.zPosition = 10
         skScene.addChild(roundNumberLabel)
-        
-        
-        
-        // TODO: Return to main menu after delay
         
         
     }

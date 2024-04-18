@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's blocking state
 class NinjaBlockingState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
@@ -9,7 +10,6 @@ class NinjaBlockingState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaBlockingState")
         stateMachine.character.setState(withState: CharacterState.Blocking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Blocking]!, loop: true)
     }
@@ -18,6 +18,5 @@ class NinjaBlockingState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaBlockingState")
     }
 }

@@ -7,6 +7,10 @@
 
 import SceneKit
 
+/*
+Creates a Hurtbox and attaches as a child to the SCNNode
+of part of the character model
+*/
 func initHurtboxAttack(
     withParentNode playerSpawn: SCNNode,
     width: CGFloat = 1.0,
@@ -22,8 +26,6 @@ func initHurtboxAttack(
     
     hurtBoxNode.scale = SCNVector3(100, 100, 100) // Scale up by a factor of 10 in all directions
     
-    //    hitboxNode.position.z = 1.0
-    //    hitboxNode.position.y = 1.0
     hurtBoxNode.position = position;
     hurtBoxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hurtBoxGeometry, options: nil))
     hurtBoxNode.physicsBody?.isAffectedByGravity = false
@@ -50,7 +52,6 @@ func initHurtboxAttack(
     let greenTransparentMaterial = SCNMaterial()
     greenTransparentMaterial.diffuse.contents = greenColor
     hurtBoxNode.geometry?.materials = [greenTransparentMaterial]
-//    hurtBoxNode.isHidden = true
 
     // attach the hitbox to the playerSpawn node
     playerSpawn.addChildNode(hurtBoxNode)

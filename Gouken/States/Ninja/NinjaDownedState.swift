@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's downed state
 class NinjaDownedState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
@@ -9,7 +10,6 @@ class NinjaDownedState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaDownedState")
         stateMachine.character.setState(withState: CharacterState.Downed)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Downed]!, loop: true)
     }
@@ -18,6 +18,5 @@ class NinjaDownedState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaDownedState")
     }
 }

@@ -8,12 +8,14 @@
 import GameplayKit
 import SceneKit
 
+// ENUM of the Stage Types
 enum StageType {
     case AmazingBrentwood
     case PyramidOfGiza
     case Temple
 }
 
+// 
 let StageScnMapper : Dictionary = [
     StageType.AmazingBrentwood: "art.scnassets/AmazingBrentwood.scn",
     StageType.PyramidOfGiza: "art.scnassets/PyramidOfGiza.scn",

@@ -16,7 +16,16 @@ var p1Side = PlayerType.P1
 var p2Side = PlayerType.P2
 let debugBoxes = false
 
+/**
+    A view controller responsible for managing the gameloop, scenes, UI and interactions
+    
+    So raise a toast to this game divine,
+    A labor of love, a gem to shine,
+    Gouken, a testament to teamwork's art,
+    A triumph born from every heart.
 
+    - Chad Gippity
+*/
 class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayDelegate, SCNPhysicsContactDelegate {
     var scnView: SCNView!
     var menuLoaded = false
@@ -24,20 +33,19 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
     var gameplayOverlay: GameplayOverlay!
     var roundEntity: RoundEntity?
     
+    // Loads game when loading into game
     func playButtonPressed() {
         removeMenuOverlay()
         loadGame()
     }
     
+    // Removes existing Menu Overlays
     func removeMenuOverlay() {
-        print("Attempting to remove menu overlay...")
         view.subviews.first(where: { $0 is SKView })?.removeFromSuperview()
-        print("Menu overlay removed.")
     }
     
+    // Loads Menu Scene
     func loadMenu() {
-        print("Loading Menu Scene")
-        
         // Remove current SKView (menu overlay)
         view.subviews.first(where: { $0 is SCNView })?.removeFromSuperview()
         
@@ -65,14 +73,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             return // Ensure self.view is actually an SCNView
         }
         
-        GameManager.Instance().doSomething();
         AudioManager.Instance().playBackgoundMusicSound(audio: AudioDict.Menu)
         
     }
     
     func loadGame() {
         guard menuLoaded else {
-            print("Menu not loaded yet!")
             return
         }
         
@@ -103,11 +109,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         GameManager.Instance().cameraNode = cameraNode
         
         initLighting(scene:scene)
-        
-        // Add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        scnViewNew.addGestureRecognizer(tapGesture)
-        
+                
         p1Side = PlayerType.P1
         p2Side = PlayerType.P2
         
@@ -121,7 +123,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             let myPeerDisplayName = String(multipeerConnect.myPeerId.hash)
             let firstConnectedPeerDisplayName = String(multipeerConnect.connectedPeers.first!.hash)
             
-            print("\(myPeerDisplayName) and \(firstConnectedPeerDisplayName)")
             
             GameManager.Instance().matchType = MatchType.MP
             if (myPeerDisplayName > firstConnectedPeerDisplayName) {
@@ -138,7 +139,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                 p2Side = PlayerType.P1
                 p1Char = CharacterName.Ninja2
                 p2Char = CharacterName.Ninja
-//                swapMoves()
+
             }
             
             GameManager.Instance().matchType = MatchType.MP
@@ -188,7 +189,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             entityManager.addEntity(self.roundEntity!)
         }
         
-        //        GameManager.Instance().camera = cameraNode
+        // GameManager.Instance().camera = cameraNode
                 
         var gkEntity = GKEntity()
         var cameraComponent: GKComponent = CameraComponent(camera: cameraNode)
@@ -198,26 +199,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // configure the view
         scnView.backgroundColor = UIColor.black
         
-        // init floor physics
-//        initWorld(scene: scene)
-//        initPlayerPhysics(player1: playerSpawn, player2: enemySpawn)
         
         if (debugBoxes) {
             scnViewNew.debugOptions = [.showPhysicsShapes]
         }
-//        scnViewNew.debugOptions = [.showPhysicsShapes, .showWireframe]
-//        scnViewNew.debugOptions = [.showWireframe]
-        
-        // Player Controls Overlay
-//        let overlayScene = GKScene(fileNamed: "Overlay")
-//        let overlayNode = overlayScene?.rootNode as? Overlay
-//        overlayNode?.scaleMode = .aspectFill
-//        scnViewNew.overlaySKScene = overlayNode
-//        gamePad = overlayNode?.virtualController?.controller?.extendedGamepad
-//        gamePad?.leftThumbstick.valueChangedHandler = thumbstickHandler
-//        gamePad?.buttonA.valueChangedHandler = changeAnimationA
-//        gamePad?.buttonB.valueChangedHandler = changeAnimationB
-        
         
 
         let gamepadOverlay = setupGamePad(withViewHeight: scnViewNew.bounds.height, andViewWidth: scnViewNew.bounds.width)
@@ -285,7 +270,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         return collision != nil && !collision!.isEmpty
     }
     
-    // TODO: Store array of each character's hitboxes in Character obj
     // On attack, check that character's Hitboxes and check collisions
     func changeAnimationB(_ button: GCControllerButtonInput, _ pressure: Float, _ hasBeenPressed: Bool) {
         if hasBeenPressed {
@@ -305,14 +289,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             self?.handleReceivedData(receivedData)
         }
         
-//        if (player2?.state == CharacterState.Idle) {
-//            player2?.stateMachine?.switchState((player2?.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
-//        }
-        
-        
-        
-        
-        
         //handle game logic
         ticksPassed!+=1
         let deltaTime = lastFrameTime == 0.0 ? 0.0 : time - lastFrameTime
@@ -320,12 +296,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         // Update loop for any calls (our game loop)
         entityManager.entities.forEach { entity in
             
-            entity.update(deltaTime: deltaTime)
+        entity.update(deltaTime: deltaTime)
             
-            if let component = entity.component(ofType: MovementComponent.self) {
-                // Update entity based on movement component
-                //component.move()
-            }
         }
                 
         if (GameManager.Instance().matchType == MatchType.MP && player2!.health.currentHealth! == 0 && player1!.characterNode.parent!.name == "p1Spawn") {
@@ -340,9 +312,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
             gameplayOverlay.setPlayerHealth(amount: player2!.health.currentHealth!)
         }
         
-
-//        //            player2?.stateMachine?.switchState(NinjaDownedState((player2!.stateMachine! as! NinjaStateMachine)))
-
         
         if (!self.roundEntity!.isPaused) {
             processBuffer(fromBuffer: P1Buffer, onCharacter: player1!)
@@ -358,6 +327,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
 
     }
     
+    // Look at enemy player  
     func lookAtOpponent(player:SCNNode, enemy:SCNNode ){
         
         var relativePos1 = player.position.z - enemy.position.z
@@ -377,14 +347,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         
     }
 
-    
+    //Process data received to apply to enemy player
     func handleReceivedData(_ receivedData: PlayerData) {
         
         if(receivedData.player.ticks % 1 == 0){
-            if(playerSpawn?.name == Optional("p1Spawn") ){
-                
-                //print("P1's version: enemySpawn= \(enemySpawn?.position.z) and PlayerSpawn=\(playerSpawn?.position.z)")
-                
+            if(playerSpawn?.name == Optional("p1Spawn") ){                
                 enemySpawn?.position.z = receivedData.player.position1z
                 enemySpawn?.position.y = receivedData.player.position1y
                 playerSpawn?.position.z = receivedData.player.position2z
@@ -395,15 +362,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
                         player2!.health.currentHealth = receivedData.player.health2
                     }
             }
-
         }
-        
-                     
+                  
         var enemyState = receivedData.player.characterState
         convertEnemyDataToClient(enemyState: enemyState)
                      
     }
     
+    //Process state data received to apply to enemy player
     func convertEnemyDataToClient(enemyState: CharacterState){
         guard let player2 = player2,
               let stateMachine = player2.stateMachine,
@@ -456,48 +422,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SKOverlayD
         }
     }
 
-
-    @objc
-    func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-//        // retrieve the SCNView
-//        let scnView = self.view as! SCNView
-//        
-//        // check what nodes are tapped
-//        let p = gestureRecognize.location(in: scnView)
-//        let hitResults = scnView.hitTest(p, options: [:])
-//        // check that we clicked on at least one object
-//        if hitResults.count > 0 {
-//            // retrieved the first clicked object
-//            let result = hitResults[0]
-//            
-//            // get its material
-//            let material = result.node.geometry!.firstMaterial!
-//            
-//            // highlight it
-//            SCNTransaction.begin()
-//            SCNTransaction.animationDuration = 0.5
-//            
-//            // on completion - unhighlight
-//            SCNTransaction.completionBlock = {
-//                SCNTransaction.begin()
-//                SCNTransaction.animationDuration = 0.5
-//                
-//                material.emission.contents = UIColor.black
-//                
-//                SCNTransaction.commit()
-//            }
-//            
-//            material.emission.contents = UIColor.red
-//            
-//            SCNTransaction.commit()
-//        }
-    }
-    
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
             // Check which nodes collided
             let nodeA = contact.nodeA
             let nodeB = contact.nodeB
-            print("Contact Delegate Called")
         }
     
     func initLighting(scene:SCNScene){

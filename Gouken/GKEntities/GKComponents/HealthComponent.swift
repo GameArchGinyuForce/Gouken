@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Health Component that stores health info of the players
 class HealthComponent : GKComponent {
     var maxHealth: Int!
     var currentHealth: Int!
@@ -12,6 +13,7 @@ class HealthComponent : GKComponent {
     var onHeal: (() -> Void)?
     var onDie: (() -> Void)?
     
+    // Initializes the max health of a player
     init(maxHealth: Int, statsUI: GameplayOverlay) {
         super.init()
         
@@ -26,6 +28,7 @@ class HealthComponent : GKComponent {
     
     override func update(deltaTime seconds: TimeInterval) {    }
     
+    // Function that handles the damage taken on a player, reduces the current health provided the amount of damage taken
     func damage(_ amount: Int) {
         currentHealth = currentHealth - amount < 0 ? 0 : currentHealth - amount;
         
@@ -40,12 +43,14 @@ class HealthComponent : GKComponent {
         }
     }
     
+    // Heals the player
     func heal(_ amount: Int) {
         currentHealth = currentHealth + amount > maxHealth ? maxHealth : currentHealth + amount;
         
         onHeal?()
     }
     
+    // Function that handles the death of a player
     func die() {
         onDie?()
     }

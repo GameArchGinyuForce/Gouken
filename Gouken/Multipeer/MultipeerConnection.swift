@@ -3,34 +3,36 @@
 //
 //  Created by Sepehr Mansouri on 2024-03-27.
 //
+// Contains the functions for multipeer connectivity
+//
+//
 
 import Foundation
 import MultipeerConnectivity
 import os
 import Combine
 
-
+// Enum representing different moves a player can make
 enum Move: String, CaseIterable, Codable {
     case left, right, jump, crouch, lowDash, midDash, block
 }
 
+// Struct representing data about a player, including their character and timestamp
 struct PlayerData: Codable {
     let player: SerializableCharacter
     let timestamp: TimeInterval
 }
 
-
+// Class responsible for managing multipeer connectivity
 class MultipeerConnection: NSObject, ObservableObject {
 
+    // Change this for advertiser code
     private let serviceType = "GoukenMP"
 
     private let session: MCSession
     var receivedDataHandler: ((PlayerData) -> Void)?
     private var invitationAccepted = false
     
-    
-    
-    // TODO: Get the GameCenter Username from the apple device
     public let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
@@ -54,7 +56,7 @@ class MultipeerConnection: NSObject, ObservableObject {
     let objectWillChange = PassthroughSubject<Void, Never>()
 
 
-
+    // Initialize MultipeerConnection
     override init() {
         precondition(Thread.isMainThread)
         self.session = MCSession(peer: myPeerId, securityIdentity: nil, encryptionPreference: MCEncryptionPreference.none)
@@ -76,6 +78,7 @@ class MultipeerConnection: NSObject, ObservableObject {
         self.serviceBrowser.stopBrowsingForPeers()
     }
     
+    // Sends data to connected peer
     func send(ready: String) {
         //precondition(Thread.isMainThread)
         if !session.connectedPeers.isEmpty {
@@ -91,6 +94,7 @@ class MultipeerConnection: NSObject, ObservableObject {
         }
     }
 
+    // Sends game state data to connected peer
     func send(player: SerializableCharacter) {
         //precondition(Thread.isMainThread)
         if !session.connectedPeers.isEmpty {
@@ -105,17 +109,20 @@ class MultipeerConnection: NSObject, ObservableObject {
             }
         }
     }
-    
+
+    // Stops advertising and browsing for peers
     func disablePlayerSearch() {
         serviceAdvertiser.stopAdvertisingPeer()
         serviceBrowser.stopBrowsingForPeers()
     }
-    
+
+    // Starts advertising and browsing for peers
     func enablePlayerSearch() {
         serviceAdvertiser.startAdvertisingPeer()
         serviceBrowser.startBrowsingForPeers()
     }
 }
+
 
 extension MultipeerConnection: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
@@ -157,7 +164,6 @@ extension MultipeerConnection: MCNearbyServiceBrowserDelegate {
     }
 }
 
-//
 extension MultipeerConnection: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         log.info("peer \(peerID) didChangeState: \(state.debugDescription)")
@@ -173,11 +179,7 @@ extension MultipeerConnection: MCSessionDelegate {
         
             do {
                 let decoder = JSONDecoder()
-
-                
                 let receivedData = try decoder.decode(PlayerData.self, from: data)
-
-
                 let currentTimestamp = Date().timeIntervalSince1970
                 let roundTripLatency = (currentTimestamp - receivedData.timestamp)
                 DispatchQueue.main.async {

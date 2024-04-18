@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's attacking state
 class NinjaAttackingState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
@@ -11,7 +12,6 @@ class NinjaAttackingState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaAttackingState")
         stateMachine.character.setState(withState: CharacterState.Attacking)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Attacking]!, loop: false)
         
@@ -29,7 +29,6 @@ class NinjaAttackingState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaAttackingState")
         stateMachine.character?.hitbox.deactivateHitboxes()    // Clears hitboxes if attack state disrupted
     }
 }

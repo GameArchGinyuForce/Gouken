@@ -8,6 +8,7 @@
 import Foundation
 import GameplayKit
 
+// hit Box Component that handles the hitbox/hurtbox
 class HitBoxComponent : GKComponent {
     var hitboxes: [SCNNode] = [SCNNode]()
     var hitboxesDict: Dictionary = [String: SCNNode]()  // Dictionary to activate specific hitboxes
@@ -25,6 +26,9 @@ class HitBoxComponent : GKComponent {
         super.init(coder: coder)
     }
     
+    /**
+     Checks for collisions for characters hitboxes every tick
+    */
     override func update(deltaTime seconds: TimeInterval) {
         // Check hitbox collisions
         let contactBitMask = checkCollisions(scene: self.scene)
@@ -33,13 +37,9 @@ class HitBoxComponent : GKComponent {
             return
         }
         
-        print(contactBitMask)
-        
         let p2HitBool = p1Side == PlayerType.P1 ? (p2HitBox | p1HurtBox) : (p1HitBox | p2HurtBox)
         let p1HitBool = p1Side == PlayerType.P1 ? (p1HitBox | p2HurtBox) : (p2HitBox | p1HurtBox)
                 
-        print(p2HitBool)
-        print(p1HitBool)
         // Check which player hit which && whether enemy is not stunned
         if (contactBitMask == p2HitBool && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
             GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, GameManager.Instance().p1Character!.hitbox.damage)
@@ -48,14 +48,9 @@ class HitBoxComponent : GKComponent {
             
             GameManager.Instance().p1Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p2Character!, GameManager.Instance().p2Character!.hitbox.damage)
         }
-
-//        if (contactBitMask == (p2HitBox | p1HurtBox) && GameManager.Instance().p2Character?.state != CharacterState.Stunned) {
-//            GameManager.Instance().p2Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p1Character!, 10)
-//        } else if (contactBitMask == (p1HitBox | p2HurtBox) && GameManager.Instance().p1Character?.state != CharacterState.Stunned) {
-//            GameManager.Instance().p1Character?.stateMachine?.character.health.onHit?(GameManager.Instance().p2Character!, 10)
-//        }
     }
     
+    // Appends hitboxes to the player
     func addHitbox(hitbox: SCNNode) {
         hitboxes.append(hitbox)
         hitboxesDict[hitbox.name ?? ""] = hitbox
@@ -70,15 +65,13 @@ class HitBoxComponent : GKComponent {
         if scene == nil {
             return -1
         }
-//        
+      
         for _hitbox in hitboxes {
             let enemyHurtBox = _hitbox.physicsBody!.categoryBitMask == p1HitBox ? p2HurtBox : _hitbox.physicsBody!.collisionBitMask
             if ((_hitbox.physicsBody) == nil) {
                 continue
             }
             
-            //            print("(\(_hitbox.physicsBody!.categoryBitMask),\(_hitbox.physicsBody!.collisionBitMask), \(_hitbox.physicsBody!.contactTestBitMask))")
-            //            print(enemyHurtBox)
             let collision = scene?.physicsWorld.contactTest(with: _hitbox.physicsBody!, options: [SCNPhysicsWorld.TestOption.collisionBitMask: enemyHurtBox])
             if (collision != nil && !collision!.isEmpty) {
                 for coll in collision! {
@@ -86,7 +79,6 @@ class HitBoxComponent : GKComponent {
                     if coll.nodeA.physicsBody!.contactTestBitMask != coll.nodeB.physicsBody!.categoryBitMask {
                         continue
                     }
-                    print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
                     return (coll.nodeA.physicsBody!.categoryBitMask) | (coll.nodeB.physicsBody!.categoryBitMask)
                     
                 }
@@ -106,11 +98,6 @@ class HitBoxComponent : GKComponent {
                             continue
                         }
                         
-                        print(enemyHurtBox)
-                        print("First detected collision:", coll.nodeB.physicsBody!.categoryBitMask)
-                        print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
-
-                        print("(\(coll.nodeA.physicsBody!.categoryBitMask),\(coll.nodeA.physicsBody!.collisionBitMask), \(coll.nodeA.physicsBody!.contactTestBitMask)) vs ", "(\(coll.nodeB.physicsBody!.categoryBitMask),\(coll.nodeB.physicsBody!.collisionBitMask), \(coll.nodeB.physicsBody!.contactTestBitMask))")
                         return (coll.nodeA.physicsBody!.categoryBitMask) | (coll.nodeB.physicsBody!.categoryBitMask)
                         
                     }
@@ -149,7 +136,6 @@ class HitBoxComponent : GKComponent {
         let hitbox: SCNNode? = hitboxesDict[name]
         
         if (hitbox == nil) {
-            print("Not hitbox found with name: ", name)
             return
         }
         

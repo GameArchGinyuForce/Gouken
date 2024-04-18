@@ -9,6 +9,7 @@ protocol SKOverlayDelegate: AnyObject {
     // Add more functions as needed for different menu options
 }
 
+// A menu scene overlay that shows up once the game is booted up to show the menus
 class MenuSceneOverlay: SKScene {
     weak var overlayDelegate: SKOverlayDelegate?
     var backgroundMusicPlayer: AVAudioPlayer?
@@ -18,30 +19,30 @@ class MenuSceneOverlay: SKScene {
     var readyBtn: SKShapeNode!
     var multipeerConnect: MultipeerConnection?
     
+    // Sets up multipeer connection once the PVP option is chosen in the menu
     func setupMultipeerConnect() {
         guard let multipeerConnect = multipeerConnect else {
             return
         }
         multipeerConnect.enablePlayerSearch()
-        print("connection changed1")
         handleConnectionChange()
         cancellable = multipeerConnect.objectWillChange.sink { [weak self] _ in
             self?.handleConnectionChange()
         }
     }
     
+    // Initializes the main menu setup
     init(size: CGSize, multipeerConnect: MultipeerConnection) {
         self.multipeerConnect = multipeerConnect
-        print("test")
-        print(multipeerConnect)
         super.init(size: size)
      }
     
+    // Checks for fatal error if the menu isn't initialized
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Add other buttons
+    // Default button size for the main menu
     let buttonSize = CGSize(width: 150, height: 50)
     let offsetFromMiddle = CGPoint(x: 0, y: -20)
     let buttonSpacing: CGFloat = 10
@@ -50,10 +51,8 @@ class MenuSceneOverlay: SKScene {
     
     var cancellable: AnyCancellable?
     
+    // Handles connection change once the PvP option is pressed
     func handleConnectionChange() {
-            print("Connection status changed")
-            // Update UI based on the new connection status
-            // For example:
 
             if multipeerConnect?.connectedPeers.isEmpty ?? true {
                 // No connected peers
@@ -85,12 +84,10 @@ class MenuSceneOverlay: SKScene {
                     overlayDelegate?.playButtonPressed()    // Calls a method in GameViewController to swap scenes
 
                 }
-//                addText(to: readyBtn, text: "Ready", name: "readyText")
-//                node.childNode(withName: "readyText")?.removeFromParent()
             }
         }
 
-
+    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         let backgroundImage = SKSpriteNode(imageNamed: "background.jpg")
@@ -111,7 +108,6 @@ class MenuSceneOverlay: SKScene {
         // Play background music
         playBackgroundMusic()
         
-//        setupMenu()
         showMenu();
         addChild(menuContainer)
         
@@ -126,7 +122,7 @@ class MenuSceneOverlay: SKScene {
     }
     
     
-    
+    // Function that adds a text to a corresponding button
     private func addText(to node: SKNode, text: String, fontSize: CGFloat=20, name: String="") {
         let label = SKLabelNode(text: text)
         label.fontName = "Helvetica"
@@ -144,6 +140,7 @@ class MenuSceneOverlay: SKScene {
         node.addChild(label)
     }
     
+    // Displays the select game mode during 
     func showSelectGameMode() {
         menuContainer.removeAllChildren()
         
@@ -199,17 +196,7 @@ class MenuSceneOverlay: SKScene {
         matchmakingLabel.fontColor = .white
         matchmakingLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 80)
         menuContainer.addChild(matchmakingLabel)
-        
-        
-        
-        // TODO: Add check if match is found
-//        DispatchQueue.global().async {
-//            Thread.sleep(forTimeInterval: 2)
-//            
-//            DispatchQueue.main.async {
-//                matchmakingLabel.text = "Matches Found!"
-//            }
-//        }
+    
         
         // Back button
         let backButton = SKShapeNode(rect: CGRect(x: -buttonSize.width / 2, y: -buttonSize.height / 2, width: buttonSize.width, height: buttonSize.height), cornerRadius: 10)
@@ -222,7 +209,7 @@ class MenuSceneOverlay: SKScene {
         addText(to: backButton, text: "Back")
     }
     
-    
+    // Displays a 'matchmaking' text when choosing PvP button
     func addMatchmakingText() {
         matchmakingText = SKLabelNode(text: "Matchmaking...")
         matchmakingText.name = "matchmaking"
@@ -233,6 +220,7 @@ class MenuSceneOverlay: SKScene {
         menuContainer.addChild(matchmakingText)
     }
     
+    // Shows the menu
     func showMenu() {
         menuContainer.removeAllChildren()
 
@@ -279,6 +267,7 @@ class MenuSceneOverlay: SKScene {
         addText(to: quitButton, text: "Quit")
     }
     
+    // Function thaPlays a background music in the menus
     func playBackgroundMusic() {
         guard let url = Bundle.main.url(forResource: "backgroundMusic", withExtension: "mp3") else {
             print("Could not find backgroundMusic.mp3")
@@ -295,7 +284,7 @@ class MenuSceneOverlay: SKScene {
         }
     }
     
-    
+    // Function that detects the touch within the menus UI Interaction
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)

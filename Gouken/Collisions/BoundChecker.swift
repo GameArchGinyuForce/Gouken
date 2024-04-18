@@ -3,7 +3,8 @@
 //  Gouken
 //
 //  Created by Jeff Phan on 2024-04-02.
-//
+// 
+// Functions for checking bounds per tick
 
 import Foundation
 import SceneKit
@@ -14,6 +15,7 @@ let pushPlayerBoundSize: Float = 0.8
 var cameraBoundSize: Float = 5
 var pushSpeed: Float = 0.05
 
+// Check all bounds 
 func boundCheckAll(player1Node: SCNNode, player2Node: SCNNode, newPos: Float, cameraPos: Float) -> Float {
     
     var player1Pos = player1Node.position.z
@@ -29,7 +31,6 @@ func boundCheckAll(player1Node: SCNNode, player2Node: SCNNode, newPos: Float, ca
         }
     }
     
-    
     if (boundCheckWorld(player1Pos: player1Pos, player2Pos: player2Pos, newPos: newPos) &&
         boundCheckCamera(player1Pos: player1Pos, player2Pos: player2Pos, newPos: newPos, cameraPos: cameraPos)) {
         return newPos
@@ -38,6 +39,7 @@ func boundCheckAll(player1Node: SCNNode, player2Node: SCNNode, newPos: Float, ca
     }
 }
 
+// Check bounds of the other player
 func boundCheckPlayer(player1Node: SCNNode, player2Node: SCNNode, newPos: Float) -> Float? {
     
     var player1Pos = player1Node.position.z
@@ -62,6 +64,7 @@ func boundCheckPlayer(player1Node: SCNNode, player2Node: SCNNode, newPos: Float)
     return nil
 }
 
+// Check the world bounds
 func boundCheckWorld(player1Pos: Float, player2Pos: Float, newPos: Float) -> Bool {
     let lowerBound = -worldBoundSize / 2
     let upperBound = worldBoundSize / 2
@@ -79,6 +82,7 @@ func boundCheckWorld(player1Pos: Float, player2Pos: Float, newPos: Float) -> Boo
     return newPos >= lowerBound && newPos <= upperBound
 }
 
+// Checks the bounds in which the camera can view the scene
 func boundCheckCamera(player1Pos: Float, player2Pos: Float, newPos: Float, cameraPos: Float) -> Bool {
     let difference = abs(newPos - player2Pos)
     print("difference: \(difference)")

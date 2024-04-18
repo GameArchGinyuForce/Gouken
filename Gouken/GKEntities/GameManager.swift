@@ -35,9 +35,11 @@ enum CurrentScene {
     Game
 }
 
+/**
+ GameManager class for game management and general util
+*/
 class GameManager {
     
-    // Initial Implementation, consider better design
     var stageSelected: StageSelected?
     var p1Character: Character?
     var p2Character: Character?
@@ -45,8 +47,6 @@ class GameManager {
     var matchType: MatchType?
     var currentScene: CurrentScene?
     var cameraNode: SCNNode?
-    
-    // TODO: Additional parameters including Settings (Sound level, etc.), playerId?, matchHistory?
     
     // Singleton Pattern
     static private var Instance_: GameManager?
@@ -57,11 +57,6 @@ class GameManager {
             GameManager.Instance_ = GameManager()
         }
         return (GameManager.Instance_)!
-    }
-
-    // A sample method that can be called from any file
-    func doSomething() {
-        print("Hey From GameManager Singleton")
     }
     
     func otherCharacter(character: Character) -> Character{

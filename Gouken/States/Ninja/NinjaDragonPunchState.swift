@@ -8,6 +8,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's dragon punch state
 class NinjaDragonPunchState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
@@ -18,7 +19,6 @@ class NinjaDragonPunchState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaHeavyAttackingState")
         stateMachine.character.setState(withState: CharacterState.DragonPunch)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DragonPunch]!, loop: false)
         
@@ -36,7 +36,6 @@ class NinjaDragonPunchState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaHeavyAttackingState")
         stateMachine.character?.hitbox.deactivateHitboxes()    // Clears hitboxes if attack state disrupted
     }
 }

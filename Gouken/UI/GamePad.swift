@@ -7,9 +7,11 @@
 
 import SpriteKit
 
+// Below are stored constants for the RGBA values of a button that is pressed or not.
 let unpressedColour : UIColor = UIColor(red: 128.0, green: 128.0, blue: 128.0, alpha: 0.7)
 let pressedColour   : UIColor = UIColor(red: 128.0, green: 128.0, blue: 128.0, alpha: 0.4)
 
+// Constants for responsive U.I. scaling.
 let BUTTON_RATIO = 0.152
 let XPOS_RATIO   = 0.1701
 let YPOS_RATIO   = 0.4835
@@ -26,7 +28,7 @@ enum ButtonType : Int {
 
 let gamePadButtons : [GamePadButton] = []
 
-/** This class handles gamepad buttons.
+/** This class encapsulates SkShapeNode behaviour for a GamePad button.
  */
 class GamePadButton : SKShapeNode {
     
@@ -92,9 +94,9 @@ func createPunchBtn(onBuffer buffer: InputBuffer, withRadius radius: CGFloat, an
     return GamePadButton(withBuffer: buffer, ofShape: button, andButtonType: type)
 }
 
+// Creates an SKScene with the GamePad buttons and returns it.
 func setupGamePad(withViewHeight height: CGFloat, andViewWidth width: CGFloat) -> SKScene {
     let sceneSize = CGSize(width: width, height: height)
-    print("Screen size of ", width, " by ", height)
     let skScene = SKScene(size: sceneSize)
     skScene.scaleMode = .resizeFill
     

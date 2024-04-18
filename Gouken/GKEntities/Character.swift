@@ -44,6 +44,9 @@ enum CharacterState : String, Codable {
 
 let runSpeed = 0.06
 
+/**
+ * This class serves as a struct encompassing all of our player data. 
+ */
 class Character: Equatable {
     
     static func == (lhs: Character, rhs: Character) -> Bool {
@@ -117,10 +120,6 @@ class Character: Equatable {
         
         withManager.addEntity(entity)
         
-        // Bug when seting up boxes in Character
-//        setUpHurtBoxes()
-//        setUpHitboxes()
-        
         // Set up callbacks
         toggleHitboxesCallback = { [weak self] param1, param2, param3 in
             self?.togglePlayerHitboxes()
@@ -136,14 +135,13 @@ class Character: Equatable {
         }
     }
     
+    // Toggles visibility for hitboxes
     func togglePlayerHitboxes() {
-        print("Toggling hitboxes")
         for _hitbox in hitbox.hitboxes {
             _hitbox.isHidden = !_hitbox.isHidden
         }
-        print("Completed Toggling hitboxes")
     }
-    
+
     func addHitbox(hitboxNode: SCNNode) {
         hitbox.addHitbox(hitbox: hitboxNode)
     }
@@ -225,21 +223,6 @@ class Character: Equatable {
         var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.3, length: 0.2, position: SCNVector3(-30, -60, -20), pside: playerSide, name: "Hand_R", rotation: SCNVector3(x: Float.pi/10, y: 0, z: -Float.pi/7))
         hitbox.isHidden = true
         addHitbox(hitboxNode: hitbox)
-        
-//        var modelSCNNode = characterNode.childNode(withName: "Hand_R", recursively: true)
-//        var hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_R")
-//        hitbox.isHidden = true
-//        addHitbox(hitboxNode: hitbox)
-        
-//        modelSCNNode = characterNode.childNode(withName: "Hand_L", recursively: true)
-//        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 0.2, length: 0.2, position: SCNVector3(0, 0, 0), pside: playerSide, name: "Hand_L")
-//        hitbox.isHidden = true
-//        addHitbox(hitboxNode: hitbox)
-        
-//        modelSCNNode = characterNode.childNode(withName: "SM_Wep_Odachi_01", recursively: true)
-//        hitbox = initHitboxAttack(withPlayerNode: modelSCNNode!, width: 0.2, height: 1.2, length: 0.2, position: SCNVector3(0, 1.5, 1), pside: playerSide, name: "SM_Wep_Odachi_01", rotation: SCNVector3(x: Float.pi / 4, y: Float.pi / 4, z: Float.pi / 4))
-//        hitbox.isHidden = false
-//        addHitbox(hitboxNode: hitbox)
     }
     
     required init?(coder aDecoder: NSCoder) {

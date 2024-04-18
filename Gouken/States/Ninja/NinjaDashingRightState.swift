@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's dashing right state
 class NinjaDashingRightState: NinjaBaseState {
     
     var stateMachine: NinjaStateMachine!
@@ -22,7 +23,6 @@ class NinjaDashingRightState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaDashingRightState")
         dashProgress = 0.0
         
         stateMachine.character.setState(withState: CharacterState.DashingRight)
@@ -31,7 +31,6 @@ class NinjaDashingRightState: NinjaBaseState {
         } else {
             stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DashingRight]!, loop: false)
         }
-//        stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.DashingRight]!, loop: false)
     }
     
     func tick(_ deltaTime: TimeInterval) {
@@ -47,6 +46,5 @@ class NinjaDashingRightState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaDashingRightState")
     }
 }

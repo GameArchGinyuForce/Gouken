@@ -1,8 +1,10 @@
+// Dictionary holding character mesh paths 
 let characterModels     : Dictionary = [
     CharacterName.Ninja: "art.scnassets/Ninja_Katana_Default.dae",
     CharacterName.Ninja2: "art.scnassets/Ninja_Katana_Default2.dae",
 ]
 
+// Dictionary holding the CharacterState paths
 let characterAnimations : Dictionary = [
     CharacterName.Ninja: [
         CharacterState.Idle         :   "art.scnassets/Synty_Frank_RPG_Katana_Stance1_Idle.dae",

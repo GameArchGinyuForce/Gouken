@@ -50,7 +50,6 @@ ONLY USE THIS FUNCTION INSIDE OF THE RENDERER DELEGATE OF SCENEKIT.
 THIS IS BECAUSE THE ACTUAL INPUT BUFFER ITSELF ISN'T THREAD SAFE, ONLY ONE FLOW OF CONTR0L SHOULD
 TOUCH IT OTHERWISE BU HA0
 */
-//TODO: Clean up input handling and add sequence reading for Hadouken. Earlier commit hash has the sequence reading algo.
 func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character) {
     buffer.updateInput()
     
@@ -129,6 +128,11 @@ func processBuffer(fromBuffer buffer: InputBuffer, onCharacter player: Character
 }
 
 
+/**
+ * This takes a movelist and parses the input buffer to return the move with the highest priority
+ * whose sequence is found (with its respective frame leniency). As of now this is just a linear
+ * scan with no sub-leniencies (e.g. we don't have strings like Mishima 1-1-2 Flash Punch in Tekken).
+ */
 func readSequences(fromList seq: [CharacterState: CharacterMove], andBuffer buffer: InputBuffer) -> CharacterMove {
     var currentMovesPrio = -1
     var currentMove = CharacterMove(sequence: [ButtonType.Neutral], stateChages: CharacterState.Idle, priority: 1, frameLeniency: 1, attackKeyFrames: [])
@@ -157,44 +161,5 @@ func readSequences(fromList seq: [CharacterState: CharacterMove], andBuffer buff
         }
     }
     
-    return currentMove
-    
-//    // below dinky shit bc swift does not have negative modulus
-//    let readIdx = (buffer.writeIdx - 1) < 0 ? bufferSize - 1 : (buffer.writeIdx - 1) % bufferSize
-//    let input = buffer.buffer[readIdx]
-//    let isCharIdle = player.state == CharacterState.Idle
-//    let canEnterNeutral = player.state == CharacterState.RunningLeft || player.state == CharacterState.RunningRight || player.state == CharacterState.Blocking
-//    
-//    if (input == ButtonType.Right && isCharIdle) {
-//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningRight]!)
-//    } else if (input == ButtonType.Left && isCharIdle) {
-//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.RunningLeft]!)
-//    } else if (input == ButtonType.Down && isCharIdle) {
-//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Blocking]!)
-//    } else if (player.state != CharacterState.Attacking && input == ButtonType.LP && isCharIdle) {
-//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Attacking]!)
-//        
-//        // Hardcoded adding of events for hitbox toggling
-////            player1?.animator.addAnimationEvent(keyTime: 0.1, callback: (player1?.activateHitboxesCallback)!)
-//        player.animator.addAnimationEvent(keyTime: 0.1) { node, eventData, playingBackward in
-//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-//        }
-//        
-//        player.animator.addAnimationEvent(keyTime: 0.2, callback: (player.deactivateHitboxesCallback)!)
-////            player1?.animator.addAnimationEvent(keyTime: 0.3, callback: (player1?.activateHitboxesCallback)!)
-//        player.animator.addAnimationEvent(keyTime: 0.3) { node, eventData, playingBackward in
-//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-//        }
-//        
-//        player.animator.addAnimationEvent(keyTime: 0.4, callback: (player.deactivateHitboxesCallback)!)
-////            player1?.animator.addAnimationEvent(keyTime: 0.5, callback: (player1?.activateHitboxesCallback)!)
-//        player.animator.addAnimationEvent(keyTime: 0.5) { node, eventData, playingBackward in
-//            player.activateHitboxByNameCallback!("Hand_R", eventData, playingBackward)
-//        }
-//        
-//        player.animator.addAnimationEvent(keyTime: 0.6, callback: (player.deactivateHitboxesCallback)!)
-//
-//    } else if (canEnterNeutral && input == ButtonType.Neutral) {
-//        player.stateMachine?.switchState((player.stateMachine! as! NinjaStateMachine).stateInstances[CharacterState.Idle]!)
-//    }
+    return currentMove    
 }

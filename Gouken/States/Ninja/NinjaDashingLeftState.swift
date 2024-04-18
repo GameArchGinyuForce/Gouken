@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's dashing left state
 class NinjaDashingLeftState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     let dashDuration = 0.3
@@ -21,7 +22,6 @@ class NinjaDashingLeftState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaDashingLeftState")
         dashProgress = 0.0
         
         stateMachine.character.setState(withState: CharacterState.DashingLeft)
@@ -39,16 +39,12 @@ class NinjaDashingLeftState: NinjaBaseState {
             boundCheckCamera(player1Pos: player1Node.position.z, player2Pos: player2Node.position.z, newPos: player1Node.position.z - Float(dashDistancePerTick), cameraPos: cameraNode.position.z)) {
             player1Node.position.z =  player1Node.position.z - Float(dashDistancePerTick)
         }
-     
-        
-        
-        
+
         if (stateMachine.character.animator.currentTimeNormalized >= 1.0 || dashProgress >= dashDuration) {
             stateMachine.switchState(stateMachine.stateInstances[CharacterState.Idle]!)
         }
     }
     
     func exit() {
-        print("exit NinjaDashingLeftState")
     }
 }

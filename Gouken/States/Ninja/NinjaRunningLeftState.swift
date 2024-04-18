@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's running left state
 class NinjaRunningLeftState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     var player1Node: SCNNode
@@ -16,10 +17,7 @@ class NinjaRunningLeftState: NinjaBaseState {
         self.cameraNode = GameManager.Instance().cameraNode!
     }
     
-    func enter() {
-        
-        //playerNode = stateMachine.character.parentNode
-        
+    func enter() {        
         stateMachine.character.setState(withState: CharacterState.RunningLeft)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.RunningLeft]!, loop: true)
         

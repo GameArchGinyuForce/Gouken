@@ -16,6 +16,7 @@ func playAnimation(onNode node: SCNNode, withSCNFile anim: String, andBlendOutDu
     return animPlayer
 }
 
+// Stops the animation from playing
 func StopAnimation(onNode node: SCNNode, withBlendOutDuration blendOut: CGFloat = CGFloat(0.0)) {
     node.removeAllAnimations(withBlendOutDuration: blendOut)
 }

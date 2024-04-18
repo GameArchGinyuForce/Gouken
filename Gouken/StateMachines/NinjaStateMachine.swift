@@ -1,9 +1,11 @@
 import Foundation
 import GameplayKit
 
+// A specialized state machine for handling the states of a ninja character
 class NinjaStateMachine: CharacterStateMachine {
     var stateInstances: [CharacterState: NinjaBaseState]!
     
+    // Sets up all possible states that a ninja can be in and defines the closures for events
     override init(_ character: Character) {
         super.init(character)
         

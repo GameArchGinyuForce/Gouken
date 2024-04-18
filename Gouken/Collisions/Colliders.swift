@@ -21,7 +21,7 @@ import SceneKit
 /* Below we define all of our bitmasks. Nathan and Jas worked on this in crunch-time,
  consider verifying for best practices later. */
 
-// IMPORTANT NOTE: FUCK YOU APPLE, 64 IS MAXIMUM SIZE FOR BIT MASKS.
+// IMPORTANT NOTE: F*** YOU APPLE, 64 IS MAXIMUM SIZE FOR BIT MASKS.
 let floorBitMask = 1 << 5       // Binary: 00000010
 let p1MeshBitMask = 1 << 4      // Binary: 00001000
 let p2MeshBitMask = 1 << 6      // Binary: 01000000
@@ -34,7 +34,7 @@ let p1HurtBox = 8          // Binary: 00010000
 let p2HurtBox = 1 << 2          // Binary: 00000100
 
 
-
+// Initializes all the player physics as they interact within the scene
 func initPlayerPhysics(player1:SCNNode?, player2:SCNNode?){
     player1?.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
     player2?.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
@@ -64,6 +64,7 @@ func initPlayerPhysics(player1:SCNNode?, player2:SCNNode?){
     player2?.physicsBody?.collisionBitMask = floorBitMask | p1MeshBitMask
 }
 
+// Initializes the world and sets up colliders for the players as they are deployed into the scene
 func initWorld(scene:SCNScene){
     // init floor physics
     let floor = scene.rootNode.childNode(withName: "floor", recursively: true)!

@@ -7,6 +7,10 @@
 
 import SceneKit
 
+/*
+Creates a Hitbox and attaches as a child to the SCNNode
+of part of the character model
+*/
 func initHitboxAttack(
     withPlayerNode: SCNNode,
     width: CGFloat = 1.0,
@@ -21,8 +25,7 @@ func initHitboxAttack(
     let hitboxGeometry = SCNBox(width: width, height: height, length: length, chamferRadius: 0.0)
     let hitBoxNode = SCNNode(geometry: hitboxGeometry)
     hitBoxNode.name = "hitBoxNode"
-//    hitboxNode.position.z = 1.0
-//    hitboxNode.position.y = 1.0
+
     hitBoxNode.position = position;
     hitBoxNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: SCNPhysicsShape(geometry: hitboxGeometry, options: nil))
     hitBoxNode.physicsBody?.isAffectedByGravity = false

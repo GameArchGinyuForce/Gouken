@@ -6,6 +6,7 @@ class AnimatorComponent: GKComponent {
     private var character: SCNNode!
     private var _currentTime : TimeInterval = 0
     
+    //returns the current time for time interval
     var currentTime: TimeInterval {
         get {
             return _currentTime
@@ -36,10 +37,12 @@ class AnimatorComponent: GKComponent {
         _currentTime += (seconds * animPlayer.speed)
     }
     
+    // Sets the speed of the animator
     func setSpeed(_ speed: CGFloat) {
         animPlayer.speed = speed
     }
     
+    // Changes the animation type given a string
     func changeAnimation(animName: String, loop: Bool) {
         _currentTime = 0
         character.removeAllAnimations()

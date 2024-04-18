@@ -1,12 +1,12 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's running right state
 class NinjaRunningRightState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     var player1Node: SCNNode
     var player2Node: SCNNode
     var cameraNode: SCNNode
-    
     
     required init(_ stateMachine: NinjaStateMachine) {
         self.stateMachine = stateMachine
@@ -17,8 +17,6 @@ class NinjaRunningRightState: NinjaBaseState {
     }
     
     func enter() {
-        
-        //playerNode = stateMachine.character.parentNode
         
         stateMachine.character.setState(withState: CharacterState.RunningRight)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.RunningRight]!, loop: true)
@@ -32,16 +30,12 @@ class NinjaRunningRightState: NinjaBaseState {
         }
     }
     
-    func tick(_ deltaTime: TimeInterval) {
-        
-        player1Node.position.z = boundCheckAll(player1Node: player1Node, player2Node: player2Node, newPos: player1Node.position.z + Float(runSpeed), cameraPos: cameraNode.position.z)
-       
+    func tick(_ deltaTime: TimeInterval) {   
+        player1Node.position.z = boundCheckAll(player1Node: player1Node, player2Node: player2Node, newPos: player1Node.position.z + Float(runSpeed), cameraPos: cameraNode.position.z) 
     }
     
     func exit() {
         stateMachine.character.parentNode.eulerAngles.x = 0.0
-        stateMachine.character.animator.setSpeed(1)
-        
-    }
-    
+        stateMachine.character.animator.setSpeed(1) 
+    }  
 }

@@ -10,6 +10,7 @@ class Overlay: SKScene {
         setUpSecondaryUI()
     }
     
+    // Checks if the scene loaded up
     override func sceneDidLoad() {
         setUpSecondaryUI()
 
@@ -25,6 +26,7 @@ class Overlay: SKScene {
         
     }
     
+    // Sets up the menus Secondary UI
     func setUpSecondaryUI () {
         // Quit button
         let buttonSize = CGSize(width: 20, height: 20)

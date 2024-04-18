@@ -1,6 +1,7 @@
 import Foundation
 import GameplayKit
 
+// Handles animations and logic related to ninja's stunned state
 class NinjaStunnedState: NinjaBaseState {
     var stateMachine: NinjaStateMachine!
     
@@ -9,7 +10,6 @@ class NinjaStunnedState: NinjaBaseState {
     }
     
     func enter() {
-        print("enter NinjaStunnedState")
         stateMachine.character.setState(withState: CharacterState.Stunned)
         stateMachine.character.animator.changeAnimation(animName: characterAnimations[CharacterName.Ninja]![CharacterState.Stunned]!, loop: false)
     }
@@ -21,6 +21,5 @@ class NinjaStunnedState: NinjaBaseState {
     }
     
     func exit() {
-        print("exit NinjaStunnedState")
     }
 }
